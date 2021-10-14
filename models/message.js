@@ -6,6 +6,7 @@ const newScheduleAMessageSchema = mongoose.Schema({
     required: true,
   },
   date_or_cron_or_rules: {
+    //zmienic na object bedzie znacznie lepiej.
     //UTC
     //cron
     //second (0-59)|minute (0-59)|hour (0-23)|date (1-31)|month (0-11)|year|dayOfWeek (0-6) Starting with Sunday|tz
@@ -22,8 +23,9 @@ const newScheduleAMessageSchema = mongoose.Schema({
     required: false,
     default: "",
   },
-  phone_number: {
-    type: String,
+  phone_numbers: {
+    //zmienic
+    type: Array,
     required: true,
   },
   body: {
@@ -44,7 +46,6 @@ const newScheduleAMessageSchema = mongoose.Schema({
     type: Array,
     required: false,
   },
-
 });
 
 module.exports = mongoose.model("Message", newScheduleAMessageSchema);
