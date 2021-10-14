@@ -22,7 +22,7 @@ const addScheduledMessagesFromDB = async () => {
                                 console.log(
                                     `Is ${
                                         message.date_or_cron_or_rules
-                                    }, so I send a message: ${generateText(message.text)} to ${
+                                    }, so I send a message: ${generateText(message.body)} to ${
                                         message.phone_number
                                     }.`
                                 );
@@ -55,7 +55,7 @@ const addScheduledMessagesFromDB = async () => {
                                     );
                                     console.log(
                                         `Sending ${message._id} message: "${generateText(
-                                            message.text
+                                            message.body
                                         )}" to ${message.phone_number}, ${
                                             Math.round(
                                                 ((new Date() - new Date(message.date)) / 3600000) *

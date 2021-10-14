@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="post">
+    Date, cron or rules: <input type="text" name="date_or_cron_or_rules" required/><br />
+    Start Time if cron: <input type="text" name="startTime"/> - not required<br />
+    End Time if cron: <input type="text" name="endTime"/> - not required<br />
+    Phone number: <input type="text" name="phone_number" required/><br />
+    The message: <textarea type="textarea" name="body" rows="4" cols="50" required/></textarea><br />
+    Want to send the message if server was offline -1 or total count of hours: <input type="text" name="sendIfTheServerWasDown"/> - not required<br />
+    <input type="submit"/>
+</form>
+</body>
+<script>
+    document.getElementsByName('date_or_cron_or_rules')[0].value=new Date(new Date().setDate(new Date().getDate()+2)).toISOString();
+    console.log(1)
+</script>
+</html>
