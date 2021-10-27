@@ -6,7 +6,7 @@ const sha256 = require("js-sha256");
 const { createJWT } = require("../utils/auth");
 const emailRegexp =
   /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
-//
+
 // const nodemailer = require("nodemailer");
 //
 // let transporter = nodemailer.createTransport({
@@ -201,13 +201,10 @@ exports.confirm_email = (req, res) => {
     errors.activation_key = "invalid";
   }
   if (Object.keys(errors).length > 0) {
-    console.log(errors);
     return res.status(422).json(errors);
   }
-  console.log(email);
   EmailValidation.findOne({ email: email })
     .then((result) => {
-      console.log(result);
       if (result.key === activation_key) {
         User.findOneAndUpdate({ email: email }, { status: "active" })
           .then(async (user) => {
@@ -242,4 +239,18 @@ exports.confirm_email = (req, res) => {
         email: "incorrect",
       });
     });
+};
+
+exports.is_token_valid = (req, res) => {
+  let { token } = req.body;
+  jwt.verify(token, process.env.TOKEN_SECRET, (error, decoded) => {
+    if (error) {
+      res.status(500).json({ error });
+    }
+    if (decoded) {
+      return res.status(200).json({
+        valid: true,
+      });
+    }
+  });
 };

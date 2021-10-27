@@ -295,22 +295,29 @@ const Register = ({
             </Link>
           </div>
           <div className={"holder"}>Not a robot checkbox here</div>
-          <button
-            className={"button move-to-bottom"}
-            type={"submit"}
-            ref={submitButtonRef}
-            disabled
-          >
-            {formIsChecking ? (
-              <Loading
-                size={"1rem"}
-                margin={".72rem"}
-                background={"rgba(0,01,255,0.291)"}
-              />
-            ) : (
-              "sign up"
-            )}
-          </button>
+          <div className={"move-to-bottom"}>
+            <div className={"fullW"}>
+              <div style={{ marginLeft: 16, marginRight: 16 }}>
+                <button
+                  className={"button center"}
+                  type={"submit"}
+                  ref={submitButtonRef}
+                  disabled
+                  style={{ fontSize: "2rem" }}
+                >
+                  {formIsChecking ? (
+                    <Loading
+                      size={"1rem"}
+                      margin={".72rem"}
+                      background={"rgba(0,01,255,0.291)"}
+                    />
+                  ) : (
+                    "sign up"
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
         </form>
       </div>
     </div>

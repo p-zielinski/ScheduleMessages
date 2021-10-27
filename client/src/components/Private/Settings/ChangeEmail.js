@@ -10,15 +10,21 @@ const ChangeEmail = () => {
   const email1Ref = useRef();
   const [email1, setEmail1] = useState("");
   const [email1Warning, setEmail1Warning] = useState("&nbsp;");
+  const [email1BackgroundColor, setEmail1BackgroundColor] = useState("none");
+
   const email2Ref = useRef();
   const [email2, setEmail2] = useState("");
   const [email2Warning, setEmail2Warning] = useState("&nbsp;");
+  const [email2BackgroundColor, setEmail2BackgroundColor] = useState("none");
+
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   const [password, setPassword] = useState("");
   const passwordRef = useRef();
   const [passwordType, setPasswordType] = useState("password");
   const [passwordWarning, setPasswordWarning] = useState("&nbsp;");
+  const [passwordBackgroundColor, setPasswordBackgroundColor] =
+    useState("none");
 
   const timeout = (ms) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -66,18 +72,22 @@ const ChangeEmail = () => {
     setEmail1Warning("&nbsp;");
     setEmail2Warning("&nbsp;");
     await timeout(1000);
-    if (email === email1Ref.current.state.value) {
-      updateEmailWarningText();
-    }
+    try {
+      if (email === email1Ref.current.state.value) {
+        updateEmailWarningText();
+      }
+    } catch (e) {}
   };
 
   const didEmail2Changed = async (email) => {
     setEmail1Warning("&nbsp;");
     setEmail2Warning("&nbsp;");
     await timeout(1000);
-    if (email === email2Ref.current.state.value) {
-      updateEmailWarningText();
-    }
+    try {
+      if (email === email2Ref.current.state.value) {
+        updateEmailWarningText();
+      }
+    } catch (e) {}
   };
 
   const ShowHidePassword = () => {
@@ -96,10 +106,11 @@ const ChangeEmail = () => {
   const didPasswordChanged = async (password) => {
     setPasswordWarning("&nbsp;");
     await timeout(1000);
-
-    if (password === passwordRef.current.state.value) {
-      updatePasswordWarningText();
-    }
+    try {
+      if (password === passwordRef.current.state.value) {
+        updatePasswordWarningText();
+      }
+    } catch (e) {}
   };
 
   const updatePasswordWarningText = () => {
@@ -116,7 +127,7 @@ const ChangeEmail = () => {
   };
 
   return (
-    <div className={"center"} style={{ width: 800 }}>
+    <div className={"center fullW"}>
       <h2 className={"center mb"}>Change your email address:</h2>
       <p className={"center"} style={{ marginBottom: 5 }}>
         Please enter twice Your new email address down below:
@@ -126,6 +137,7 @@ const ChangeEmail = () => {
         placeholder="Your new email address"
         value={email1}
         ref={email1Ref}
+        style={{ background: email1BackgroundColor }}
         onChange={(e) => {
           setEmail1(e.target.value.replace(/\ /g, ""));
           didEmail1Changed(e.target.value.replace(/\ /g, ""));
@@ -145,6 +157,7 @@ const ChangeEmail = () => {
         placeholder="Reenter Your new email address"
         ref={email2Ref}
         value={email2}
+        style={{ background: email2BackgroundColor }}
         onChange={(e) => {
           setEmail2(e.target.value.replace(/\ /g, ""));
           didEmail2Changed(e.target.value.replace(/\ /g, ""));
@@ -183,6 +196,7 @@ const ChangeEmail = () => {
           </p>
         </div>
         <Input
+          style={{ background: passwordBackgroundColor }}
           placeholder="Your password"
           type={passwordType}
           size={"large"}
@@ -192,7 +206,7 @@ const ChangeEmail = () => {
         />
       </div>
       <p
-        className={"warning-holder mb"}
+        className={"warning-holder"}
         style={{
           paddingLeft: 140,
           fontSize: 13,
@@ -201,10 +215,15 @@ const ChangeEmail = () => {
       >
         {parse(passwordWarning)}
       </p>
+      <p className={"center"} style={{ marginTop: 10 }}>
+        Afterwords we will send you an email to your new email with the link to
+        confirm the change.
+      </p>
+      <p className={"center mb"}>The link will be valid only 24 hours.</p>
       <button
         disabled={isButtonDisabled}
         className={"button"}
-        type={"submit"}
+        type={"button"}
         style={{ fontSize: "2rem" }}
       >
         Continue

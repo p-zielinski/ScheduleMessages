@@ -9,6 +9,7 @@ import parsePhoneNumber, {
 } from "libphonenumber-js/mobile";
 import { SegmentedMessage } from "sms-segments-calculator";
 import parse from "html-react-parser";
+import { nanoid } from "nanoid";
 
 const EditSingleContact = ({
   id,
@@ -17,6 +18,8 @@ const EditSingleContact = ({
   newContactList,
   updateContacts,
   setUpdateContacts,
+  allowNumberChange,
+  setWantUpdate,
 }) => {
   const [number, setNumber] = useState(options[id].number);
   const [name, setName] = useState(options[id].name);
@@ -39,11 +42,35 @@ const EditSingleContact = ({
   const [UCS2encoded, setUCS2encoded] = useState(
     new SegmentedMessage(name).getNonGsmCharacters().length > 0 ? true : false
   );
+  const [wantDeleteClassName, setWantDeleteClassName] = useState("");
 
   const [wasEverNameLongerThan2Letters, setWasEverNameLongerThan2Letters] =
     useState(false);
   const [nameBackground, setNameBackground] = useState("none");
   const [phoneNumberBackground, setPhoneNumberBackground] = useState("none");
+
+  useEffect(() => {
+    let temp = updateContacts;
+    temp[id] = {
+      origin: options[id].number,
+      number: number,
+      name: name,
+      modified:
+        number === options[id].number && name === options[id].name
+          ? false
+          : true,
+      delete: wantDelete,
+    };
+    setUpdateContacts(temp);
+    setWantUpdate(nanoid(24));
+  }, [number, name, wantDelete]);
+
+  useEffect(() => {
+    if (wantDelete === true) {
+      setWarningText("&nbsp;");
+      setWantDeleteClassName("width150prc");
+    }
+  }, [wantDelete]);
 
   const timeout = (ms) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -244,217 +271,150 @@ const EditSingleContact = ({
     }
   }
 
-  // function onChangeNumber(e) {
-  //   let y;
-  //   if (e.length >= 1) {
-  //     y = "+";
-  //   } else {
-  //     y = "";
-  //   }
-  //
-  //   for (let x of e) {
-  //     if (!isNaN(parseInt(x))) {
-  //       y += x;
-  //     }
-  //   }
-  //
-  //   let found = false;
-  //   dbOfNumber.forEach((e) => {
-  //     e[0] = e[0].replace(/\ /g, "");
-  //     if (e[0] !== options[id].number.replace(/\ /g, "") && e[0] === y) {
-  //       setAssignedTo(e[1]);
-  //       found = true;
-  //     }
-  //   });
-  //
-  //   setNumberAlreadyUsed(found);
-  //
-  //   if (isValidPhoneNumber(y) === false) {
-  //     console.log("not valid");
-  //   }
-  //
-  // try {
-  //   if (
-  //     validatePhoneNumberLength(y) === "TOO_LONG" ||
-  //     (e.length > 10 && parsePhoneNumber(y) === undefined)
-  //   ) {
-  //     return 0;
-  //   }
-  //   setNumber(parsePhoneNumber(y).formatInternational());
-  // } catch (e) {
-  //   setNumber(y);
-  // }
-  // }
-
   return (
-    <>
+    <div className={"fullW"}>
       <div
         key={id}
-        className={"fullW flex-wrapper"}
+        className={"input-contact"}
         style={{
           position: "related",
-          width: 800,
           left: "0",
           right: "auto",
         }}
       >
         <div
-          className={"add_delete_icon"}
-          style={{ cursor: "pointer", marginRight: 9, minWidth: 30 }}
-          onClick={() => setWantDelete(!wantDelete)}
+          className={
+            wantDelete
+              ? "flex-wrapper input-contact-inner-no-right-margin"
+              : "flex-wrapper input-contact-inner"
+          }
         >
+          <div
+            className={"add_delete_icon"}
+            style={{ cursor: "pointer", marginRight: 9, minWidth: 30 }}
+            onClick={() => setWantDelete(!wantDelete)}
+          >
+            {!wantDelete ? (
+              <i className="fas fa-trash vertical-center"></i>
+            ) : (
+              <i class="fas fa-trash-restore vertical-center"></i>
+            )}
+          </div>
           {!wantDelete ? (
-            <i className="fas fa-trash vertical-center"></i>
+            <>
+              <div
+                className={"add_delete_icon"}
+                style={{
+                  minWidth: 50,
+                  paddingLeft: "7px",
+                  marginRight: 9,
+                  background: phoneNumberBackground,
+                }}
+              >
+                <PhoneInput
+                  onChange={(e) => onChangeNumber(e)}
+                  className={"vertical-center"}
+                  flags={flags}
+                  key={number}
+                  value={number}
+                  international
+                />
+              </div>
+              <Input
+                onChange={(e) => onChangeNumber(e.target.value)}
+                value={number}
+                ref={numberInputRef}
+                size={"large"}
+                style={{
+                  width: "100%",
+                  background: phoneNumberBackground,
+                }}
+              />
+            </>
           ) : (
-            <i class="fas fa-trash-restore vertical-center"></i>
+            <div
+              className={"delete_contact left-cell-delete_contact"}
+              style={{ width: "100%" }}
+            >
+              <p className={"vertical-center center center-min-500px"}>
+                Contact <b>{options[id].name}</b>
+              </p>
+            </div>
           )}
         </div>
-        {!wantDelete ? (
-          <>
-            <div
-              className={"add_delete_icon"}
-              style={{
-                minWidth: 50,
-                paddingLeft: "7px",
-                marginRight: 9,
-                background: phoneNumberBackground,
-              }}
-            >
-              <PhoneInput
-                onChange={(e) => onChangeNumber(e)}
-                className={"vertical-center"}
-                flags={flags}
-                key={number}
-                value={number}
-                international
-              />
-            </div>
-
-            <Input
-              onChange={(e) => onChangeNumber(e.target.value)}
-              value={number}
-              ref={numberInputRef}
-              size={"large"}
-              style={{
-                minWidth: 160,
-                width: 160,
-                marginRight: 9,
-                background: phoneNumberBackground,
-              }}
-            />
-            <div className={"flex-wrapper fullW"}>
-              {!numberAlreadyUsed ? (
-                <>
-                  <Input
-                    size={"large"}
-                    value={name}
-                    style={{ background: nameBackground }}
-                    ref={nameInputRef}
-                    onChange={(input) => updateName(input.target.value)}
-                  />
-                  <div
-                    className={"add_delete_icon"}
-                    style={{
-                      cursor: "pointer",
-                      marginLeft: 9,
-                      background: "none",
-                      width: 60,
-                      minWidth: 60,
-                    }}
-                    onClick={() => setUCS2encoded(!UCS2encoded)}
-                  >
-                    <div className={"flex-wrapper vertical-center center"}>
-                      <Checkbox
-                        style={{ marginRight: 3 }}
-                        checked={UCS2encoded}
-                      />
-                      <i
-                        className="fas fa-dollar-sign"
-                        style={{ fontSize: ".85rem" }}
-                      ></i>
-                      <i
-                        className="fas fa-dollar-sign"
-                        style={{ fontSize: ".85rem" }}
-                      ></i>
-                      <i
-                        className="fas fa-dollar-sign"
-                        style={{ fontSize: ".85rem" }}
-                      ></i>
-                    </div>
+        <div className={"flex-wrapper fullW margin-top-max-500px"}>
+          {!wantDelete ? (
+            !numberAlreadyUsed ? (
+              <>
+                <Input
+                  size={"large"}
+                  value={name}
+                  style={{ background: nameBackground }}
+                  ref={nameInputRef}
+                  onChange={(input) => updateName(input.target.value)}
+                />
+                <div
+                  className={"add_delete_icon"}
+                  style={{
+                    cursor: "pointer",
+                    marginLeft: 9,
+                    background: "none",
+                    width: 60,
+                    minWidth: 60,
+                  }}
+                  onClick={() => setUCS2encoded(!UCS2encoded)}
+                >
+                  <div className={"flex-wrapper vertical-center center"}>
+                    <Checkbox
+                      style={{ marginRight: 3 }}
+                      checked={UCS2encoded}
+                    />
+                    <i
+                      className="fas fa-dollar-sign"
+                      style={{ fontSize: ".85rem" }}
+                    ></i>
+                    <i
+                      className="fas fa-dollar-sign"
+                      style={{ fontSize: ".85rem" }}
+                    ></i>
+                    <i
+                      className="fas fa-dollar-sign"
+                      style={{ fontSize: ".85rem" }}
+                    ></i>
                   </div>
-                  {(name !== options[id].name ||
-                    number.replace(/\ /g, "") !==
-                      options[id].number.replace(/\ /g, "")) && (
-                    <div
-                      id={id}
-                      className={"add_delete_icon"}
-                      style={{
-                        minWidth: "auto",
-                        width: "auto",
-                        marginLeft: 9,
-                        cursor: "pointer",
-                        background: "none",
-                      }}
-                      onClick={async () => {
-                        const UCS2 =
-                          (await new SegmentedMessage(
-                            options[id].name
-                          ).getNonGsmCharacters().length) > 0
-                            ? true
-                            : false;
-                        if (UCS2) {
-                          setUCS2encoded(true);
-                        }
-                        onChangeNumber(options[id].number);
-                        updateName(options[id].name, UCS2);
-                      }}
-                    >
-                      <p
-                        className={"flex-wrapper"}
-                        style={{
-                          top: "50%",
-                          float: "right",
-                          "-ms-transform": "translate3d(0%,55%,0)",
-                          transform: "translate3d(0%,55%,0)",
-                          color: "rgba(0, 0, 0, 0.5)",
-                          whiteSpace: "nowrap",
-                          marginRight: 9,
-                        }}
-                      >
-                        <i
-                          className="fas fa-arrow-left"
-                          style={{
-                            paddingLeft: 9,
-                            color: "rgba(0, 0, 0, 0.6)",
-                            marginRight: 9,
-                          }}
-                        ></i>
-                        {options[id].label}
-                      </p>
-                    </div>
-                  )}
-                </>
-              ) : (
-                <div className={"delete_contact"}>
-                  <p className={"vertical-center center"}>
-                    This number is already assigned to <b>{assignedTo}</b>
-                  </p>
                 </div>
-              )}
+              </>
+            ) : (
+              <div
+                className={"delete_contact"}
+                style={{ minWidth: 270, width: "150%" }}
+              >
+                <p className={"center vertical-center"}>
+                  This number is assigned to <b>{assignedTo}</b>
+                </p>
+              </div>
+            )
+          ) : (
+            <div
+              className={"delete_contact right-cell-delete_contact"}
+              style={{ minWidth: 270, width: "150%" }}
+            >
+              <p
+                className={
+                  "center vertical-center center2-min-500px right-cell"
+                }
+              >
+                <b>({options[id].number})</b> will be deleted
+              </p>
             </div>
-          </>
-        ) : (
-          <div className={"delete_contact"}>
-            <p className={"vertical-center center"}>
-              Contact <b>{options[id].label}</b> will be deleted
-            </p>
-          </div>
-        )}
+          )}
+        </div>
       </div>
       <p
-        className={"warning-holder"}
+        className={
+          "warning-holder margin-bottom-max-500px padding-left-88px-min-width-500px"
+        }
         style={{
-          paddingLeft: 88,
           fontSize: 13,
           marginTop: -3,
         }}
@@ -464,8 +424,192 @@ const EditSingleContact = ({
         {isUsernameTooShort && "Name must be at least 2 characters long. "}
         {parse(warningText)}
       </p>
-    </>
+    </div>
   );
+
+  // return (
+  //   <div className={"fullW"}>
+  //     <div
+  //       key={id}
+  //       className={"input-contact flex-wrapper"}
+  //       style={{
+  //         position: "related",
+  //         left: "0",
+  //         right: "auto",
+  //       }}
+  //     >
+  //       <div className={"flex-wrapper input-contact-inner"}>
+  //         <div
+  //           className={"add_delete_icon"}
+  //           style={{ cursor: "pointer", marginRight: 9, minWidth: 30 }}
+  //           onClick={() => setWantDelete(!wantDelete)}
+  //         >
+  //           {!wantDelete ? (
+  //             <i className="fas fa-trash vertical-center"></i>
+  //           ) : (
+  //             <i class="fas fa-trash-restore vertical-center"></i>
+  //           )}
+  //         </div>
+  //       </div>
+  //       {!wantDelete ? (
+  //         <div>
+  //           <div className={"flex-wrapper input-contact-inner"}>
+  //             <div
+  //               className={"add_delete_icon"}
+  //               style={{
+  //                 minWidth: 50,
+  //                 paddingLeft: "7px",
+  //                 marginRight: 9,
+  //                 background: phoneNumberBackground,
+  //               }}
+  //             >
+  //               <PhoneInput
+  //                 onChange={(e) => onChangeNumber(e)}
+  //                 className={"vertical-center"}
+  //                 flags={flags}
+  //                 key={number}
+  //                 value={number}
+  //                 international
+  //               />
+  //             </div>
+  //
+  //             <Input
+  //               onChange={(e) => onChangeNumber(e.target.value)}
+  //               value={number}
+  //               ref={numberInputRef}
+  //               size={"large"}
+  //               style={{
+  //                 minWidth: 160,
+  //                 width: 160,
+  //                 marginRight: 9,
+  //                 background: phoneNumberBackground,
+  //               }}
+  //             />
+  //           </div>
+  //           <div className={"flex-wrapper fullW"}>
+  //             {!numberAlreadyUsed ? (
+  //               <>
+  //                 <Input
+  //                   size={"large"}
+  //                   value={name}
+  //                   style={{ background: nameBackground }}
+  //                   ref={nameInputRef}
+  //                   onChange={(input) => updateName(input.target.value)}
+  //                 />
+  //                 <div
+  //                   className={"add_delete_icon"}
+  //                   style={{
+  //                     cursor: "pointer",
+  //                     marginLeft: 9,
+  //                     background: "none",
+  //                     width: 60,
+  //                     minWidth: 60,
+  //                   }}
+  //                   onClick={() => setUCS2encoded(!UCS2encoded)}
+  //                 >
+  //                   <div className={"flex-wrapper vertical-center center"}>
+  //                     <Checkbox
+  //                       style={{ marginRight: 3 }}
+  //                       checked={UCS2encoded}
+  //                     />
+  //                     <i
+  //                       className="fas fa-dollar-sign"
+  //                       style={{ fontSize: ".85rem" }}
+  //                     ></i>
+  //                     <i
+  //                       className="fas fa-dollar-sign"
+  //                       style={{ fontSize: ".85rem" }}
+  //                     ></i>
+  //                     <i
+  //                       className="fas fa-dollar-sign"
+  //                       style={{ fontSize: ".85rem" }}
+  //                     ></i>
+  //                   </div>
+  //                 </div>
+  //                 {(name !== options[id].name ||
+  //                   number.replace(/\ /g, "") !==
+  //                     options[id].number.replace(/\ /g, "")) && (
+  //                   <div
+  //                     id={id}
+  //                     className={"add_delete_icon"}
+  //                     style={{
+  //                       minWidth: "auto",
+  //                       width: "auto",
+  //                       marginLeft: 9,
+  //                       cursor: "pointer",
+  //                       background: "none",
+  //                     }}
+  //                     onClick={async () => {
+  //                       const UCS2 =
+  //                         (await new SegmentedMessage(
+  //                           options[id].name
+  //                         ).getNonGsmCharacters().length) > 0
+  //                           ? true
+  //                           : false;
+  //                       if (UCS2) {
+  //                         setUCS2encoded(true);
+  //                       }
+  //                       onChangeNumber(options[id].number);
+  //                       updateName(options[id].name, UCS2);
+  //                     }}
+  //                   >
+  //                     <p
+  //                       className={"flex-wrapper"}
+  //                       style={{
+  //                         top: "50%",
+  //                         float: "right",
+  //                         "-ms-transform": "translate3d(0%,55%,0)",
+  //                         transform: "translate3d(0%,55%,0)",
+  //                         color: "rgba(0, 0, 0, 0.5)",
+  //                         whiteSpace: "nowrap",
+  //                         marginRight: 9,
+  //                       }}
+  //                     >
+  //                       <i
+  //                         className="fas fa-arrow-left"
+  //                         style={{
+  //                           paddingLeft: 9,
+  //                           color: "rgba(0, 0, 0, 0.6)",
+  //                           marginRight: 9,
+  //                         }}
+  //                       ></i>
+  //                       {options[id].label}
+  //                     </p>
+  //                   </div>
+  //                 )}
+  //               </>
+  //             ) : (
+  //               <div className={"delete_contact"}>
+  //                 <p className={"vertical-center center"}>
+  //                   This number is already assigned to <b>{assignedTo}</b>
+  //                 </p>
+  //               </div>
+  //             )}
+  //           </div>
+  //         </div>
+  //       ) : (
+  //         <div className={"delete_contact"}>
+  //           <p className={"vertical-center center"}>
+  //             Contact <b>{options[id].label}</b> will be deleted
+  //           </p>
+  //         </div>
+  //       )}
+  //     </div>
+  //     <p
+  //       className={"warning-holder"}
+  //       style={{
+  //         paddingLeft: 88,
+  //         fontSize: 13,
+  //         marginTop: -3,
+  //       }}
+  //     >
+  //       {parse(numberValidationInfo)}
+  //       {isUsernameTooLong && "Name cannot be longer than 16 characters. "}
+  //       {isUsernameTooShort && "Name must be at least 2 characters long. "}
+  //       {parse(warningText)}
+  //     </p>
+  //   </div>
+  // );
 };
 
 export default EditSingleContact;

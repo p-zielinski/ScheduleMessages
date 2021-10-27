@@ -6,27 +6,21 @@ const AddedDate = ({ dateValue, selectedYear, setSelectedYear }) => {
   };
 
   return (
-    <div style={{ marginTop: "10px" }}>
-      <Space direction={"horizontal"}>
-        <div>
-          <Space direction={"horizontal"}>
-            <div
-              className={"add_delete_icon"}
-              style={{ cursor: "pointer" }}
-              onClick={() => deleteDate()}
-            >
-              <i className="fas fa-trash  vertical-center"></i>
-            </div>
-            <DatePicker
-              disabled
-              value={dateValue}
-              size={"large"}
-              style={{ width: 760 }}
-              format={"MMMM Do"}
-            />
-          </Space>
-        </div>
-      </Space>
+    <div className={"flex-wrapper fullW"} style={{ marginTop: "10px" }}>
+      <div
+        className={"add_delete_icon"}
+        style={{ cursor: "pointer", marginRight: 9, minWidth: 30 }}
+        onClick={() => deleteDate()}
+      >
+        <i className="fas fa-trash  vertical-center"></i>
+      </div>
+      <DatePicker
+        disabled
+        value={dateValue}
+        size={"large"}
+        style={{ width: "100%" }}
+        format={"MMMM Do"}
+      />
     </div>
   );
 };

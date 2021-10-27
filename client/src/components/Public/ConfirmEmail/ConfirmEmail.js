@@ -3,6 +3,9 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import queryString from "query-string";
 import Info from "../Shared/Info";
+import jwt from "jsonwebtoken";
+import { setTokenAndEmailInStorage } from "../../../store/actions/userDataActions";
+import { useDispatch } from "react-redux";
 
 const ConfirmEmailReq = async (credentials) => {
   return await axios({
@@ -15,7 +18,7 @@ const ConfirmEmailReq = async (credentials) => {
     data: credentials,
   })
     .then((response) => response.data)
-    .catch((error) => error.response.status);
+    .catch((error) => error.response.data);
 };
 
 const CheckEmailInDatabase = async (email) => {
@@ -53,6 +56,7 @@ const Register = ({
   const emailWarningRef = useRef();
   const submitButtonRef = useRef();
   const [typeOfInfo, setTypeOfInfo] = useState(null);
+  const dispatch = useDispatch();
 
   const redirectToLogin = (
     <Link to="/login" id={"form-link"}>
@@ -324,22 +328,29 @@ const Register = ({
           fukcje
         </div>
         <div className={"holder"}>Not a robot checkbox here</div>
-        <button
-          className={"button move-to-bottom"}
-          type={"submit"}
-          ref={submitButtonRef}
-          disabled
-        >
-          {formIsChecking ? (
-            <Loading
-              size={"1rem"}
-              margin={".72rem"}
-              background={"rgba(0,01,255,0.291)"}
-            />
-          ) : (
-            "confirm"
-          )}
-        </button>
+        <div className={"move-to-bottom"}>
+          <div className={"fullW"}>
+            <div style={{ marginLeft: 16, marginRight: 16 }}>
+              <button
+                className={"button center"}
+                type={"submit"}
+                ref={submitButtonRef}
+                disabled
+                style={{ fontSize: "2rem" }}
+              >
+                {formIsChecking ? (
+                  <Loading
+                    size={"1rem"}
+                    margin={".72rem"}
+                    background={"rgba(0,01,255,0.291)"}
+                  />
+                ) : (
+                  "confirm"
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
       </form>
     </div>
   );
