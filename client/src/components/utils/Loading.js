@@ -1,5 +1,4 @@
 import styled, { keyframes } from "styled-components";
-import { useState } from "react";
 
 const Loading = ({ size, margin, background, duration, dots }) => {
   const BounceAnimation = keyframes`
@@ -10,8 +9,6 @@ const Loading = ({ size, margin, background, duration, dots }) => {
       transform: translate3d(0, -1.5rem, 0);
     }
   `;
-
-  const [test, setTime] = useState(0);
 
   const UnhideAnimation = keyframes`
     from {

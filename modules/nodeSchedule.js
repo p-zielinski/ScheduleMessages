@@ -1,184 +1,266 @@
-const Message = require("../models/message");
 const schedule = require("node-schedule");
 const generateText = require("./generateText");
+const moment = require("moment-timezone");
+const { nanoid } = require("nanoid");
+const User = require("../models/user");
 
 let jobs = {};
 
-const getJobs = (id) =>{
-    if(id===undefined){
-        return jobs
-    }
-    if (jobs[id]===undefined){
-        return false
-    }
-    return jobs[id]
-}
+const handleSendingMessages = (userId, data) => {
+  console.log("sending....... message to xxx.....");
+};
 
-const scheduleAMessage = async (data) => {
-    let ruleOrDate;
-    let message;
-    if (data.addToDatabase === true) {
-        message = new Message({
-            ownerId: data.ownerId,
-            date_or_cron_or_rules: data.date_or_cron_or_rules,
-            startTime: data.startTime,
-            endTime: data.endTime,
-            phone_number: data.phone_number,
-            body: data.body,
-            sendIfTheServerWasDown: data.sendIfTheServerWasDown,
-        });
-        message
-            .save()
-            // .then((data) => message)
-            .then((data) => {
-                message = data;
-            })
-            .catch((err) => {
-                console.log(`error ${err}\nA message cannot be scheduled.`);
-                return false;
-            });
-    } else {
-        message = data;
-    }
-
-    if (message.date_or_cron_or_rules.indexOf("|") !== -1) {
-        ruleOrDate = new schedule.RecurrenceRule();
-        let tempIndex=0
-        message.date_or_cron_or_rules.split("|").forEach(e => {
-            if(tempIndex===7){
-                ruleOrDate.tz=e
-            }
-            else{
-                if(e.indexOf("+")===-1 && Number.isNaN(parseInt(e))===false){
-                    switch (tempIndex){
-                        case 0:
-                            ruleOrDate.second=parseInt(e);
-                            break;
-                        case 1:
-                            ruleOrDate.minute=parseInt(e);
-                            break;
-                        case 2:
-                            ruleOrDate.hour=parseInt(e);
-                            break;
-                        case 3:
-                            ruleOrDate.date=parseInt(e);
-                            break;
-                        case 4:
-                            ruleOrDate.month=parseInt(e);
-                            break;
-                        case 5:
-                            ruleOrDate.year=parseInt(e);
-                            break;
-                        default:
-                            ruleOrDate.dayOfWeek=parseInt(e);
-                            break;
-                    }
-                }
-                else if(e.indexOf("+")!==-1){
-                    e='['+e.replace('+','new schedule.Range(').replace('-',',')+')]'
-                    switch (tempIndex){
-                        case 0:
-                            ruleOrDate.second=eval(e);
-                            break;
-                        case 1:
-                            ruleOrDate.minute=eval(e);
-                            break;
-                        case 2:
-                            ruleOrDate.hour=eval(e);
-                            break;
-                        case 3:
-                            ruleOrDate.date=eval(e);
-                            break;
-                        case 4:
-                            ruleOrDate.month=eval(e);
-                            break;
-                        case 5:
-                            ruleOrDate.year=eval(e);
-                            break;
-                        default:
-                            ruleOrDate.dayOfWeek=eval(e);
-                            break;
-                    }
-                }
-            }
-            tempIndex+=1
-        })
-    }
-    else if (message.date_or_cron_or_rules.indexOf(" ") !== -1) {
-        ruleOrDate = {}
-        if (message.startTime !== "") {
-            ruleOrDate.start = message.startTime;
+const handleChangeMessageStatus = (userId, uniqJobId, status) => {
+  User.findOne({ _id: userId })
+    .then((userData) => {
+      const messages = [];
+      for (let message of userData.messages) {
+        if (message.uniqJobId === uniqJobId) {
+          message.status = status;
         }
-        if (message.endTime !== "") {
-            ruleOrDate.end = message.endTime;
-        }
-        ruleOrDate.rule = message.date_or_cron_or_rules;
-    }
-    else {
-        ruleOrDate = message.date_or_cron_or_rules;
-    }
-    const job = schedule.scheduleJob(ruleOrDate, function () {
-        console.log(
-            `Is so I send a message: ${generateText(message.body)} to ${
-                message.phone_number
-            }.`
-        );
-        if (typeof ruleOrDate === "string") {
-            Message.findByIdAndUpdate(message._id, { status: 1 })
-                .then((data) => {
-                    console.log(data);
-                    console.log(`Status of ${message._id} has been changed to 1`);
-                })
-                .catch((err) =>
-                    console.log(
-                        `unknown error while updating message status in mongoDB: ${err}`
-                    )
-                );
-        } else {
-            Message.findById(message._id, (err, message) => {
-                if(message){
-                    Message.findByIdAndUpdate(message._id , { sent: [...message.sent, fakeMessage]}, (err, message) => {
-                        if(message){
-                            console.log(`Message id ${message._id} was updated`);
-                        }
-                        else{
-                            //error
-                        }
-                    })
-                }
-                else{
-                    //error
-                }
-            })
-        }
+        messages.push(message);
+      }
+      User.findOneAndUpdate({ _id: userId }, { messages: messages })
+        .then((userData) => console.log(`job #${uniqJobId} completed`))
+        .catch((error) => console.log(error));
+    })
+    .catch((error) => {
+      console.log(error);
+      console.log("error while getting user data");
     });
-    if (job === null) {
-        console.log(`message id ${message._id} has failed to be scheduled`);
-        return false;
-    } else {
-        console.log(`message id ${message._id} was scheduled successfully`);
-        jobs[message._id] = Object.assign({}, message._doc);
-        jobs[message._id].job = job;
-        return message;
-    }
-}
+};
 
-const scheduleFromDB = (message, args) => {
-    let job = schedule.scheduleJob(args[0],args[1]);
-    jobs[message._id] = Object.assign({}, message._doc);
-    jobs[message._id].job = job;
-    return message._id;
-}
+const scheduleAMessage = async (userId, data, uniqJobIdIfFromDB) => {
+  let uniqJobId = Date.now() + nanoid();
+  if (typeof uniqJobIdIfFromDB === "string") {
+    uniqJobId = uniqJobIdIfFromDB;
+  }
+  let job = null;
+  if (data.isSingleTime === "recurring") {
+    const startDate = data.timeRange[0].split("-");
+    const rule = new schedule.RecurrenceRule();
+    rule.minute = parseInt(data.at[1]);
+    rule.hour = parseInt(data.at[0]);
+    rule.tz = data.timezone;
+    // if (typeof uniqJobIdIfFromDB) {
+    const testingNow = moment().tz(data.timezone);
+    testingNow.set("minute", parseInt(data.at[1]));
+    testingNow.set("hour", parseInt(data.at[0]));
+    testingNow.set("year", parseInt(startDate[0]));
+    testingNow.set("month", parseInt(startDate[1]) - 1);
+    testingNow.set("date", parseInt(startDate[2]));
+    if (moment().tz(data.timezone).isAfter(testingNow) === true) {
+      const endDate = data.timeRange[1].split("-");
+      testingNow.set("year", parseInt(endDate[0]));
+      testingNow.set("month", parseInt(endDate[1]) - 1);
+      testingNow.set("date", parseInt(endDate[2]));
+      if (moment().tz(data.timezone).isBefore(testingNow) === true) {
+        let foundTheStartingDay = false;
+        testingNow.set("year", parseInt(startDate[0]));
+        testingNow.set("month", parseInt(startDate[1]) - 1);
+        testingNow.set("date", parseInt(startDate[2]));
+        while (!foundTheStartingDay) {
+          testingNow.add(1, "days");
+          if (moment().tz(data.timezone).isBefore(testingNow) === true) {
+            foundTheStartingDay = true;
+          }
+        }
+        rule.year = parseInt(testingNow.format("YYYY"));
+        rule.month = parseInt(testingNow.format("M")) - 1;
+        rule.date = parseInt(testingNow.format("D"));
+      } else {
+        console.log(
+          `Message id ${uniqJobId} has been completed... updating in Db`
+        );
+        handleChangeMessageStatus(userId, uniqJobId, "completed");
+        return false;
+      }
+      // }
+    } else {
+      rule.year = parseInt(startDate[0]);
+      rule.month = parseInt(startDate[1]) - 1;
+      rule.date = parseInt(startDate[2]);
+    }
+    job = schedule.scheduleJob(rule, function () {
+      scheduleAMessageEveryday(userId, data, uniqJobId);
+      const now = moment().tz(data.timezone);
+      let deliverNow = false;
+      if (data.deliverEvery === "day") deliverNow = true;
+      else if (data.deliverEvery === "week") {
+        for (let e of data.weekDays) {
+          if (parseInt(e) === now.isoWeekday()) {
+            deliverNow = true;
+            break;
+          }
+        }
+      } else if (data.deliverEvery === "month") {
+        if (data.reverseMonth === true) {
+          const totalNumberOfDaysInThisMonth = new Date(
+            now.format("YYYY"),
+            now.format("M"),
+            0
+          ).getDate();
+          for (let e of data.monthDays) {
+            if (
+              now.format("D") ===
+              totalNumberOfDaysInThisMonth - parseInt(e)
+            ) {
+              deliverNow = true;
+              break;
+            }
+          }
+        } else {
+          for (let e of data.monthDays) {
+            if (e === now.format("D")) {
+              deliverNow = true;
+              break;
+            }
+          }
+        }
+      } else if (data.deliverEvery === "year") {
+        for (let e of data.yearDays) {
+          if (e === now.format("MM-DD")) {
+            deliverNow = true;
+            break;
+          }
+        }
+      }
+      if (deliverNow === true) {
+        handleSendingMessages(userId, data);
+      }
+    });
+  } else if (data.isSingleTime === "single") {
+    const rule = new schedule.RecurrenceRule();
+    rule.minute = parseInt(data.at[1]);
+    rule.hour = parseInt(data.at[0]);
+    const startDate = data.date.split("-");
+    rule.year = parseInt(startDate[0]);
+    rule.month = parseInt(startDate[1]) - 1;
+    rule.date = parseInt(startDate[2]);
+    rule.tz = data.timezone;
+    job = schedule.scheduleJob(rule, function () {
+      handleSendingMessages(userId, data);
+      handleChangeMessageStatus(userId, uniqJobId, "completed");
+    });
+  }
+  if (job === null) {
+    if (typeof uniqJobIdIfFromDB === "string") {
+      console.log(
+        `Message id ${uniqJobId} has been completed... updating in Db`
+      );
+      handleChangeMessageStatus(userId, uniqJobId, "completed");
+    } else {
+      console.log(
+        `message id ${uniqJobId} has failed to be scheduled; type: ${data.isSingleTime}`
+      );
+    }
+    return false;
+  } else {
+    let messagesHolder = null;
+    console.log(`message id ${uniqJobId} was scheduled successfully`);
+    jobs[uniqJobId] = { data: data, job: null };
+    jobs[uniqJobId].job = job;
+    if (typeof uniqJobIdIfFromDB !== "string") {
+      await User.findOneAndUpdate(
+        { _id: userId },
+        {
+          $push: {
+            messages: { data: data, uniqJobId: uniqJobId, status: "active" },
+          },
+        },
+        {
+          new: true,
+        }
+      )
+        .then(async (userData) => {
+          messagesHolder = userData.messages;
+        })
+        .catch((error) => {
+          console.log(error);
+          console.log("error while getting user data");
+        });
+      if (messagesHolder !== null) {
+        return { messages: messagesHolder, uniqJobId: uniqJobId };
+      }
+      return uniqJobId;
+    } else return true;
+  }
+};
+
+const scheduleAMessageEveryday = async (userId, data, uniqJobId) => {
+  let job = null;
+  const rule = new schedule.RecurrenceRule();
+  rule.minute = parseInt(data.at[1]);
+  rule.hour = parseInt(data.at[0]);
+  rule.tz = data.timezone;
+  job = schedule.scheduleJob(rule, function () {
+    const now = moment().tz(data.timezone);
+    let deliverNow = false;
+    if (data.deliverEvery === "day") deliverNow = true;
+    else if (data.deliverEvery === "week") {
+      for (let e of data.weekDays) {
+        if (parseInt(e) === now.isoWeekday()) {
+          deliverNow = true;
+          break;
+        }
+      }
+    } else if (data.deliverEvery === "month") {
+      if (data.reverseMonth === true) {
+        const totalNumberOfDaysInThisMonth = now.daysInMonth();
+        for (let e of data.monthDays) {
+          if (now.format("D") === totalNumberOfDaysInThisMonth - parseInt(e)) {
+            deliverNow = true;
+            break;
+          }
+        }
+      } else {
+        for (let e of data.monthDays) {
+          if (e === now.format("D")) {
+            deliverNow = true;
+            break;
+          }
+        }
+      }
+    } else if (data.deliverEvery === "year") {
+      for (let e of data.yearDays) {
+        if (e === now.format("MM-DD")) {
+          deliverNow = true;
+          break;
+        }
+      }
+    }
+    if (deliverNow === true) {
+      handleSendingMessages(userId, data);
+    }
+    const copyNow = moment(now);
+    copyNow.set("year", data.timeRange[1].split("-")[0]);
+    copyNow.set("month", parseInt(data.timeRange[1].split("-")[1]) - 1);
+    copyNow.set("date", data.timeRange[1].split("-")[2]);
+    if (now.isSameOrAfter(copyNow) === true) {
+      jobs[uniqJobId].job.cancel();
+      handleChangeMessageStatus(userId, uniqJobId, "completed");
+    }
+  });
+  if (job !== null) {
+    setTimeout(async function () {
+      await jobs[uniqJobId].job.cancel();
+      jobs[uniqJobId].job = job;
+      console.log("message successfully re-scheduled");
+    }, 30000);
+    return true;
+  } else {
+    console.log("message failed to be schedule further");
+    return false;
+  }
+};
 
 const cancelAScheduledJob = (messageId) => {
-    const status = jobs[messageId].job.cancel();
-    if(status===true){
-        delete jobs[messageId]
-    }
-    return status
-}
+  const status = jobs[messageId].job.cancel();
+  if (status === true) {
+    delete jobs[messageId];
+  }
+  return status;
+};
 
-exports.getJobs = getJobs;
 exports.scheduleAMessage = scheduleAMessage;
-exports.scheduleFromDB = scheduleFromDB;
 exports.cancelAScheduledJob = cancelAScheduledJob;

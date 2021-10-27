@@ -1,53 +1,54 @@
 import { Select } from "antd";
 import parse from "html-react-parser";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setWeekDays } from "../../../../store/actions/scheduleDataActions";
 
 const daysOfWeek = [
-  {
-    name: "Sunday",
-    index: 0,
-  },
   { name: "Monday", index: 1 },
   { name: "Tuesday", index: 2 },
   { name: "Wensday", index: 3 },
   { name: "Thursday", index: 4 },
   { name: "Friday", index: 5 },
   { name: "Saturday", index: 6 },
+  {
+    name: "Sunday",
+    index: 7,
+  },
 ];
 
-//sorting if another language
+const EveryWeek = () => {
+  const [weekDaysOptions, setWeekDaysOptions] = useState([]);
+  const dispatch = useDispatch();
+  const { weekDays } = useSelector((state) => state.scheduleData);
 
-let weekDaysOptions = [];
-for (let x of daysOfWeek) {
-  weekDaysOptions.push(x);
-}
-
-const EveryWeek = ({ selectedWeek, setSelectedWeek }) => {
-  const daysSelect = (e) => {
-    let temp = [];
-    for (let x of daysOfWeek) {
-      for (let y of e) {
-        if (y === x.name) {
-          temp.push(y);
-          break;
-        }
-      }
+  useEffect(() => {
+    const _daysOfWeek = [];
+    for (let e of daysOfWeek) {
+      _daysOfWeek.push(
+        `<Select.Option value=${e.index}>${e.name}</Select.Option>`
+      );
     }
-    setSelectedWeek(temp);
+    setWeekDaysOptions(_daysOfWeek);
+  }, []);
+
+  const setWeekDaysHandler = (selected) => {
+    dispatch(setWeekDays(selected));
   };
 
   return (
-    <div className={"mb"}>
+    <div className={"fullW mb"}>
       <div className={"center"}>
         <h2>on:</h2>
       </div>
-      <div className={"center"} style={{ width: "800px" }}>
+      <div className={"fullW  center"}>
         <Select
           className={"fullW"}
-          onChange={(e) => daysSelect(e)}
-          value={selectedWeek}
-          style={{ marginBottom: "15px" }}
+          style={{ marginBottom: "15px", width: "100%" }}
           size={"large"}
           mode="multiple"
+          value={weekDays}
+          onChange={(e) => setWeekDaysHandler(e)}
           placeholder="Select day or days"
           filterOption={(input, option) =>
             option.label
@@ -56,9 +57,7 @@ const EveryWeek = ({ selectedWeek, setSelectedWeek }) => {
               .indexOf(input.toLowerCase().replace(/ /g, "")) >= 0
           }
         >
-          {weekDaysOptions.map((e) =>
-            parse(`<Select.Option value=${e.name}>${e.name}</Select.Option>`)
-          )}
+          {parse(weekDaysOptions.join(""))}
         </Select>
       </div>
     </div>

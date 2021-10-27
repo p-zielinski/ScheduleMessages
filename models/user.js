@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 const { nanoid } = require("nanoid");
 
 const newUserSchema = mongoose.Schema({
+  status: {
+    type: String,
+    required: false,
+    default: "pending",
+  },
   email: {
     type: String,
     required: true,
@@ -11,19 +16,35 @@ const newUserSchema = mongoose.Schema({
     type: String,
     required: false,
   },
-  status: {
-    type: String,
+  messages: {
+    type: Array,
     required: false,
-    default: "pending",
+    default: [],
   },
   available_funds: {
     type: Number,
     required: false,
+    default: 0,
   },
-  update_key: {
+  name: {
     type: String,
     required: false,
-    default: nanoid(24),
+    default: "",
+  },
+  contact_list: {
+    type: Array,
+    required: false,
+    default: [],
+  },
+  default_country: {
+    type: String,
+    required: false,
+    default: "",
+  },
+  default_tz: {
+    type: String,
+    required: false,
+    default: "",
   },
 });
 

@@ -1,10 +1,14 @@
 import { Space, DatePicker } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddedDate from "./AddedDate";
 import moment from "moment-timezone";
+import { useDispatch, useSelector } from "react-redux";
+import { setYearDays } from "../../../../store/actions/scheduleDataActions";
 
-const EveryYear = ({ selectedYear, setSelectedYear }) => {
+const EveryYear = () => {
   const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedYear, setSelectedYear] = useState([]);
+  const dispatch = useDispatch();
 
   const addDate = () => {
     try {
@@ -32,6 +36,10 @@ const EveryYear = ({ selectedYear, setSelectedYear }) => {
     return found;
   }
 
+  useEffect(() => {
+    dispatch(setYearDays(selectedYear));
+  }, [selectedYear]);
+
   return (
     <div
       className={"fullW"}
@@ -45,28 +53,24 @@ const EveryYear = ({ selectedYear, setSelectedYear }) => {
       <div className={"center"}>
         <h2>on:</h2>
       </div>
-      <div>
-        <Space direction={"horizontal"}>
-          <div>
-            <Space direction={"horizontal"}>
-              <div
-                className={"add_delete_icon"}
-                style={{ cursor: "pointer" }}
-                onClick={() => addDate()}
-              >
-                <i className="fas fa-plus vertical-center"></i>
-              </div>
-              <DatePicker
-                disabledDate={disabledDate}
-                value={selectedDate}
-                onChange={setSelectedDate}
-                size={"large"}
-                style={{ width: 760 }}
-                format={"MMMM Do"}
-              />
-            </Space>
+      <div className={"fullW"}>
+        <div className={"flex-wrapper"}>
+          <div
+            className={"add_delete_icon"}
+            style={{ cursor: "pointer", marginRight: 9, minWidth: 30 }}
+            onClick={() => addDate()}
+          >
+            <i className="fas fa-plus vertical-center"></i>
           </div>
-        </Space>
+          <DatePicker
+            disabledDate={disabledDate}
+            value={selectedDate}
+            onChange={setSelectedDate}
+            size={"large"}
+            style={{ width: "100%" }}
+            format={"MMMM Do"}
+          />
+        </div>
       </div>
       {selectedYear.map((e) => (
         <AddedDate

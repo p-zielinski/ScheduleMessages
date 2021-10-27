@@ -12,6 +12,7 @@ import parsePhoneNumber, {
 import { Checkbox } from "antd";
 import parse from "html-react-parser";
 import { SegmentedMessage } from "sms-segments-calculator";
+import { useResizeDetector } from "react-resize-detector";
 
 const InputContact = ({
   options,
@@ -19,6 +20,7 @@ const InputContact = ({
   setSelectedRecipients,
   newContactList,
   setNewContactList,
+  updateNumberAndNumber_InputContact,
 }) => {
   const [inputName, setInputName] = useState("");
   const [number, setNumber] = useState("");
@@ -50,6 +52,23 @@ const InputContact = ({
     onChangeNumber(number);
   }, [selectedRecipients]);
 
+  useEffect(async () => {
+    if (updateNumberAndNumber_InputContact.length > 0) {
+      const UCS2 =
+        (await new SegmentedMessage(
+          updateNumberAndNumber_InputContact[1]
+        ).getNonGsmCharacters().length) > 0
+          ? true
+          : false;
+      if (UCS2) {
+        setUCS2encoded(true);
+      }
+      updateName(updateNumberAndNumber_InputContact[1], UCS2);
+      onChangeNumber(updateNumberAndNumber_InputContact[0]);
+      setAddContactButtonClassName("add_icon");
+    }
+  }, [updateNumberAndNumber_InputContact]);
+
   const timeout = (ms) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
   };
@@ -78,7 +97,6 @@ const InputContact = ({
       if (name === nameInputRef.current.state.value) {
         if (name.length < 2 && wasEverNameLongerThan2Letters) {
           setIsUsernameTooShort(true);
-          console.log("jest za krotkie");
         }
         setWhileNextTimeUpdateResetWarning(true);
       }
@@ -105,7 +123,6 @@ const InputContact = ({
         },
       ]);
     } else if (typeof numberAlreadyUsed === "string") {
-      console.log("test");
       setNumberAlreadyUsed(false);
       setNewContactList(
         newContactList.filter((element) => element.id !== numberAlreadyUsed)
@@ -113,12 +130,13 @@ const InputContact = ({
       updateName(inputName);
       setWasEverNameLongerThan2Letters(false);
       return 0;
-    } else if (numberAlreadyUsed) {
+    } else {
       for (let contact of options) {
+        console.log(contact);
         if (contact.number.replace(/\ /g, "") === number.replace(/\ /g, "")) {
           setSelectedRecipients([...selectedRecipients, contact.value]);
+          break;
         }
-        break;
       }
     }
     setWasEverNameLongerThan2Letters(false);
@@ -151,6 +169,13 @@ const InputContact = ({
       }
     }
 
+    if (
+      validatePhoneNumberLength(y) === "TOO_LONG" ||
+      (e.length > 10 && parsePhoneNumber(y) === undefined)
+    ) {
+      y = y.slice(0, y.length - 1);
+    }
+
     let local_MessageIsBeingEdited = false;
     let found = false;
     for (let contact of options) {
@@ -178,12 +203,6 @@ const InputContact = ({
     }
 
     try {
-      if (
-        validatePhoneNumberLength(y) === "TOO_LONG" ||
-        (e.length > 10 && parsePhoneNumber(y) === undefined)
-      ) {
-        return 0;
-      }
       let temp = parsePhoneNumber(y).formatInternational();
       setNumber(temp);
       didInputNumberChanged(temp);
@@ -226,7 +245,8 @@ const InputContact = ({
     updateName(inputName);
   }, [UCS2encoded]);
 
-  const updateName = (name) => {
+  //do tego miejsca kopiuje
+  const updateName = (name, UCS2) => {
     setIsUsernameTooShort(false);
     if (name.length > 16) {
       setIsUsernameTooLong(true);
@@ -242,7 +262,7 @@ const InputContact = ({
       setWarningText("&nbsp;");
     }
     let nonGSM7Characters;
-    if (UCS2encoded === false) {
+    if (UCS2encoded === false && UCS2 !== true) {
       nonGSM7Characters = [
         ...new Set([
           ...new SegmentedMessage(name)
@@ -281,7 +301,7 @@ const InputContact = ({
       .join(" ")
       .split("");
 
-    if (!UCS2encoded) {
+    if (!UCS2encoded || UCS2) {
       name = name.map((e) =>
         nonGSM7Characters.includes(e.toLowerCase()) ? null : e
       );
@@ -324,63 +344,67 @@ const InputContact = ({
         right: "auto",
       }}
     >
-      <div className={"flex-wrapper"}>
-        <div
-          className={addContactButtonClassName}
-          onClick={() => AddContact()}
-          style={{ marginRight: 9, width: 30, minWidth: 30 }}
-        >
-          {numberAlreadyUsed ? (
-            <i
-              className="fas fa-edit vertical-center"
-              style={{ marginLeft: 1 }}
-            ></i>
-          ) : (
-            <i className="fas fa-plus vertical-center"></i>
-          )}
-        </div>
-        <div
-          className={"add_delete_icon"}
-          style={{
-            width: 50,
-            minWidth: 50,
-            paddingLeft: "7px",
-            marginRight: 9,
-            background: phoneNumberBackground,
-          }}
-        >
-          <PhoneInput
-            className={"vertical-center"}
-            flags={flags}
-            value={number}
-            onChange={setNumber}
-            international
-          />
-        </div>
-        <div>
-          <Input
-            onChange={(e) => onChangeNumber(e.target.value)}
-            ref={numberInputRef}
-            value={number}
-            size={"large"}
-            placeholder={"phone number"}
+      <div className={"input-contact"}>
+        <div className={"flex-wrapper input-contact-inner"}>
+          <div
+            className={addContactButtonClassName}
+            onClick={() => AddContact()}
+            style={{ marginRight: 9, width: 30, minWidth: 30 }}
+          >
+            {numberAlreadyUsed ? (
+              <i
+                className="fas fa-edit vertical-center"
+                style={{ marginLeft: 1 }}
+              ></i>
+            ) : (
+              <i className="fas fa-plus vertical-center"></i>
+            )}
+          </div>
+          <div
+            className={"add_delete_icon"}
             style={{
-              width: 160,
-              minWidth: 160,
+              width: 50,
+              minWidth: 50,
+              paddingLeft: "7px",
               marginRight: 9,
               background: phoneNumberBackground,
             }}
-          />
+          >
+            <PhoneInput
+              className={"vertical-center"}
+              flags={flags}
+              value={number}
+              onChange={setNumber}
+              international
+            />
+          </div>
+          <div className={"fullW"}>
+            <Input
+              onChange={(e) => onChangeNumber(e.target.value)}
+              ref={numberInputRef}
+              value={number}
+              size={"large"}
+              placeholder={"phone number"}
+              style={{
+                width: "100%",
+                minWidth: "100%",
+                marginRight: 0,
+                background: phoneNumberBackground,
+              }}
+            />
+          </div>
         </div>
-        {console.log(numberAlreadyUsed)}
         {!numberAlreadyUsed ? (
-          <div className={"flex-wrapper fullW"}>
+          <div className={"flex-wrapper fullW margin-top-max-500px"}>
             <Input
               size={"large"}
               placeholder={"name"}
               value={inputName}
               ref={nameInputRef}
-              style={{ background: nameBackground }}
+              style={{
+                background: nameBackground,
+                width: "100%",
+              }}
               onChange={(e) => updateName(e.target.value)}
             />
             <div
@@ -406,9 +430,11 @@ const InputContact = ({
               >
                 <Checkbox
                   checked={UCS2encoded}
-                  style={{ marginRight: "5px" }}
+                  style={{ marginRight: "4px" }}
                 />
-                Allow much more expensive letters
+                <i className="fas fa-dollar-sign"></i>
+                <i className="fas fa-dollar-sign"></i>
+                <i className="fas fa-dollar-sign"></i>
               </p>
             </div>
           </div>

@@ -4,6 +4,9 @@ import axios from "axios";
 import { Link, useHistory } from "react-router-dom";
 import Info from "../Shared/Info";
 import styled from "styled-components";
+import jwt from "jsonwebtoken";
+import { useDispatch } from "react-redux";
+import { setTokenAndEmailInStorage } from "../../../store/actions/userDataActions";
 
 const LoginUser = async (credentials) => {
   return await axios({
@@ -40,11 +43,11 @@ const emailRegexp =
 
 const Login = ({
   Loading,
-  setToken,
   email,
   setEmail,
   password,
   setPassword,
+  setToken,
 }) => {
   const inputPasswordRef = useRef();
   const inputEmailRef = useRef();
@@ -59,6 +62,7 @@ const Login = ({
   const [linkHolder, setLinkHolder] = useState("");
   const [typeOfInfo, setTypeOfInfo] = useState(null);
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const didEmailChanged = async () => {
     await timeout(1000);
@@ -329,22 +333,29 @@ const Login = ({
           </p>
         </div>
         <div className={"holder"}>Not a robot checkbox here</div>
-        <button
-          className={"button move-to-bottom"}
-          type={"submit"}
-          ref={submitButtonRef}
-          disabled
-        >
-          {formIsChecking ? (
-            <Loading
-              size={"1rem"}
-              margin={".72rem"}
-              background={"rgba(0,01,255,0.291)"}
-            />
-          ) : (
-            "log in"
-          )}
-        </button>
+        <div className={"move-to-bottom"}>
+          <div className={"fullW"}>
+            <div style={{ marginLeft: 16, marginRight: 16 }}>
+              <button
+                className={"button center"}
+                type={"submit"}
+                ref={submitButtonRef}
+                disabled
+                style={{ fontSize: "2rem" }}
+              >
+                {formIsChecking ? (
+                  <Loading
+                    size={"1rem"}
+                    margin={".72rem"}
+                    background={"rgba(0,01,255,0.291)"}
+                  />
+                ) : (
+                  "log in"
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
         <test />
       </form>
     </div>

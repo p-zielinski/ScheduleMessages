@@ -2,75 +2,87 @@ import moment from "moment-timezone";
 import iso3311a2 from "iso-3166-1-alpha-2";
 import parse from "html-react-parser";
 import { DatePicker, Select, Checkbox, TimePicker } from "antd";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Recipients from "./Recipients";
 import TextBody from "./TextBody";
-import ScheduleButton from "./ScheduleButton";
 import Timezone from "./Timezone";
+import { useDispatch, useSelector } from "react-redux";
+import { setDate, setAt } from "../../../store/actions/scheduleDataActions";
 
-const Single = () => {
-  const [country, setCountry] = useState("PL");
-  const [timezone, setTimezone] = useState(undefined);
-  const [date, setDate] = useState(undefined);
+const Single = ({ disabledDate, scheduleNow }) => {
+  const { date, at, timezone, recipients, messageBody, messageEnds } =
+    useSelector((state) => state.scheduleData);
+  const dispatch = useDispatch();
 
-  function disabledDate(current) {
-    return current <= moment().subtract(1, "day");
-  }
+  const setDateHandler = async (date) => {
+    dispatch(setDate(date));
+  };
+
+  const setAtHandler = async (time) => {
+    dispatch(setAt(time));
+  };
 
   return (
     <>
       <div className={"fullW mb"}>
-        <div className={"center"}>
+        <div className={"center"} style={{ marginTop: 20 }}>
           <h2>deliver on:</h2>
         </div>
         <DatePicker
           style={{
             width: "100%",
           }}
-          format="YYYY-MM-DD HH:mm"
+          value={date}
+          format="YYYY-MMMM-DD"
           size={"large"}
           disabledDate={disabledDate}
-          showTime
           showToday={false}
           showNow={false}
           placeholder="select date"
-          onOk={(e) => setDate(e.format("YYYY-MM-DD HH:mm"))}
-        />
-      </div>
-      <div className={"mb"}>
-        <div className={"center"}>
-          <h2>at:</h2>
-        </div>
-        <TimePicker
-          showNow={false}
-          size={"large"}
-          style={{
-            width: "800px",
-          }}
-          format={"HH:mm"}
+          onSelect={(e) => setDateHandler(e)}
         />
       </div>
       {date && (
-        <Timezone
-          country={country}
-          setCountry={setCountry}
-          timezone={timezone}
-          setTimezone={setTimezone}
-        />
+        <>
+          <div className={"center"}>
+            <h2>at:</h2>
+          </div>
+          <TimePicker
+            showNow={false}
+            size={"large"}
+            style={{
+              marginBottom: 30,
+              width: "100%",
+            }}
+            value={at}
+            format={"HH:mm"}
+            onOk={(e) => setAtHandler(e)}
+          />
+          {at && (
+            <>
+              <Timezone />
+              {timezone && (
+                <div className={"center"} style={{ width: "100%" }}>
+                  <Recipients />
+                </div>
+              )}
+              {timezone && recipients.length > 0 && <TextBody />}
+              {timezone &&
+                recipients.length > 0 &&
+                messageBody !== "" &&
+                messageEnds !== "" && (
+                  <button
+                    onClick={() => scheduleNow()}
+                    className={"button"}
+                    style={{ fontSize: "2rem" }}
+                  >
+                    Schedule now
+                  </button>
+                )}
+            </>
+          )}
+        </>
       )}
-      {date && timezone && (
-        <div
-          className={"center"}
-          style={{ "margin-top": "7px", "margin-bottom": "24px" }}
-        >
-          <Checkbox>Set this timezone as a default</Checkbox>
-        </div>
-      )}
-      <div className={"center mb"} style={{ width: 800 }}>
-        <Recipients />
-      </div>
-      <TextBody />
-      <ScheduleButton />
     </>
   );
 };

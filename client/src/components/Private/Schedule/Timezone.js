@@ -2,8 +2,42 @@ import { Checkbox, Select } from "antd";
 import parse from "html-react-parser";
 import moment from "moment-timezone";
 import iso3311a2 from "iso-3166-1-alpha-2";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setCountry,
+  setTimezone,
+  setCountryAndTimezone,
+  setTimezoneDefault,
+} from "../../../store/actions/scheduleDataActions";
 
-const Timezone = ({ country, setCountry, timezone, setTimezone }) => {
+const Timezone = () => {
+  const { country, timezone, saveTimezoneAsDefault } = useSelector(
+    (state) => state.scheduleData
+  );
+  const { default_tz, default_country } = useSelector(
+    (state) => state.userData
+  );
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (default_tz !== "" && default_country !== "") {
+      dispatch(setCountryAndTimezone(default_country, default_tz));
+      setTimezoneDefaultHandler(true);
+    }
+  }, []);
+
+  const setTimezoneDefaultHandler = async (value) => {
+    dispatch(setTimezoneDefault(value));
+  };
+
+  const setCountryHandler = async (country) => {
+    dispatch(setCountry(country));
+  };
+  const setTimezoneHandler = async (timezone) => {
+    dispatch(setTimezone(timezone));
+  };
+
   return (
     <>
       <div className={"center"}>
@@ -14,16 +48,15 @@ const Timezone = ({ country, setCountry, timezone, setTimezone }) => {
           style={{ width: "50%" }}
           allowClear={true}
           onClear={() => {
-            setCountry(undefined);
-            setTimezone(undefined);
+            setCountryHandler(null);
+            setTimezoneHandler(null);
           }}
           showSearch
           size={"large"}
           value={country}
           onSelect={(e) => {
-            console.log(e);
-            setCountry(e);
-            setTimezone(undefined);
+            setCountryHandler(e);
+            setTimezoneHandler(null);
           }}
           placeholder="select a country"
           optionFilterProp="children"
@@ -45,7 +78,7 @@ const Timezone = ({ country, setCountry, timezone, setTimezone }) => {
           showSearch
           style={{ width: "50%" }}
           size={"large"}
-          onSelect={(e) => setTimezone(e)}
+          onSelect={(e) => setTimezoneHandler(e)}
           value={timezone}
           placeholder="select a city within your desired timezone"
           optionFilterProp="children"
@@ -53,7 +86,7 @@ const Timezone = ({ country, setCountry, timezone, setTimezone }) => {
             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
           }
         >
-          {country !== undefined &&
+          {country &&
             parse(
               moment.tz
                 .zonesForCountry(country)
@@ -63,7 +96,17 @@ const Timezone = ({ country, setCountry, timezone, setTimezone }) => {
                 .join("\n")
             )}
         </Select>
-        {timezone}
+        <div
+          className={"center"}
+          style={{ "margin-top": "7px", "margin-bottom": "24px" }}
+        >
+          <Checkbox
+            checked={saveTimezoneAsDefault}
+            onClick={() => setTimezoneDefaultHandler(!saveTimezoneAsDefault)}
+          >
+            Set this timezone as a default
+          </Checkbox>
+        </div>
       </div>
     </>
   );

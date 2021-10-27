@@ -11,7 +11,7 @@ const NotLogged = ({ setToken }) => {
   const [password, setPassword] = useState("");
   const [justRegister, setJustRegister] = useState(false); //zmienic na false
   return (
-    <div>
+    <>
       <Route path="/register">
         <Register
           Loading={Loading}
@@ -45,7 +45,7 @@ const NotLogged = ({ setToken }) => {
       <Route>
         <Home />
       </Route>
-    </div>
+    </>
   );
 };
 

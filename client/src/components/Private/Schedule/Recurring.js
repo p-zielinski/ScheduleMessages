@@ -1,127 +1,154 @@
-import parse from "html-react-parser";
 import EveryWeek from "./Select/EveryWeek";
 import EveryYear from "./Select/EveryYear";
-import { Checkbox, DatePicker, Radio, Select, TimePicker } from "antd";
-import { useState } from "react";
+import { DatePicker, Radio, Select, TimePicker } from "antd";
 import Timezone from "./Timezone";
 import EveryMonth from "./Select/EveryMonth";
 import Recipients from "./Recipients";
 import TextBody from "./TextBody";
-import ScheduleButton from "./ScheduleButton";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setTimeRange,
+  setDeliverEvery,
+  setAt,
+} from "../../../store/actions/scheduleDataActions";
 const { RangePicker } = DatePicker;
 
-const Recurring = () => {
-  const [pickerType, setPickerType] = useState(null);
-  const [selectedWeek, setSelectedWeek] = useState([]);
-  const [selectedMonth, setSelectedMonth] = useState([]);
-  const [reverseMonth, setReverseMonth] = useState(false);
-  const [selectedYear, setSelectedYear] = useState([]);
+const Recurring = ({ disabledDate, scheduleNow }) => {
+  const {
+    deliverEvery,
+    at,
+    weekDays,
+    monthDays,
+    yearDays,
+    timezone,
+    timeRange,
+    recipients,
+    messageBody,
+    messageEnds,
+  } = useSelector((state) => state.scheduleData);
+  const dispatch = useDispatch();
 
-  const [country, setCountry] = useState(undefined);
-  const [timezone, setTimezone] = useState(undefined);
-  const [date, setDate] = useState("1");
+  const setDeliverEveryHandler = (value) => {
+    dispatch(setDeliverEvery(value));
+  };
+
+  const setTimeRangeHandler = (timerange) => {
+    dispatch(setTimeRange(timerange));
+  };
+
+  const setAtHandler = async (time) => {
+    dispatch(setAt(time));
+  };
 
   return (
     <div>
-      <div className={"center mb"}>
-        <div className={"center"} style={{ "margin-bottom": "0px" }}>
+      <div className={"fullW center mb"}>
+        <div className={"center"} style={{ marginBottom: 0, marginTop: 20 }}>
           <h2>deliver every:</h2>
         </div>
-        <Radio.Group
-          style={{ width: "800px" }}
-          size={"large"}
-          onChange={(e) => {
-            setPickerType(e.target.value);
-          }}
-        >
-          <Radio.Button value="day" style={{ width: "200px" }}>
-            day
-          </Radio.Button>
-          <Radio.Button value="week" style={{ width: "200px" }}>
-            week
-          </Radio.Button>
-          <Radio.Button value="month" style={{ width: "200px" }}>
-            month
-          </Radio.Button>
-          <Radio.Button value="year" style={{ width: "200px" }}>
-            year
-          </Radio.Button>
-        </Radio.Group>
-      </div>
-      {pickerType === "week" && (
-        <EveryWeek
-          selectedWeek={selectedWeek}
-          setSelectedWeek={setSelectedWeek}
-        />
-      )}
-
-      {pickerType === "month" && (
-        <EveryMonth
-          selectedMonth={selectedMonth}
-          setSelectedMonth={setSelectedMonth}
-          reverseMonth={reverseMonth}
-          setReverseMonth={setReverseMonth}
-        />
-      )}
-      {pickerType === "year" && (
-        <EveryYear
-          selectedYear={selectedYear}
-          setSelectedYear={setSelectedYear}
-        />
-      )}
-      <>
-        <div className={"mb"}>
-          <div className={"center"}>
-            <h2>at:</h2>
-          </div>
-          <TimePicker
-            showNow={false}
+        <div className={"fullW"}>
+          <Radio.Group
+            style={{ width: "100%" }}
             size={"large"}
-            style={{
-              width: "800px",
+            onChange={(e) => {
+              setDeliverEveryHandler(e.target.value);
             }}
-            format={"HH:mm"}
-          />
+          >
+            <Radio.Button value="day" style={{ width: "25%" }}>
+              <p className={"vertical-center center"}>day</p>
+            </Radio.Button>
+            <Radio.Button value="week" style={{ width: "25%" }}>
+              <p className={"vertical-center center"}>week</p>
+            </Radio.Button>
+            <Radio.Button value="month" style={{ width: "25%" }}>
+              <p className={"vertical-center center"}>month</p>
+            </Radio.Button>
+            <Radio.Button value="year" style={{ width: "25%" }}>
+              <p className={"vertical-center center"}>year</p>
+            </Radio.Button>
+          </Radio.Group>
         </div>
-        <div className={"mb"}>
-          <Timezone
-            country={country}
-            setCountry={setCountry}
-            timezone={timezone}
-            setTimezone={setTimezone}
-          />
-          {date && timezone && (
-            <div
-              className={"center"}
-              style={{ "margin-top": "7px", "margin-bottom": "2px" }}
-            >
-              <Checkbox>Set this timezone as a default</Checkbox>
+      </div>
+      {deliverEvery === "week" && <EveryWeek />}
+      {deliverEvery === "month" && <EveryMonth />}
+      {deliverEvery === "year" && <EveryYear />}
+      {((deliverEvery === "year" && yearDays.length > 0) ||
+        (deliverEvery === "month" && monthDays.length > 0) ||
+        (deliverEvery === "week" && weekDays.length > 0) ||
+        deliverEvery === "day") && (
+        <>
+          <div className={"mb"}>
+            <div className={"center"}>
+              <h2>at:</h2>
             </div>
+            <TimePicker
+              showNow={false}
+              size={"large"}
+              style={{
+                width: "100%",
+                display: "table",
+                margin: "0 auto",
+              }}
+              value={at}
+              format={"HH:mm"}
+              onOk={(e) => setAtHandler(e)}
+            />
+          </div>
+          {at !== null && (
+            <>
+              <div className={"mb"}>
+                <Timezone />
+              </div>
+              {timezone !== null && (
+                <>
+                  <div className={"center fullW"}>
+                    <div className={"center"}>
+                      <h2>time range:</h2>
+                    </div>
+                    <RangePicker
+                      disabledDate={disabledDate}
+                      showToday={true}
+                      size={"large"}
+                      style={{
+                        width: "100%",
+                      }}
+                      onChange={(e) => {
+                        setTimeRangeHandler(e);
+                      }}
+                    />
+                    <div style={{ marginTop: 5 }} className={"mb"}>
+                      <p className={"center"} style={{ fontSize: ".92rem" }}>
+                        Both dates included
+                      </p>
+                    </div>
+                  </div>
+                  {timeRange.length === 2 && (
+                    <>
+                      <div className={"center mb fullW"}>
+                        <Recipients />
+                      </div>
+                      {recipients.length > 0 && (
+                        <>
+                          <TextBody />
+                          {messageBody !== "" && messageEnds !== "" && (
+                            <button
+                              onClick={() => scheduleNow()}
+                              className={"button"}
+                              style={{ fontSize: "2rem" }}
+                            >
+                              Schedule now
+                            </button>
+                          )}
+                        </>
+                      )}
+                    </>
+                  )}
+                </>
+              )}
+            </>
           )}
-        </div>
-        <div className={"center"}>
-          <div className={"center"}>
-            <h2>time range:</h2>
-          </div>
-          <RangePicker
-            showToday={true}
-            size={"large"}
-            style={{
-              width: "800px",
-            }}
-          />
-          <div style={{ marginTop: 5 }} className={"mb"}>
-            <p className={"center"} style={{ fontSize: ".92rem" }}>
-              Both dates included
-            </p>
-          </div>
-        </div>
-      </>
-      <div className={"center mb"} style={{ width: 800 }}>
-        <Recipients />
-      </div>
-      <TextBody />
-      <ScheduleButton />
+        </>
+      )}
     </div>
   );
 };

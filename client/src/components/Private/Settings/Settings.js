@@ -1,5 +1,5 @@
 import { Radio, Space } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ChangeEmail from "./ChangeEmail";
 import ChangePassword from "./ChangePassword";
 import ChangeUsername from "./ChangeUsername";
@@ -7,32 +7,54 @@ import EditContacts from "./EditContacts";
 
 const Settings = () => {
   const [formType, setFormType] = useState(undefined);
+
   return (
     <div>
-      <div className={"center mb"} style={{ width: "800", minWidth: 800 }}>
+      <div className={"fullW center mb"}>
         <Radio.Group
-          style={{ width: "800px" }}
           size={"large"}
           value={formType}
           onChange={(e) => setFormType(e.target.value)}
         >
-          <Radio.Button style={{ width: 800 }} value="email">
+          <Radio.Button
+            style={{
+              width: "100%",
+            }}
+            value="email"
+          >
             Change your email
           </Radio.Button>
-          <Radio.Button style={{ width: 800 }} value="password">
+          <Radio.Button
+            value="password"
+            style={{
+              width: "100%",
+            }}
+          >
             Change your password
           </Radio.Button>
-          <Radio.Button style={{ width: 800 }} value="username">
+          <Radio.Button
+            style={{
+              width: "100%",
+            }}
+            value="username"
+          >
             Enter, delete or change your name
           </Radio.Button>
-          <Radio.Button style={{ width: 800 }} value="contacts">
+          <Radio.Button
+            style={{
+              width: "100%",
+            }}
+            value="contacts"
+          >
             Edit your contact list
           </Radio.Button>
-          <Radio.Button style={{ width: 800 }} value="timezone">
+          <Radio.Button
+            style={{
+              width: "100%",
+            }}
+            value="timezone"
+          >
             Change your default timezone
-          </Radio.Button>
-          <Radio.Button style={{ width: 800 }} value="bodyending">
-            Change message ends texts
           </Radio.Button>
         </Radio.Group>
       </div>
