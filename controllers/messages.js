@@ -1,6 +1,10 @@
 const jwt = require("jsonwebtoken");
-const { scheduleAMessage } = require("../modules/nodeSchedule");
+const {
+  scheduleAMessage,
+  cancelAScheduledJob,
+} = require("../modules/nodeSchedule");
 const Message = require("../models/message");
+const User = require("../models/user");
 
 exports.scheduleAMessageRequest = async (req, res) => {
   let { token, data } = req.body;
@@ -36,6 +40,62 @@ exports.scheduleAMessageRequest = async (req, res) => {
     return res
       .status(422)
       .json({ error: "Error! A message was NOT scheduled!" });
+  }
+};
+
+exports.cancelAMessage = async (req, res) => {
+  let { token, uniqJobId } = req.body;
+  await jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
+    if (err) token = undefined;
+    else if (decoded) token = decoded;
+  });
+  let errors = [];
+  if (token === undefined) {
+    errors.push({ token: "invalid" });
+  }
+  if (uniqJobId === undefined) {
+    errors.push({ uniqJobId: "invalid" });
+  }
+  if (errors.length > 0) {
+    return res.status(422).json({ errors: errors });
+  } else {
+    await User.findOne({ _id: token.userId })
+      .then(async (data) => {
+        let _messages = [];
+        let updated = false;
+        let canceled = false;
+        for (let message of data.messages) {
+          if (message.uniqJobId === uniqJobId) {
+            if (message.status === "active") {
+              message.status = "canceled";
+            }
+            updated = true;
+            canceled = await cancelAScheduledJob(uniqJobId);
+          }
+          _messages.push(message);
+        }
+        if (updated === true && canceled === true) {
+          await User.findOneAndUpdate(
+            { _id: token.userId },
+            { messages: _messages },
+            { new: true }
+          )
+            .then((data) => {
+              return res.status(200).json({
+                success: true,
+                result: `Success! A message was canceled!`,
+                messages: data.messages,
+              });
+            })
+            .catch((errors) => console.log(errors));
+        } else {
+          return res.status(422).json({ error: "Job was not canceled" });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        return res.status(422).json({ errors: errors });
+      });
   }
 };
 

@@ -10,6 +10,7 @@ const {
 const {
   scheduleAMessageRequest,
   getUsersScheduledMessages,
+  cancelAMessage,
 } = require("../controllers/messages");
 const { setContactList, getUserInfo, setName } = require("../controllers/data");
 
@@ -21,6 +22,7 @@ router.post("/is_token_valid", is_token_valid);
 
 router.post("/get_messages", getUsersScheduledMessages);
 router.post("/new_message", scheduleAMessageRequest);
+router.post("/cancel_job", cancelAMessage);
 
 router.post("/get_user_info", getUserInfo);
 router.post("/set_name", setName);

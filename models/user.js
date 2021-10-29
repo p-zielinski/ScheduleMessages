@@ -46,6 +46,11 @@ const newUserSchema = mongoose.Schema({
     required: false,
     default: "",
   },
+  sending_messages_log: {
+    type: Array,
+    required: false,
+    default: [],
+  },
 });
 
 module.exports = mongoose.model("User", newUserSchema);

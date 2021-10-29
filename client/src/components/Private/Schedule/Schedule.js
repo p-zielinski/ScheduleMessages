@@ -1,8 +1,6 @@
 import Single from "./Single";
 import Recurring from "./Recurring";
-import { useEffect, useState } from "react";
-import { DatePicker, Radio, Space } from "antd";
-import { nanoid } from "nanoid";
+import { useState } from "react";
 import moment from "moment-timezone";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsSingleTime } from "../../../store/actions/scheduleDataActions";

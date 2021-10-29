@@ -10,7 +10,7 @@ const Settings = () => {
 
   return (
     <div>
-      <div className={"fullW center mb"}>
+      <div className={"fullW center"}>
         <Radio.Group
           size={"large"}
           value={formType}
@@ -58,6 +58,7 @@ const Settings = () => {
           </Radio.Button>
         </Radio.Group>
       </div>
+      {formType !== undefined && <div style={{ height: 20 }}></div>}
       {formType === "email" && <ChangeEmail />}
       {formType === "password" && <ChangePassword />}
       {formType === "username" && <ChangeUsername />}
