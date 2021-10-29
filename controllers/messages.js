@@ -31,6 +31,7 @@ exports.scheduleAMessageRequest = async (req, res) => {
         messages: statusOrData.messages,
         newJobId: statusOrData.uniqJobId,
       });
+      // if(data.saveTimezoneAsDefault)
     }
     return res.status(200).json({
       success: true,

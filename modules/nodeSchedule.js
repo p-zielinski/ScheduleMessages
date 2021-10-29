@@ -57,6 +57,8 @@ const handleSendingMessages = async (userId, data) => {
       if (person.valid === true) {
       }
     }
+  } else {
+    //will not send
   }
 };
 

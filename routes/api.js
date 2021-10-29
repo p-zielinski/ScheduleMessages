@@ -13,6 +13,7 @@ const {
   cancelAMessage,
 } = require("../controllers/messages");
 const { setContactList, getUserInfo, setName } = require("../controllers/data");
+const { handleIncomingSMS } = require("../controllers/twilio");
 
 router.post("/signup", signup);
 router.post("/sign_in", sign_in);
@@ -27,5 +28,7 @@ router.post("/cancel_job", cancelAMessage);
 router.post("/get_user_info", getUserInfo);
 router.post("/set_name", setName);
 router.post("/set_contact_list", setContactList);
+
+router.post("/incoming_sms", handleIncomingSMS);
 
 module.exports = router;

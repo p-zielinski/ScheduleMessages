@@ -159,10 +159,10 @@ const ViewMessageSummary = ({ message }) => {
       }}
     >
       {showCancelBar && (
-        <div className={"test1"}>
+        <div className={"cancel-div-wrapper"}>
           <div className={"vertical-center center"}>
             <div className={"inside-test"}>
-              <p style={{ marginBottom: 5 }}>
+              <p style={{ marginBottom: 5, textAlign: "center" }}>
                 Do you want to cancel this scheduled message?
               </p>
               <div className={"center"}>
@@ -257,7 +257,8 @@ const ViewMessageSummary = ({ message }) => {
         <b>{message.data.date}</b> at {message.data.at.join(":")}
       </h3>
       <h3 className={"center"} style={{ textAlign: "center", marginTop: 5 }}>
-        Timezone: {message.data.timezone}
+        Timezone:{" "}
+        {message.data.timezone.replace(/_/g, " ").replace(/\//g, " - ")}
       </h3>
       <div className={"center"}>
         <div className={"flex-wrapper"} style={{ fontSize: "1.2rem" }}>

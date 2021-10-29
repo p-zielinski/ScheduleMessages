@@ -15,6 +15,8 @@ const Logged = ({ LogOut, token }) => {
   const dispatch = useDispatch();
   const currentLocation = useLocation().pathname;
   const [prevLocation, setPrevLocation] = useState("");
+  const [newestScheduledMessage, setNewestScheduledMessage] =
+    useState(undefined);
 
   const watchTokenExp = async () => {
     const decoded = await jwt.decode(token);
@@ -60,11 +62,11 @@ const Logged = ({ LogOut, token }) => {
         {currentLocation === "/settings" ? (
           <Settings />
         ) : currentLocation === "/schedule" ? (
-          <Schedule />
+          <Schedule setNewestScheduledMessage={setNewestScheduledMessage} />
         ) : currentLocation === "/messages" ? (
           <Messages />
         ) : (
-          <Dashboard />
+          <Dashboard newestScheduledMessage={newestScheduledMessage} />
         )}
       </div>
     </div>

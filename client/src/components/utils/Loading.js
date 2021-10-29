@@ -1,12 +1,12 @@
 import styled, { keyframes } from "styled-components";
 
-const Loading = ({ size, margin, background, duration, dots }) => {
+const Loading = ({ size, margin, height, background }) => {
   const BounceAnimation = keyframes`
     0% { margin-bottom: 0; }
     100% { margin-bottom: 0 }
     to {
       opacity: 0.3;
-      transform: translate3d(0, -1.5rem, 0);
+      transform: translate3d(0, ${height}, 0);
     }
   `;
 
@@ -16,7 +16,7 @@ const Loading = ({ size, margin, background, duration, dots }) => {
     }
     to {
       opacity: 0.0;
-      transform: translate3d(0, -1.5rem, 0);
+      transform: translate3d(0, -3rem, 0);
     }`;
 
   const DotWrapper = styled.div`
@@ -26,11 +26,11 @@ const Loading = ({ size, margin, background, duration, dots }) => {
   `;
 
   const Dot = styled.div`
-    background-color: rgba(0, 01, 255, 0.61);
+    background-color: ${background};
     border-radius: 50%;
-    width: 12px;
-    height: 12px;
-    margin: -20px 5px;
+    width: ${size};
+    height: ${size};
+    margin: -20px ${margin};
     /* Animation */
     animation: ${BounceAnimation} 0.8s alternate infinite,
       ${UnhideAnimation} 0.8s linear;

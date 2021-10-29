@@ -28,6 +28,12 @@ export const updateMessagesData = (messages) => async (dispatch) => {
   });
 };
 
+export const clearScheduleData = () => async (dispatch) => {
+  dispatch({
+    type: "clear_schedule_data",
+  });
+};
+
 export const clearData = () => async (dispatch) => {
   dispatch({
     type: "clear_data",

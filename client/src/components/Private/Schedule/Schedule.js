@@ -5,7 +5,12 @@ import moment from "moment-timezone";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsSingleTime } from "../../../store/actions/scheduleDataActions";
 import axios from "axios";
-import { updateMessagesData } from "../../../store/actions/userDataActions";
+import {
+  updateMessagesData,
+  clearScheduleData,
+} from "../../../store/actions/userDataActions";
+import Loading from "../../utils/Loading";
+import ViewMessageSummary from "../Dashboard/ViewMessageSummary";
 
 const ScheduleReq = async (token, data) => {
   return await axios({
@@ -41,8 +46,13 @@ const Schedule = () => {
     messageEnds,
     allowExpensiveCharacters,
   } = useSelector((state) => state.scheduleData);
-  const { token } = useSelector((state) => state.userData);
+  const { token, messages } = useSelector((state) => state.userData);
   const dispatch = useDispatch();
+  const [formIsSending, setFormIsSending] = useState(false);
+  const [messageFailedToBeScheduled, setMessageFailedToBeScheduled] =
+    useState(false);
+  const [messageWasScheduledSuccessfully, setMessageWasScheduledSuccessfully] =
+    useState(false);
 
   const setType = (value) => {
     dispatch(setIsSingleTime(value));
@@ -53,6 +63,7 @@ const Schedule = () => {
   }
 
   const scheduleNow = async () => {
+    setFormIsSending(true);
     let data = {
       isSingleTime: isSingleTime,
       deliverEvery: deliverEvery,
@@ -81,10 +92,24 @@ const Schedule = () => {
       data.at = at.format("HH:mm").split(":");
     } catch (e) {}
 
-    const returningData = await ScheduleReq(token, data);
+    let returningData = await ScheduleReq(token, data);
     if (typeof returningData.messages === "object") {
       dispatch(updateMessagesData(returningData.messages.reverse()));
+      setMessageWasScheduledSuccessfully(true);
+    } else if (typeof returningData.error === "string") {
+      setMessageFailedToBeScheduled(true);
     }
+  };
+
+  const closeMessageFailedToBeScheduledBar = () => {
+    setFormIsSending(false);
+    setMessageFailedToBeScheduled(false);
+  };
+
+  const closeMessageWasScheduledSuccessfully = () => {
+    setFormIsSending(false);
+    setMessageWasScheduledSuccessfully(false);
+    dispatch(clearScheduleData());
   };
 
   const [leftCellClassName, setLeftCellClassName] = useState(
@@ -114,6 +139,57 @@ const Schedule = () => {
 
   return (
     <div className={"schedule-form"}>
+      <div className={"checking-form"} hidden={!formIsSending}>
+        <div className={"loading-icon"}>
+          <div className={"vertical-center center"}>
+            {messageFailedToBeScheduled ? (
+              <div
+                className={"inside-test"}
+                style={{ paddingTop: 20, textAlign: "center" }}
+              >
+                <i
+                  className={"fas fa-times"}
+                  style={{ fontSize: "1.8rem" }}
+                  onClick={() => closeMessageFailedToBeScheduledBar()}
+                ></i>
+                This message cannot be scheduled.
+                <br />
+                Probably because you have chosen a past date.
+                <br />
+                Please try again.
+              </div>
+            ) : messageWasScheduledSuccessfully ? (
+              <div className={"just-scheduled-message"}>
+                <i
+                  className={"fas fa-times greenColorHover"}
+                  style={{ fontSize: "1.8rem" }}
+                  onClick={() => closeMessageWasScheduledSuccessfully()}
+                ></i>
+                <p className={"center"} style={{ fontSize: "2rem" }}>
+                  Success!
+                </p>
+                {messages.map((message, index) => {
+                  if (index === 0)
+                    return (
+                      <ViewMessageSummary
+                        key={message.uniqJobId}
+                        message={message}
+                      />
+                    );
+                  else return "";
+                })}
+              </div>
+            ) : (
+              <Loading
+                size={"1.5rem"}
+                margin={"1rem"}
+                background={"rgba(0,1,255,0.62)"}
+                height={"-3rem"}
+              />
+            )}
+          </div>
+        </div>
+      </div>
       <div className={"fullW flex-wrapper-max-400px"}>
         <div
           className={leftCellClassName}

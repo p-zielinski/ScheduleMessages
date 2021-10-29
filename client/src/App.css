@@ -121,6 +121,7 @@ html, body {
   height: 100%;
   min-width: 100%;
   min-height: 100%;
+  background: white;
   min-height: -webkit-fill-available;
 }
 
@@ -838,13 +839,15 @@ input-contact-inner-plus-save{
   background: rgba(255,0,0,0.3);
 }
 
-.test1{
+.cancel-div-wrapper{
   position: absolute;
-  width: 92%;
-  height: 42%;
+  width: 100%;
+  height: 100px;
+  transform: translate(0,64%);
+  left: 0;
   z-index: 3;
-  opacity: 100;
 }
+
 
 .inside-test{
   box-shadow: -5px -5px 10px rgba(255, 0, 0, 0.2), 2px 0px 10px #fff;
@@ -870,23 +873,6 @@ input-contact-inner-plus-save{
   color: rgb(255, 31, 0);
 }
 
-
-
-@media screen and (max-width: 620px) {
-  .test1{
-    width: 92%;
-  }
-}
-@media screen and (max-width: 480px) {
-  .test1{
-    width: 90%;
-  }
-}
-@media screen and (max-width: 380px) {
-  .test1{
-    width: 87%;
-  }
-}
 
 .no-inside-test-button{
   border-color: #7cb305;
@@ -951,4 +937,65 @@ input-contact-inner-plus-save{
   .margin-bottom-below-400px{
     margin-bottom: 10px;
   }
+}
+
+.checking-form{
+  position: absolute;
+  left:0;
+  top:0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.85);
+  z-index: 2;
+}
+
+.loading-icon{
+  position: absolute;
+  top:auto;
+  bottom: 0;
+  left:0;
+  right:0;
+  height: 50%;
+  background: none;
+}
+
+.just-scheduled-message{
+  box-shadow: -5px -5px 10px rgba(84, 169, 63, 0.2), 2px 0px 10px #fff;
+  background: rgb(224, 252, 221);
+  padding: 20px 20px 20px 20px;
+  border-radius: 10px;
+  border: solid 2px rgb(95, 171, 59);
+  font-size: 1.2rem;
+  background: white;
+}
+
+.greenColorHover:hover{
+  color: rgb(95, 171, 59);
+}
+
+
+.dashboard-info{
+  height: auto;
+  width: 100%;
+  background: rgba(64, 169, 255, 0.03);
+  border: solid 1px #d9d9d9;
+  border-radius: 2px;
+  margin-bottom: 10px;
+}
+
+.add_funds{
+  background: rgba(255,0,0,0.1);
+  width: auto;
+  height: auto;
+  padding: 5px 10px 5px 10px;
+  border-radius: 2px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  border-color: rgba(0, 140, 255, 0.2);
+  cursor: pointer;
+  background: none;
+}
+
+.add_funds:hover{
+  background: rgba(0, 102, 255, 0.1);
 }

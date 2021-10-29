@@ -4,9 +4,17 @@ import ChangeEmail from "./ChangeEmail";
 import ChangePassword from "./ChangePassword";
 import ChangeUsername from "./ChangeUsername";
 import EditContacts from "./EditContacts";
+import { useLocation } from "react-router-dom";
 
 const Settings = () => {
   const [formType, setFormType] = useState(undefined);
+  const currentLocation = useLocation();
+
+  useEffect(() => {
+    if (currentLocation.search.includes("funds")) {
+      setFormType("funds");
+    }
+  }, []);
 
   return (
     <div>
@@ -16,6 +24,14 @@ const Settings = () => {
           value={formType}
           onChange={(e) => setFormType(e.target.value)}
         >
+          <Radio.Button
+            style={{
+              width: "100%",
+            }}
+            value="funds"
+          >
+            Add funds to your account
+          </Radio.Button>
           <Radio.Button
             style={{
               width: "100%",
@@ -63,6 +79,7 @@ const Settings = () => {
       {formType === "password" && <ChangePassword />}
       {formType === "username" && <ChangeUsername />}
       {formType === "contacts" && <EditContacts />}
+      {formType === "funds" && <div>addfunds</div>}
     </div>
   );
 };

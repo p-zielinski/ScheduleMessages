@@ -23,7 +23,19 @@ const Single = ({ disabledDate, scheduleNow }) => {
   };
 
   return (
-    <>
+    <div className={"fullW"}>
+      {/*<div*/}
+      {/*  className={"fullW"}*/}
+      {/*  style={{*/}
+      {/*    height: "100%",*/}
+      {/*    position: "absolute",*/}
+      {/*    background: "rgba(40,82,222,0.79)",*/}
+      {/*    left: 0,*/}
+      {/*    zIndex: 1,*/}
+      {/*  }}*/}
+      {/*>*/}
+      {/*  a*/}
+      {/*</div>*/}
       <div className={"fullW mb"}>
         <div className={"center"} style={{ marginTop: 20 }}>
           <h2>deliver on:</h2>
@@ -83,7 +95,7 @@ const Single = ({ disabledDate, scheduleNow }) => {
           )}
         </>
       )}
-    </>
+    </div>
   );
 };
 

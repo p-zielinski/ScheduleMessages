@@ -93,6 +93,9 @@ const scheduleDataReducer = (state = initState, action) => {
       state.yearDays = action.payload.yearDays;
       return { ...state };
     }
+    case "clear_schedule_data": {
+      return initState;
+    }
     default:
       return { ...state };
   }

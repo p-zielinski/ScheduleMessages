@@ -360,8 +360,9 @@ const Register = ({
                 {formIsChecking ? (
                   <Loading
                     size={"1rem"}
-                    margin={".72rem"}
-                    background={"rgba(0,01,255,0.291)"}
+                    margin={"10px"}
+                    height={"-1.5rem"}
+                    background={"rgba(0,1,255,0.62)"}
                   />
                 ) : (
                   "confirm"
