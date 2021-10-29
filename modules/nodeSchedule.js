@@ -1,13 +1,63 @@
 const schedule = require("node-schedule");
+const dotenv = require("dotenv");
 const generateText = require("./generateText");
 const moment = require("moment-timezone");
 const { nanoid } = require("nanoid");
 const User = require("../models/user");
+const { transliterate } = require("transliteration");
+const { SegmentedMessage } = require("sms-segments-calculator");
+const { parsePhoneNumber } = require("libphonenumber-js/mobile");
+const accountSid =
+  process.env.TWILIO_ACCOUNT_SID || "AC4a20d744c0df6dd69dd8d3b1f3be69be";
+const authToken =
+  process.env.TWILIO_AUTH_TOKEN || "e69a56fcd03d5e09f71407854427d43d";
+const twilioClient = require("twilio")(accountSid, authToken);
 
 let jobs = {};
 
-const handleSendingMessages = (userId, data) => {
-  console.log("sending....... message to xxx.....");
+const handleSendingMessages = async (userId, data) => {
+  let willSend = false;
+  let theMessage = data.messageBody + " ";
+  while (theMessage.includes("  ")) {
+    theMessage.replace(/\ \ /g, " ");
+  }
+  theMessage += data.messageEnds;
+  if (data.allowExpensiveCharacters === false) {
+    theMessage = transliterate(theMessage);
+  }
+  const theMessageLength = new SegmentedMessage(theMessage).segmentsCount;
+  let totalCost = 0;
+  for (let person of data.recipients) {
+    const number = parsePhoneNumber(person.number);
+    if (number.isValid()) {
+      person.valid = true;
+    }
+    person.valid = false;
+    person.country = number.country;
+    if (
+      (person.country === "US" || person.country === "CA") &&
+      person.valid === true
+    ) {
+      totalCost += theMessageLength * 0.1;
+    } else if (person.valid === true) {
+      totalCost += theMessageLength * 0.2;
+    }
+  }
+  await User.findOne({ _id: userId })
+    .then((data) => {
+      if (data.available_funds >= totalCost) {
+        willSend = true;
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  if (willSend === true) {
+    for (let person of data.recipients) {
+      if (person.valid === true) {
+      }
+    }
+  }
 };
 
 const handleChangeMessageStatus = (userId, uniqJobId, status) => {
@@ -254,10 +304,10 @@ const scheduleAMessageEveryday = async (userId, data, uniqJobId) => {
   }
 };
 
-const cancelAScheduledJob = (messageId) => {
-  const status = jobs[messageId].job.cancel();
+const cancelAScheduledJob = (uniqJobId) => {
+  const status = jobs[uniqJobId].job.cancel();
   if (status === true) {
-    delete jobs[messageId];
+    delete jobs[uniqJobId];
   }
   return status;
 };

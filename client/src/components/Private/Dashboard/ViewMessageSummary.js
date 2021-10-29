@@ -1,6 +1,23 @@
 import { useEffect, useState } from "react";
 import parse from "html-react-parser";
 import moment from "moment";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { updateMessagesData } from "../../../store/actions/userDataActions";
+
+const CancelJobReq = async (token, uniqJobId) => {
+  return await axios({
+    method: "post",
+    url: "/api/cancel_job",
+    timeout: 1000 * 5, // Wait for 5 seconds
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: { token: token, uniqJobId: uniqJobId },
+  })
+    .then((response) => response.data)
+    .catch((error) => error.response.data);
+};
 
 const ViewMessageSummary = ({ message }) => {
   const [recipients, setRecipients] = useState([]);
@@ -8,6 +25,19 @@ const ViewMessageSummary = ({ message }) => {
   const [weekDays, setWeekDays] = useState("");
   const [monthDays, setMonthDays] = useState("");
   const [yearDays, setYearDays] = useState("");
+  const [showCancelBar, setShowCancelBar] = useState(false);
+  const dispatch = useDispatch();
+
+  const { token } = useSelector((state) => state.userData);
+
+  const cancelThisJob = async () => {
+    const returningData = await CancelJobReq(token, message.uniqJobId);
+    if (typeof returningData.messages === "object") {
+      setShowCancelBar(false);
+      dispatch(updateMessagesData(returningData.messages.reverse()));
+      setBackgroundColor("rgba(255,0,0,0.1)");
+    }
+  };
 
   useEffect(() => {
     const recipients = [];
@@ -97,8 +127,6 @@ const ViewMessageSummary = ({ message }) => {
     );
   }, []);
 
-  const cancelThisJob = () => {};
-
   const getStNdTh = (number) => {
     if (number > 3 && number < 21) {
       return `${number}th`;
@@ -130,13 +158,35 @@ const ViewMessageSummary = ({ message }) => {
         background: backgroundColor,
       }}
     >
-      <div className={"test1"}>
-        <div className={"vertical-center center"}>
-          <div className={"inside-test"}>
-            Are You sure you want to cancel this scheduled message?
+      {showCancelBar && (
+        <div className={"test1"}>
+          <div className={"vertical-center center"}>
+            <div className={"inside-test"}>
+              <p style={{ marginBottom: 5 }}>
+                Do you want to cancel this scheduled message?
+              </p>
+              <div className={"center"}>
+                <div className={"flex-wrapper"}>
+                  <div
+                    onClick={() => cancelThisJob()}
+                    className={"inside-test-button yes-inside-test-button"}
+                    style={{ marginRight: 30 }}
+                  >
+                    YES
+                  </div>
+                  <div
+                    onClick={() => setShowCancelBar(false)}
+                    className={"inside-test-button no-inside-test-button"}
+                  >
+                    NO
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      )}
+
       <h2 className={"center"} style={{ textAlign: "center" }}>
         {message.data.isSingleTime === "single"
           ? "Single time message"
@@ -154,6 +204,7 @@ const ViewMessageSummary = ({ message }) => {
           fontSize: "1.15rem",
           lineHeight: 1.3,
           textAlign: "center",
+          marginBottom: 10,
         }}
       >
         {parse(recipients.join("<br />"))}
@@ -221,7 +272,12 @@ const ViewMessageSummary = ({ message }) => {
             status: <b>{message.status}</b>{" "}
           </p>
           {message.status === "active" && (
-            <p className={"delete_contact cancel_job"}>CANCEL</p>
+            <p
+              className={"delete_contact cancel_job"}
+              onClick={() => setShowCancelBar(true)}
+            >
+              CANCEL
+            </p>
           )}
         </div>
       </div>

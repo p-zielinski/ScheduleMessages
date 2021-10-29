@@ -182,12 +182,13 @@ legend {
   background: white;
   position:absolute;
   top:0;
-  bottom:0;
   left:0;
   right:0;
   width:100%;
   max-width: 650px;
   min-width: 320px;
+  -ms-transform: translateY(50%);
+  transform: translateY(50%);
   height:550px;
   margin:auto;
 }
@@ -273,8 +274,8 @@ a:visited,a:active,a:link{
   text-decoration: none;
 }
 a:hover{
-  text-decoration: underline;
-  text-decoration-color: var(--color__accent);
+  text-decoration: none;
+  /*text-decoration-color: var(--color__accent);*/
 }
 
 .title{
@@ -846,12 +847,30 @@ input-contact-inner-plus-save{
 }
 
 .inside-test{
-  background: rgb(255, 185, 175);
-  padding: 30px;
+  box-shadow: -5px -5px 10px rgba(255, 0, 0, 0.2), 2px 0px 10px #fff;
+  background: rgb(252, 225, 221);
+  padding: 30px 20px 20px 20px;
   border-radius: 10px;
   border: solid 2px rgb(255, 147, 132);
   font-size: 1.2rem;
 }
+
+.inside-test-button{
+  margin-top:10px;
+  padding: 5px 20px 5px 20px;
+  border-radius: 10px;
+  border: solid 1px rgb(255, 147, 132);
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: rgb(255, 147, 132);
+}
+
+.yes-inside-test-button:hover{
+  box-shadow: -5px -5px 15px rgba(255, 0, 0, 0.2), 2px 0px 10px #fff;
+  color: rgb(255, 31, 0);
+}
+
+
 
 @media screen and (max-width: 620px) {
   .test1{
@@ -866,5 +885,70 @@ input-contact-inner-plus-save{
 @media screen and (max-width: 380px) {
   .test1{
     width: 87%;
+  }
+}
+
+.no-inside-test-button{
+  border-color: #7cb305;
+  background: rgb(241, 248, 238);
+  color: #7cb305;
+}
+
+.no-inside-test-button:hover{
+  box-shadow: -5px -5px 15px #acbe8a, 2px 0px 10px #fff;
+  color: #689800;
+}
+
+.hide-decoration a:hover{
+  text-decoration: none;
+}
+
+
+
+.filters-margin-right{
+  margin-right: 10px;
+}
+
+.all-button:hover{
+  color:black
+}
+
+.active-button{
+  width: 100%;
+  background: rgba(134, 255, 64, 0.1);
+}
+
+.active-button:hover{
+  border-color: rgb(100, 189, 50);
+  color:black
+}
+
+.canceled-button{
+  width: 100%;
+  background: rgba(255,0,0,0.1);
+}
+
+.canceled-button:hover{
+  border-color: rgba(255, 0, 0, 0.77);
+  color:black
+}
+
+.completed-button{
+  width: 100%;
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.completed-button:hover{
+  border-color: rgba(0, 0, 0, 0.45);
+  color:black
+}
+
+
+@media screen and (max-width: 400px) {
+  .no-margin-below-400px{
+    margin-right: 0;
+  }
+  .margin-bottom-below-400px{
+    margin-bottom: 10px;
   }
 }

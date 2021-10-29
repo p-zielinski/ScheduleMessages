@@ -56,7 +56,26 @@ const Register = ({
   const emailWarningRef = useRef();
   const submitButtonRef = useRef();
   const [typeOfInfo, setTypeOfInfo] = useState(null);
-  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (email === "" && activationKey === "") {
+      setFormIsChecking(false);
+    }
+  }, [email, activationKey]);
+
+  useEffect(() => {
+    if (email === "" && activationKey === "") {
+      setFormIsChecking(false);
+    }
+    setTimeout(function () {
+      if (
+        inputEmailRef.current.value === "" &&
+        inputActivationKeyRef.current.value === ""
+      ) {
+        setFormIsChecking(false);
+      }
+    }, 1000);
+  }, []);
 
   const redirectToLogin = (
     <Link to="/login" id={"form-link"}>

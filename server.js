@@ -1,24 +1,10 @@
-//db model schemas
-const EmailValidation = require("./models/emailValidation");
-const Message = require("./models/message");
-const User = require("./models/user");
 //app modules
 const express = require("express");
 const app = express();
-const bcrypt = require("bcrypt");
-const sha256 = require("js-sha256");
 const dotenv = require("dotenv");
-const cors = require("cors");
-//-------------------------------------------------
-// const sessions = require('client-sessions')
-//-------------------------------------------------
+const path = require("path");
 //functions
 const checkExpiredEmailValidation = require("./modules/checkExpiredEmailValidation");
-const {
-  getJobs,
-  scheduleAMessage,
-  cancelAScheduledJob,
-} = require("./modules/nodeSchedule");
 const connectToDB = require("./modules/connectToDB");
 const addScheduledMessagesFromDB = require("./modules/addScheduledMessagesFromDB");
 //Body parser, middleware
@@ -29,16 +15,23 @@ app.use(express.urlencoded({ extended: false }));
 const apiRoutes = require("./routes/api");
 //routes middleware
 app.use("/api", apiRoutes);
-// const options = {
-//   dotfiles: 'ignore',
-//   etag: false,
-//   extensions: ['htm', 'html'],
-//   index: false,
-//   maxAge: '1d',
-//   redirect: false,
-// }
-// app.use(express.static('public', options))
-//app variables
+
+if (process.env.NODE_ENV === "production") {
+  const options = {
+    dotfiles: "ignore",
+    etag: false,
+    extensions: ["htm", "html"],
+    index: false,
+    maxAge: "1d",
+    redirect: false,
+  };
+  app.use(express.static("client/build", options));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
+
 dotenv.config();
 const PORT = process.env.PORT || 5000;
 //process.exit(1);

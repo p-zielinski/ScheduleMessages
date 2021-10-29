@@ -10,7 +10,6 @@ import {
   setAllowExpensiveCharacters,
 } from "../../../store/actions/scheduleDataActions";
 import MessageEnds from "./MessageEnds";
-import { ReactCodeJar, useCodeJar } from "react-codejar";
 
 const highlight = (editor) => {
   let code = editor.textContent;

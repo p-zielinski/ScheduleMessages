@@ -61,6 +61,26 @@ const Register = ({
   const [typeOfInfo, setTypeOfInfo] = useState(null);
   const history = useHistory();
 
+  useEffect(() => {
+    if (email === "" && password === "") {
+      setFormIsChecking(false);
+    }
+  }, [email, password]);
+
+  useEffect(() => {
+    if (email === "" && password === "") {
+      setFormIsChecking(false);
+    }
+    setTimeout(function () {
+      if (
+        inputPasswordRef.current.value === "" &&
+        inputEmailRef.current.value === ""
+      ) {
+        setFormIsChecking(false);
+      }
+    }, 1000);
+  }, []);
+
   const redirectToConfirm = () => {
     history.push("/confirm_email");
   };
