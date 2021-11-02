@@ -23,3 +23,5 @@ To start app on your machine:
 - npm install
 - npm run client-install
 - npm run dev
+
+License: All rights restricted.
