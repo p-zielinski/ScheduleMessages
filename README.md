@@ -8,7 +8,7 @@ Live version:
 https://schedulemessages.com/ currently hosted on free heroku,
 so sometimes need a bit time to get going.
 
-Registration is working
+<b>Registration is working</b>
 
 Uses JWT to login and use interface.
 Created by Piotr Zieliński.
