@@ -3,16 +3,17 @@ const express = require("express");
 const app = express();
 const dotenv = require("dotenv");
 const path = require("path");
-//const secure = require("express-force-https");
 //functions
-const checkExpiredEmailValidation = require("./modules/checkExpiredEmailValidation");
+// const checkExpiredEmailValidation = require("./modules/checkExpiredEmailValidation");
 const connectToDB = require("./modules/connectToDB");
 const addScheduledMessagesFromDB = require("./modules/addScheduledMessagesFromDB");
+const {
+  checkExpiredEmailValidation,
+  checkChangePasswordsKeysValidations,
+} = require("./modules/checkDatabase");
 //Body parser, middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-//app.use(secure);
-// app.use(cors());
 //import routes
 const apiRoutes = require("./routes/api");
 //routes middleware
@@ -36,7 +37,6 @@ if (process.env.NODE_ENV === "production") {
 
 dotenv.config();
 const PORT = process.env.PORT || 5000;
-//process.exit(1);
 
 const main = (async () => {
   if ((await connectToDB()) === false) {
@@ -49,6 +49,7 @@ const main = (async () => {
     console.log(`Scheduling messages from DB was SUCCESSFULLY completed`);
   }
   checkExpiredEmailValidation();
+  checkChangePasswordsKeysValidations();
   api();
 })();
 

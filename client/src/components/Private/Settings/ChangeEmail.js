@@ -216,8 +216,8 @@ const ChangeEmail = () => {
         {parse(passwordWarning)}
       </p>
       <p className={"center"} style={{ marginTop: 10 }}>
-        Afterwords we will send you an email to your new email with the link to
-        confirm the change.
+        Afterwords we will send you an email to your current(old) email with the
+        link to confirm the change.
       </p>
       <p className={"center mb"}>The link will be valid only 24 hours.</p>
       <button

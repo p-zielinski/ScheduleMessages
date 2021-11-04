@@ -2,6 +2,7 @@ import { Link, useHistory } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Info from "../Shared/Info";
+import { passwordStrength } from "check-password-strength";
 
 const RegisterUser = async (credentials) => {
   return await axios({
@@ -59,6 +60,8 @@ const Register = ({
   );
   const [linkHolder, setLinkHolder] = useState("");
   const [typeOfInfo, setTypeOfInfo] = useState(null);
+  const [currentPasswordStrength, setCurrentPasswordStrength] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -156,8 +159,16 @@ const Register = ({
                     inputPasswordRef.current.value.length >= 6 &&
                     inputPasswordRef.current.value.length <= 60
                   ) {
-                    passwordWarningRef.current.innerHTML = "&nbsp;";
-                    submitButtonRef.current.disabled = false;
+                    if (
+                      passwordStrength(inputPasswordRef.current.value).value ===
+                      "Too weak"
+                    ) {
+                      passwordWarningRef.current.innerHTML =
+                        "This password is too weak, please add some symbols or numbers if you haven't already.";
+                    } else {
+                      passwordWarningRef.current.innerHTML = "&nbsp;";
+                      submitButtonRef.current.disabled = false;
+                    }
                   } else if (inputPasswordRef.current.value.length > 0) {
                     passwordWarningRef.current.innerHTML =
                       "Password length has to be at least 6 characters long, but no longer than 60.";
@@ -179,6 +190,7 @@ const Register = ({
   };
 
   useEffect(async () => {
+    setCurrentPasswordStrength(passwordStrength(password).value);
     try {
       await checkForm();
     } catch (e) {
@@ -287,29 +299,79 @@ const Register = ({
               <p className={"link-holder"}>{linkHolder}</p>
             </div>
           </div>
-          <div className="floating">
-            <input
-              id="input__password"
-              type="password"
-              className="floating__input"
-              name="password"
-              placeholder="Password"
-              onChange={(e) => setPassword(e.target.value)}
-              ref={inputPasswordRef}
-            />
-            <label
-              htmlFor="input__password"
-              className="floating__label"
-              data-content="Password"
+          <div className={"flex-wrapper"}>
+            <div className="floating" style={{ width: "100%" }}>
+              <input
+                id="input__password"
+                type={!showPassword ? "password" : "text"}
+                className="floating__input"
+                name="password"
+                placeholder="Password"
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setCurrentPasswordStrength(
+                    passwordStrength(e.target.value).value
+                  );
+                }}
+                ref={inputPasswordRef}
+              />
+              <label
+                htmlFor="input__password"
+                className="floating__label"
+                data-content="Password"
+              >
+                <span className="hidden--visually">Password</span>
+              </label>
+            </div>
+            <div
+              className={"show-hide-button"}
+              onClick={() => setShowPassword(!showPassword)}
             >
-              <span className="hidden--visually">Password</span>
-            </label>
-
-            <p className={"warning-holder"} ref={passwordWarningRef}>
-              &nbsp;
+              <div
+                className={"vertical-center"}
+                style={{ whiteSpace: "nowrap" }}
+              >
+                {!showPassword ? "Show" : "Hide"} password
+              </div>
+            </div>
+          </div>
+          <p className={"warning-holder"} ref={passwordWarningRef}>
+            &nbsp;
+          </p>
+          <div className={"flex-wrapper"} style={{ height: 25 }}>
+            <div hidden={password.length > 0 ? false : true}>
+              <p className={"vertical-center"}>
+                <u>Password strength:</u>
+              </p>
+            </div>
+            <p
+              hidden={password.length > 0 ? false : true}
+              style={{
+                color:
+                  currentPasswordStrength === "Too weak"
+                    ? "black"
+                    : currentPasswordStrength === "Weak"
+                    ? "black"
+                    : currentPasswordStrength === "Medium"
+                    ? "white"
+                    : "white",
+                background:
+                  currentPasswordStrength === "Too weak"
+                    ? "rgb(249,235,215)"
+                    : currentPasswordStrength === "Weak"
+                    ? "rgb(255,221,87)"
+                    : currentPasswordStrength === "Medium"
+                    ? "rgb(50,152,220)"
+                    : "rgb(73,199,118)",
+                padding: "5px 12px 5px 12px",
+                marginLeft: 10,
+                borderRadius: 10,
+              }}
+            >
+              {currentPasswordStrength}
             </p>
           </div>
-          <div className={"holder"}>
+          <div className={"holder"} style={{ marginTop: 10 }}>
             <Link to="/login">
               <p className={"form-link"}>Sign in instead</p>
             </Link>

@@ -3,11 +3,12 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import queryString from "query-string";
 import Info from "../Shared/Info";
+import { passwordStrength } from "check-password-strength";
 
 const ConfirmEmailReq = async (credentials) => {
   return await axios({
     method: "post",
-    url: "/api/confirm_email",
+    url: "/api/change_password_req",
     timeout: 1000 * 3, // Wait for 5 seconds
     headers: {
       "Content-Type": "application/json",
@@ -37,7 +38,9 @@ const CheckEmailInDatabase = async (email) => {
 const emailRegexp =
   /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
 
-const Register = ({
+const ChangePassword = ({
+  password,
+  setPassword,
   Loading,
   email,
   setEmail,
@@ -52,7 +55,11 @@ const Register = ({
   const activationKeyWarningRef = useRef();
   const emailWarningRef = useRef();
   const submitButtonRef = useRef();
+  const inputPasswordRef = useRef();
+  const passwordWarningRef = useRef();
   const [typeOfInfo, setTypeOfInfo] = useState(null);
+  const [currentPasswordStrength, setCurrentPasswordStrength] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (email === "" && activationKey === "") {
@@ -254,7 +261,7 @@ const Register = ({
   };
 
   return (
-    <div className="public-wrapper">
+    <div className="public-wrapper-tall">
       {typeOfInfo === "just register" && (
         <Info
           setTypeOfInfo={setTypeOfInfo}
@@ -277,13 +284,13 @@ const Register = ({
           <h1 className={"website-name"}>MESSAGES</h1>
           <h1 className={"website-name"}>.COM</h1>
         </div>
-        <h1 className={"title"}>Confirm your email address here</h1>
+        <h1 className={"title"}>Change your password</h1>
         <Link to={"/"}>
           <i className="fas fa-times"></i>
         </Link>
       </div>
       <form onSubmit={handleSubmit}>
-        <div className="floating">
+        <div className="floating" style={{ marginBottom: 0 }}>
           <input
             maxLength={200}
             id="input__email"
@@ -314,26 +321,94 @@ const Register = ({
           <input
             maxLength={24}
             id="input__activationKey"
-            type="activationKey"
+            type="secretKey"
             className="floating__input"
-            name="activationKey"
-            placeholder="ActivationKey"
+            name="secretKey"
+            placeholder="SecretKey"
             onChange={(e) => setActivationKey(e.target.value)}
             ref={inputActivationKeyRef}
           />
           <label
             htmlFor="input__activationKey"
             className="floating__label"
-            data-content="Activation Key"
+            data-content="Secret Key"
           >
-            <span className="hidden--visually">ActivationKey</span>
+            <span className="hidden--visually">Secret key</span>
           </label>
           <p className={"warning-holder"} ref={activationKeyWarningRef}>
             &nbsp;
           </p>
         </div>
-
-        <div className={"holder"}>
+        <div className={"flex-wrapper"}>
+          <div className="floating" style={{ width: "100%" }}>
+            <input
+              id="input__password"
+              type={!showPassword ? "password" : "text"}
+              className="floating__input"
+              name="password"
+              placeholder="Password"
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setCurrentPasswordStrength(
+                  passwordStrength(e.target.value).value
+                );
+              }}
+              ref={inputPasswordRef}
+            />
+            <label
+              htmlFor="input__password"
+              className="floating__label"
+              data-content="Password"
+            >
+              <span className="hidden--visually">Password</span>
+            </label>
+          </div>
+          <div
+            className={"show-hide-button"}
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            <div className={"vertical-center"} style={{ whiteSpace: "nowrap" }}>
+              {!showPassword ? "Show" : "Hide"} password
+            </div>
+          </div>
+        </div>
+        <p className={"warning-holder"} ref={passwordWarningRef}>
+          &nbsp;
+        </p>
+        <div className={"flex-wrapper"} style={{ height: 25 }}>
+          <div hidden={password.length > 0 ? false : true}>
+            <p className={"vertical-center"}>
+              <u>Password strength:</u>
+            </p>
+          </div>
+          <p
+            hidden={password.length > 0 ? false : true}
+            style={{
+              color:
+                currentPasswordStrength === "Too weak"
+                  ? "black"
+                  : currentPasswordStrength === "Weak"
+                  ? "black"
+                  : currentPasswordStrength === "Medium"
+                  ? "white"
+                  : "white",
+              background:
+                currentPasswordStrength === "Too weak"
+                  ? "rgb(249,235,215)"
+                  : currentPasswordStrength === "Weak"
+                  ? "rgb(255,221,87)"
+                  : currentPasswordStrength === "Medium"
+                  ? "rgb(50,152,220)"
+                  : "rgb(73,199,118)",
+              padding: "5px 12px 5px 12px",
+              marginLeft: 10,
+              borderRadius: 10,
+            }}
+          >
+            {currentPasswordStrength}
+          </p>
+        </div>
+        <div className={"holder"} style={{ marginTop: 10 }}>
           <Link to="/login">
             <p className={"form-link"}>Sign in instead</p>
           </Link>
@@ -373,4 +448,4 @@ const Register = ({
   );
 };
 
-export default Register;
+export default ChangePassword;

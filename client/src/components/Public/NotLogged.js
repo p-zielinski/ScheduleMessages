@@ -5,6 +5,7 @@ import ConfirmEmail from "./ConfirmEmail/ConfirmEmail";
 import Register from "./Register/Register";
 import Home from "./Home/Home";
 import Loading from "../utils/Loading";
+import ChangePassword from "./ChangePassword/ChangePassword";
 
 const NotLogged = ({ setToken }) => {
   const [email, setEmail] = useState("");
@@ -35,6 +36,18 @@ const NotLogged = ({ setToken }) => {
       <Route path="/confirm_email">
         <ConfirmEmail
           Loading={Loading}
+          email={email}
+          setEmail={setEmail}
+          justRegister={justRegister}
+          setJustRegister={setJustRegister}
+          setToken={setToken}
+        />
+      </Route>
+      <Route path="/change_password">
+        <ChangePassword
+          Loading={Loading}
+          password={password}
+          setPassword={setPassword}
           email={email}
           setEmail={setEmail}
           justRegister={justRegister}

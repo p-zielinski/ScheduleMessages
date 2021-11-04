@@ -6,6 +6,7 @@ const {
   confirm_email,
   check_email,
   is_token_valid,
+  change_password_req,
 } = require("../controllers/auth");
 const {
   scheduleAMessageRequest,
@@ -20,6 +21,7 @@ router.post("/sign_in", sign_in);
 router.post("/confirm_email", confirm_email);
 router.post("/check_email", check_email);
 router.post("/is_token_valid", is_token_valid);
+router.post("/change_password_req", change_password_req);
 
 router.post("/get_messages", getUsersScheduledMessages);
 router.post("/new_message", scheduleAMessageRequest);

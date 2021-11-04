@@ -23,7 +23,7 @@ p{
 }
 
 .floating {
-  margin-bottom: .8rem;
+  margin-bottom: 0px;
   background: white;
   transition: var(--color__main) 0.2s ease;
   border-top-left-radius: 4px;
@@ -44,6 +44,24 @@ p{
   border-radius: 5px;
   transition: border-color 0.2s ease;
   caret-color: var(--color__accent);
+}
+
+.show-hide-button {
+  width: auto;
+  margin-left: 9px;
+  background-color: var(--field__background);
+  font-size: 1rem;
+  border: 2px solid var(--input__border);
+  border-radius: 5px;
+  transition: border-color 0.2s ease;
+  caret-color: var(--color__accent);
+  padding: 0 10px 0 10px;
+  cursor: pointer;
+}
+
+.show-hide-button:hover {
+  background-color: rgba(0,101,255,0.15);
+  border-color: #2360c4;
 }
 
 .floating__input:hover .floating__input:active {
@@ -191,6 +209,26 @@ legend {
   -ms-transform: translateY(50%);
   transform: translateY(50%);
   height:550px;
+  margin:auto;
+}
+
+.public-wrapper-tall {
+  z-index:1;
+  padding: 16px;
+  border: 3px solid rgba(0,101,255,0.5);
+  border-radius: 1rem;
+  color: black;
+  background: white;
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  width:100%;
+  max-width: 650px;
+  min-width: 320px;
+  -ms-transform: translateY(30%);
+  transform: translateY(30%);
+  height:700px;
   margin:auto;
 }
 

@@ -3,10 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { Link, useHistory } from "react-router-dom";
 import Info from "../Shared/Info";
-import styled from "styled-components";
-import jwt from "jsonwebtoken";
 import { useDispatch } from "react-redux";
-import { setTokenAndEmailInStorage } from "../../../store/actions/userDataActions";
 
 const LoginUser = async (credentials) => {
   return await axios({
