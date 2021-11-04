@@ -5,7 +5,7 @@ Full Stack App, yet in progress.
 MongoDB, Node.js, Express, React and Redux.
 
 Live version:
-https://schedule-messages.herokuapp.com/ currently hosted on free heroku,
+https://schedulemessages.com/ currently hosted on free heroku,
 so sometimes need a bit time to get going.
 
 login: test@test.com
