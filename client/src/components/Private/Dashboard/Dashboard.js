@@ -78,13 +78,15 @@ const Dashboard = ({ newestScheduledMessage, setNewestScheduledMessage }) => {
       {/*) : (*/}
 
       {/*)}*/}
-      {messages.map((message, index) => {
-        if (index === 0)
-          return (
-            <ViewMessageSummary key={message.uniqJobId} message={message} />
-          );
-        else return "";
-      })}
+      {typeof messages === "object"
+        ? messages.map((message, index) => {
+            if (index === 0)
+              return (
+                <ViewMessageSummary key={message.uniqJobId} message={message} />
+              );
+            else return "";
+          })
+        : ""}
       {typeof messages === "object"
         ? messages.length > 1 && (
             <Link to={"/messages"}>
