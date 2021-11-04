@@ -8,8 +8,7 @@ Live version:
 https://schedulemessages.com/ currently hosted on free heroku,
 so sometimes need a bit time to get going.
 
-login: test@test.com
-password: 123456
+Registration is working
 
 Uses JWT to login and use interface.
 Created by Piotr Zieliński.
