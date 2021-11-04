@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const dotenv = require("dotenv");
 const path = require("path");
+const secure = require("express-force-https");
 //functions
 const checkExpiredEmailValidation = require("./modules/checkExpiredEmailValidation");
 const connectToDB = require("./modules/connectToDB");
@@ -10,6 +11,7 @@ const addScheduledMessagesFromDB = require("./modules/addScheduledMessagesFromDB
 //Body parser, middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(secure);
 // app.use(cors());
 //import routes
 const apiRoutes = require("./routes/api");
