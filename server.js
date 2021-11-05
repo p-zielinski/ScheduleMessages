@@ -1,6 +1,5 @@
 //app modules
 const express = require("express");
-const cors = require("cors");
 const app = express();
 const dotenv = require("dotenv");
 const path = require("path");
@@ -15,7 +14,6 @@ const {
 //Body parser, middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors());
 //import routes
 const apiRoutes = require("./routes/api");
 //routes middleware
