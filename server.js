@@ -1,5 +1,6 @@
 //app modules
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const dotenv = require("dotenv");
 const path = require("path");
@@ -14,9 +15,12 @@ const {
 //Body parser, middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cors());
 //import routes
 const apiRoutes = require("./routes/api");
 //routes middleware
+
+app.use("/api", apiRoutes);
 
 if (process.env.NODE_ENV === "production") {
   const options = {
@@ -30,12 +34,9 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build", options));
 
   app.get("*", (req, res) => {
-    console.log("app.get *", req);
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
 }
-
-app.use("/api", apiRoutes);
 
 dotenv.config();
 const PORT = process.env.PORT || 5000;
@@ -52,9 +53,5 @@ const main = (async () => {
   }
   checkExpiredEmailValidation();
   checkChangePasswordsKeysValidations();
-  api();
-})();
-
-const api = () => {
   app.listen(PORT, () => console.log(`Server started on port ${PORT}!`));
-};
+})();
