@@ -15,7 +15,7 @@ const twilioClient = require("twilio")(accountSid, authToken);
 
 let jobs = {};
 
-const handleSendingMessages = async (userId, data) => {
+const handleSendingMessages = async (userId, data, uniqJobId) => {
   let willSend = false;
   let theMessage = data.messageBody + " ";
   while (theMessage.includes("  ")) {
@@ -52,21 +52,67 @@ const handleSendingMessages = async (userId, data) => {
       console.log(error);
     });
   if (willSend === true) {
+    let sentTo = [];
+    let allMessages = [];
     for (let person of data.recipients) {
       if (person.valid === true) {
-        //will send
         twilioClient.messages
           .create({
             body: theMessage,
             from: "+12244412200",
             to: person.number.replace(/\ /g, ""),
           })
-          .then((message) => console.log(message.sid));
-        console.log(person);
+          .then((message) => {
+            console.log(message.sid);
+            allMessages.push({
+              sid: message.sid,
+              date_sent: message.date_sent,
+              to: message.to,
+              num_segments: message.num_segments,
+            });
+            sentTo.push(person.number.replace(/\ /g, ""));
+          });
       }
+      await User.findOneAndUpdate(
+        { _id: userId },
+        {
+          $push: {
+            sending_messages_log: {
+              data: allMessages,
+              uniqJobId: uniqJobId,
+              status: "Sent",
+            },
+          },
+        }
+      )
+        .then(async (userData) => {
+          //do nothing?
+        })
+        .catch((error) => {
+          console.log(error);
+          console.log("error while getting user data");
+        });
     }
   } else {
-    //will not send
+    await User.findOneAndUpdate(
+      { _id: userId },
+      {
+        $push: {
+          sending_messages_log: {
+            data: {},
+            uniqJobId: uniqJobId,
+            status: "Insufficient funds to send messages",
+          },
+        },
+      }
+    )
+      .then(async (userData) => {
+        //do nothing?
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log("error while getting user data");
+      });
   }
 };
 
@@ -186,7 +232,7 @@ const scheduleAMessage = async (userId, data, uniqJobIdIfFromDB) => {
         }
       }
       if (deliverNow === true) {
-        handleSendingMessages(userId, data);
+        handleSendingMessages(userId, data, uniqJobId);
       }
     });
   } else if (data.isSingleTime === "single") {
@@ -199,7 +245,7 @@ const scheduleAMessage = async (userId, data, uniqJobIdIfFromDB) => {
     rule.date = parseInt(startDate[2]);
     rule.tz = data.timezone;
     job = schedule.scheduleJob(rule, function () {
-      handleSendingMessages(userId, data);
+      handleSendingMessages(userId, data, uniqJobId);
       handleChangeMessageStatus(userId, uniqJobId, "completed");
     });
   }
@@ -290,7 +336,7 @@ const scheduleAMessageEveryday = async (userId, data, uniqJobId) => {
       }
     }
     if (deliverNow === true) {
-      handleSendingMessages(userId, data);
+      handleSendingMessages(userId, data, uniqJobId);
     }
     const copyNow = moment(now);
     copyNow.set("year", data.timeRange[1].split("-")[0]);
