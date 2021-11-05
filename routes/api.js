@@ -31,6 +31,6 @@ router.post("/get_user_info", getUserInfo);
 router.post("/set_name", setName);
 router.post("/set_contact_list", setContactList);
 
-router.get("/incoming_sms", handleIncomingSMS);
+router.post("/incoming_sms", handleIncomingSMS);
 
 module.exports = router;
