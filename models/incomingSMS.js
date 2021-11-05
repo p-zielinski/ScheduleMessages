@@ -7,4 +7,4 @@ const newIncomingSMS = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Message", newIncomingSMS);
+module.exports = mongoose.model("IncomingSMS", newIncomingSMS);

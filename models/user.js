@@ -51,6 +51,11 @@ const newUserSchema = mongoose.Schema({
     required: false,
     default: [],
   },
+  sent_earlier: {
+    type: Array,
+    required: false,
+    default: [],
+  },
 });
 
 module.exports = mongoose.model("User", newUserSchema);
