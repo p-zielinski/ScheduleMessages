@@ -31,8 +31,7 @@ const handleSendingMessages = async (userId, data) => {
     const number = parsePhoneNumber(person.number);
     if (number.isValid()) {
       person.valid = true;
-    }
-    person.valid = false;
+    } else person.valid = false;
     person.country = number.country;
     if (
       (person.country === "US" || person.country === "CA") &&
@@ -55,6 +54,15 @@ const handleSendingMessages = async (userId, data) => {
   if (willSend === true) {
     for (let person of data.recipients) {
       if (person.valid === true) {
+        //will send
+        twilioClient.messages
+          .create({
+            body: theMessage,
+            from: "+12244412200",
+            to: person.number.replace(/\ /g, ""),
+          })
+          .then((message) => console.log(message.sid));
+        console.log(person);
       }
     }
   } else {
