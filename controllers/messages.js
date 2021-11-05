@@ -3,7 +3,6 @@ const {
   scheduleAMessage,
   cancelAScheduledJob,
 } = require("../modules/nodeSchedule");
-const Message = require("../models/message");
 const User = require("../models/user");
 
 exports.scheduleAMessageRequest = async (req, res) => {
