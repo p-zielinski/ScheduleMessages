@@ -15,7 +15,6 @@ const {
 } = require("../controllers/messages");
 const { setContactList, getUserInfo, setName } = require("../controllers/data");
 const { handleIncomingSMS } = require("../controllers/twilio");
-const cors = require("cors");
 
 router.post("/signup", signup);
 router.post("/sign_in", sign_in);
