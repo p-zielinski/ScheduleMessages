@@ -1,5 +1,6 @@
 # ScheduleMessages
 schedulemessages.com
+Created by Piotr Zielinski
 
 Full Stack App, yet in progress.
 MongoDB, Node.js, Express, React and Redux.
