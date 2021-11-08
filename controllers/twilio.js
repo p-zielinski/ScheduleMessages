@@ -10,7 +10,7 @@ exports.handleIncomingSMS = async (req, res) => {
       .then()
       .catch((error) => {
         console.log(error);
-        console.log("error adding new incoming sms to db");
+        console.log("error while adding new incoming sms to db");
       });
   }
   res.writeHead(200, { "Content-Type": "text/xml" });

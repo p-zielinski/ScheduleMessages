@@ -21,6 +21,13 @@ export const setTokenAndEmailInStorage = (token, email) => async (dispatch) => {
   });
 };
 
+export const setToken = (token) => async (dispatch) => {
+  dispatch({
+    type: "set_token",
+    payload: { token: token },
+  });
+};
+
 export const updateMessagesData = (messages) => async (dispatch) => {
   dispatch({
     type: "set_messages",

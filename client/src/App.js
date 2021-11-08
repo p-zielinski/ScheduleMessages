@@ -63,7 +63,7 @@ function App() {
   return (
     <BrowserRouter>
       <Route path="/">
-        <Logged token={token} LogOut={LogOut} />
+        <Logged token={token} setToken={setToken} LogOut={LogOut} />
       </Route>
     </BrowserRouter>
   );

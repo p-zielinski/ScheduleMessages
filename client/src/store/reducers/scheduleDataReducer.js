@@ -14,7 +14,6 @@ const initState = {
   recipients: [],
   contactsToSave: [],
   messageBody: "",
-  messageEnds: "",
   allowExpensiveCharacters: false,
 };
 
@@ -59,10 +58,6 @@ const scheduleDataReducer = (state = initState, action) => {
     }
     case "set_message_body": {
       state.messageBody = action.payload.messageBody;
-      return { ...state };
-    }
-    case "set_message_ends": {
-      state.messageEnds = action.payload.messageEnds;
       return { ...state };
     }
     case "set_allow_expensive_characters": {

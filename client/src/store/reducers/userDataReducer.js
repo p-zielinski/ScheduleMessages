@@ -51,6 +51,10 @@ const userDataReducer = (state = initState, action) => {
         return { ...state };
       }
     }
+    case "set_token": {
+      state.token = action.payload.token;
+      return { ...state };
+    }
     case "set_contact_list": {
       state.contact_list = action.payload.contact_list;
       state.contact_list_is_updating = false;

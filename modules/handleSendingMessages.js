@@ -8,17 +8,29 @@ const twilioClient = require("twilio")(
 );
 
 const handleSendingMessages = async (userId, data, uniqJobId) => {
+  let sent_earlier;
+  await User.findOne({ _id: userId })
+    .then(async (user) => {
+      sent_earlier = user.sent_earlier;
+    })
+    .catch((err) => {
+      console.log(err);
+      console.log(`unable to find a user in DB: ${userId}`);
+    });
   let willSend = false;
-  let theMessage = data.messageBody + " ";
+  let theMessage = data.messageBody;
   while (theMessage.includes("  ")) {
     theMessage.replace(/\ \ /g, " ");
   }
-  theMessage += data.messageEnds;
+  while (theMessage.includes("\n\n\n")) {
+    theMessage.replace(/\n\n\n/g, "\n\n");
+  }
   if (data.allowExpensiveCharacters === false) {
     theMessage = transliterate(theMessage);
   }
   const theMessageLength = new SegmentedMessage(theMessage).segmentsCount;
   let totalCost = 0;
+  //trzeba do tego wrocic jutro
   for (let person of data.recipients) {
     const number = parsePhoneNumber(person.number);
     if (number.isValid()) {

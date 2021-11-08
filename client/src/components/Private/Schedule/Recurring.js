@@ -42,7 +42,7 @@ const Recurring = ({ disabledDate, scheduleNow }) => {
 
   return (
     <div>
-      <div className={"fullW center mb"}>
+      <div className={"fullW center"}>
         <div className={"center"} style={{ marginBottom: 0, marginTop: 20 }}>
           <h2>deliver every:</h2>
         </div>

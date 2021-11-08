@@ -56,17 +56,15 @@ const InputContact = ({
   useEffect(async () => {
     if (updateNumberAndNumber_InputContact.length > 0) {
       const UCS2 =
-        (await new SegmentedMessage(
+        new SegmentedMessage(
           updateNumberAndNumber_InputContact[1]
-        ).getNonGsmCharacters().length) > 0
-          ? true
-          : false;
+        ).getNonGsmCharacters().length > 0;
       if (UCS2) {
         setUCS2encoded(true);
       }
       updateName(updateNumberAndNumber_InputContact[1], UCS2);
       onChangeNumber(updateNumberAndNumber_InputContact[0]);
-      setAddContactButtonClassName("add_icon");
+      setAddContactButtonClassName("add_icon animate-background-blue-red");
     }
   }, [updateNumberAndNumber_InputContact]);
 
@@ -218,7 +216,7 @@ const InputContact = ({
         setIsNumberValid(true);
         setPhoneNumberBackground("rgba(64, 169, 255, 0.15)");
         if (isNameValid || found) {
-          setAddContactButtonClassName("add_icon");
+          setAddContactButtonClassName("add_icon animate-background-blue-red");
         } else {
           setAddContactButtonClassName("add_icon_disabled");
         }
@@ -233,7 +231,7 @@ const InputContact = ({
       if (isValidPhoneNumber(y)) {
         setIsNumberValid(true);
         if (isNameValid) {
-          setAddContactButtonClassName("add_icon");
+          setAddContactButtonClassName("add_icon animate-background-blue-red");
         } else {
           setAddContactButtonClassName("add_icon_disabled");
         }
@@ -326,7 +324,7 @@ const InputContact = ({
         setIsNameValid(true);
         setNameBackground(" rgba(64, 169, 255, 0.15)");
         if (isNumberValid) {
-          setAddContactButtonClassName("add_icon");
+          setAddContactButtonClassName("add_icon animate-background-blue-red");
         } else {
           setAddContactButtonClassName("add_icon_disabled");
         }

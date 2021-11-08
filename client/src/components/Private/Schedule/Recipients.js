@@ -1,7 +1,7 @@
 import { Select, Input } from "antd";
 import AddedContact from "./AddedContact";
 import InputContact from "./InputContact";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import EditSingleContact from "./EditSingleContact";
 import parse from "html-react-parser";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,6 +20,11 @@ const Recipients = () => {
   const [options, setOptions] = useState([]);
   const [optionsToParse, setOptionsToParse] = useState([]);
   const [requestUpdate, setRequestUpdate] = useState("randomText");
+  const EndOfViewRef = useRef(null);
+
+  const scrollToBottom = () => {
+    EndOfViewRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   const { contact_list } = useSelector((state) => state.userData);
 
@@ -36,6 +41,7 @@ const Recipients = () => {
       });
     }
     setOptions(_options);
+    scrollToBottom();
   }, []);
 
   useEffect(() => {
@@ -81,7 +87,7 @@ const Recipients = () => {
       <div className={"center"}>
         <h2>recipients:</h2>
       </div>
-      <div className={"fullW mb"}>
+      <div className={"fullW"} style={{ marginBottom: 16 }}>
         <p className={"center"} style={{ textAlign: "center" }}>
           <b>Select contact or contacts you want to send message to:</b>
         </p>
@@ -162,10 +168,7 @@ const Recipients = () => {
             setNewContactList={setNewContactList}
           />
         </div>
-        <div
-          className={"center flex-wrapper mb"}
-          style={{ textAlign: "center" }}
-        >
+        <div className={"center flex-wrapper"} style={{ textAlign: "center" }}>
           <p style={{ marginBottom: 5 }}>
             <i className="fas fa-dollar-sign"></i>
             <i className="fas fa-dollar-sign"></i>
@@ -178,6 +181,7 @@ const Recipients = () => {
           </p>
         </div>
       </div>
+      <div ref={EndOfViewRef} />
     </div>
   );
 };

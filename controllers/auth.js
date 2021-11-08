@@ -306,7 +306,7 @@ exports.confirm_email = (req, res) => {
             await EmailValidation.findOneAndDelete({ email: email })
               .then()
               .catch((err) => console.log(err));
-            let access_token = createJWT(user.email, user._id, 3600);
+            const access_token = createJWT(user.email, user._id, 3600);
             jwt.verify(
               access_token,
               process.env.TOKEN_SECRET,
@@ -345,6 +345,23 @@ exports.is_token_valid = (req, res) => {
     if (decoded) {
       return res.status(200).json({
         valid: true,
+      });
+    }
+  });
+};
+
+exports.extend_session = (req, res) => {
+  let { token } = req.body;
+  jwt.verify(token, process.env.TOKEN_SECRET, (error, decoded) => {
+    if (error) {
+      res.status(500).json({ error });
+    }
+    if (decoded) {
+      const access_token = createJWT(decoded.email, decoded._id, 3600);
+      return res.status(200).json({
+        success: true,
+        token: access_token,
+        user: decoded._id,
       });
     }
   });

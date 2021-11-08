@@ -46,7 +46,7 @@ const Schedule = () => {
     messageEnds,
     allowExpensiveCharacters,
   } = useSelector((state) => state.scheduleData);
-  const { token, messages } = useSelector((state) => state.userData);
+  const { token, messages, name } = useSelector((state) => state.userData);
   const dispatch = useDispatch();
   const [formIsSending, setFormIsSending] = useState(false);
   const [messageFailedToBeScheduled, setMessageFailedToBeScheduled] =
@@ -64,6 +64,14 @@ const Schedule = () => {
 
   const scheduleNow = async () => {
     setFormIsSending(true);
+    let checkFunctions = false;
+    for (const l of messageBody) {
+      if (l === "{" || l === "}" || l === "<" || l === ">") {
+        checkFunctions = true;
+        break;
+      }
+    }
+    //trzeba teraz zrobic funcje....
     let data = {
       isSingleTime: isSingleTime,
       deliverEvery: deliverEvery,

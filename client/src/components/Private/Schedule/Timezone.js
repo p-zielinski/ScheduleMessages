@@ -2,7 +2,7 @@ import { Checkbox, Select } from "antd";
 import parse from "html-react-parser";
 import moment from "moment-timezone";
 import iso3311a2 from "iso-3166-1-alpha-2";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setCountry,
@@ -19,12 +19,20 @@ const Timezone = () => {
     (state) => state.userData
   );
   const dispatch = useDispatch();
+  const EndOfViewRef = useRef(null);
+
+  const scrollToBottom = () => {
+    EndOfViewRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
     if (default_tz !== "" && default_country !== "") {
       dispatch(setCountryAndTimezone(default_country, default_tz));
       setTimezoneDefaultHandler(true);
     }
+    setTimeout(function () {
+      scrollToBottom();
+    }, 200);
   }, []);
 
   const setTimezoneDefaultHandler = async (value) => {
@@ -40,7 +48,7 @@ const Timezone = () => {
 
   return (
     <>
-      <div className={"center"}>
+      <div className={"center"} style={{ marginTop: 20 }}>
         <h2>timezone:</h2>
       </div>
       <div className={"fullW"}>
@@ -96,10 +104,7 @@ const Timezone = () => {
                 .join("\n")
             )}
         </Select>
-        <div
-          className={"center"}
-          style={{ "margin-top": "7px", "margin-bottom": "24px" }}
-        >
+        <div className={"center"} style={{ marginTop: 7 }}>
           <Checkbox
             checked={saveTimezoneAsDefault}
             onClick={() => setTimezoneDefaultHandler(!saveTimezoneAsDefault)}
@@ -108,6 +113,7 @@ const Timezone = () => {
           </Checkbox>
         </div>
       </div>
+      <div ref={EndOfViewRef} />
     </>
   );
 };

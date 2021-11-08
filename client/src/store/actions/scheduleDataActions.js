@@ -62,13 +62,6 @@ export const setMessageBody = (messageBody) => (dispatch) => {
   });
 };
 
-export const setMessageEnds = (messageEnds) => (dispatch) => {
-  dispatch({
-    type: "set_message_ends",
-    payload: { messageEnds: messageEnds },
-  });
-};
-
 export const setAllowExpensiveCharacters =
   (allowExpensiveCharacters) => (dispatch) => {
     dispatch({

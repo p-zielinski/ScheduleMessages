@@ -606,6 +606,18 @@ input:disabled{
   border-radius: 2px;
 }
 
+.animate-background-blue-red{
+  animation-name: example;
+  animation-iteration-count: infinite;
+  animation-duration: 0.7s;
+}
+
+@keyframes example {
+  0%   {background-color: rgba(64, 169, 255, 0.15);}
+  50% {background-color: rgba(255, 140, 140, 0.3);}
+  100% {background-color: rgba(64, 169, 255, 0.15);}
+}
+
 .add_icon:hover{
   border: solid 1px #40a9ff;
   color: rgba(64, 147, 255, 0.9);
@@ -1036,4 +1048,47 @@ input-contact-inner-plus-save{
 
 .add_funds:hover{
   background: rgba(0, 102, 255, 0.1);
+}
+
+.info-how-to-create-dynamic-messages{
+  border-color: rgba(0, 140, 255, 1);
+  color: rgb(0, 77, 140);
+  background: rgba(0, 140, 255, 0.2);
+}
+
+.session-timer-wrapper{
+  position: absolute;
+  left: 0;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.session-timer-holder{
+  position: relative;
+  border: 2px solid rgba(243, 66, 66, 0.66);
+  min-width: 200px;
+  width: 50%;
+  min-height: 110px;
+  background: rgb(229, 243, 255);
+  padding: 10px;
+  border-radius: 10px;
+  z-index: 1;
+}
+
+.session-timer-button{
+  background: rgba(243, 66, 66, 0.33);
+  border-color: rgba(243, 66, 66, 0.66);
+}
+
+.session-timer-button:hover{
+  color: black;
+  background: rgba(243, 66, 66, 0.66);
+  border-color: rgba(243, 66, 66, 1);
+}
+
+
+@media screen and (max-width: 400px) {
+  .add-300px-if-mobile{
+    height: 300px;
+  }
 }
