@@ -20,11 +20,6 @@ const Recipients = () => {
   const [options, setOptions] = useState([]);
   const [optionsToParse, setOptionsToParse] = useState([]);
   const [requestUpdate, setRequestUpdate] = useState("randomText");
-  const EndOfViewRef = useRef(null);
-
-  const scrollToBottom = () => {
-    EndOfViewRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
 
   const { contact_list } = useSelector((state) => state.userData);
 
@@ -41,7 +36,6 @@ const Recipients = () => {
       });
     }
     setOptions(_options);
-    scrollToBottom();
   }, []);
 
   useEffect(() => {
@@ -181,7 +175,6 @@ const Recipients = () => {
           </p>
         </div>
       </div>
-      <div ref={EndOfViewRef} />
     </div>
   );
 };

@@ -19,20 +19,12 @@ const Timezone = () => {
     (state) => state.userData
   );
   const dispatch = useDispatch();
-  const EndOfViewRef = useRef(null);
-
-  const scrollToBottom = () => {
-    EndOfViewRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
 
   useEffect(() => {
     if (default_tz !== "" && default_country !== "") {
       dispatch(setCountryAndTimezone(default_country, default_tz));
       setTimezoneDefaultHandler(true);
     }
-    setTimeout(function () {
-      scrollToBottom();
-    }, 200);
   }, []);
 
   const setTimezoneDefaultHandler = async (value) => {
@@ -113,7 +105,6 @@ const Timezone = () => {
           </Checkbox>
         </div>
       </div>
-      <div ref={EndOfViewRef} />
     </>
   );
 };

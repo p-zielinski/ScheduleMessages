@@ -2,7 +2,7 @@ import moment from "moment-timezone";
 import iso3311a2 from "iso-3166-1-alpha-2";
 import parse from "html-react-parser";
 import { DatePicker, Select, Checkbox, TimePicker } from "antd";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Recipients from "./Recipients";
 import TextBody from "./TextBody";
 import Timezone from "./Timezone";
@@ -33,6 +33,10 @@ const Single = ({ disabledDate, scheduleNow }) => {
       scrollToBottom();
     }, 200);
   };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [at, timezone, recipients]);
 
   return (
     <div className={"fullW"}>

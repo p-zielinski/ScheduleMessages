@@ -1087,8 +1087,8 @@ input-contact-inner-plus-save{
 }
 
 
-@media screen and (max-width: 400px) {
-  .add-300px-if-mobile{
-    height: 300px;
+@media screen and (max-width: 600px) {
+  .add-120px-if-mobile{
+    height: 120px;
   }
 }
