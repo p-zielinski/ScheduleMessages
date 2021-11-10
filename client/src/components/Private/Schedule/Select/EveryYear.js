@@ -44,8 +44,8 @@ const EveryYear = () => {
     <div
       className={"fullW"}
       style={{
+        marginTop: 20,
         position: "related",
-        marginBottom: "-15px",
         left: "0",
         right: "auto",
       }}
@@ -79,7 +79,6 @@ const EveryYear = () => {
           setSelectedYear={setSelectedYear}
         />
       ))}
-      <div className={"mb"}></div>
     </div>
   );
 };

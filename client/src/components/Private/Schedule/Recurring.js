@@ -11,6 +11,7 @@ import {
   setDeliverEvery,
   setAt,
 } from "../../../store/actions/scheduleDataActions";
+import { useEffect, useRef } from "react";
 const { RangePicker } = DatePicker;
 
 const Recurring = ({ disabledDate, scheduleNow }) => {
@@ -28,6 +29,12 @@ const Recurring = ({ disabledDate, scheduleNow }) => {
   } = useSelector((state) => state.scheduleData);
   const dispatch = useDispatch();
 
+  const EndOfViewRef = useRef(null);
+
+  const scrollToBottom = () => {
+    EndOfViewRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   const setDeliverEveryHandler = (value) => {
     dispatch(setDeliverEvery(value));
   };
@@ -39,6 +46,10 @@ const Recurring = ({ disabledDate, scheduleNow }) => {
   const setAtHandler = async (time) => {
     dispatch(setAt(time));
   };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [deliverEvery, at, timezone, recipients]);
 
   return (
     <div>
@@ -77,7 +88,7 @@ const Recurring = ({ disabledDate, scheduleNow }) => {
         (deliverEvery === "week" && weekDays.length > 0) ||
         deliverEvery === "day") && (
         <>
-          <div className={"mb"}>
+          <div style={{ marginTop: 20 }}>
             <div className={"center"}>
               <h2>at:</h2>
             </div>
@@ -96,12 +107,12 @@ const Recurring = ({ disabledDate, scheduleNow }) => {
           </div>
           {at !== null && (
             <>
-              <div className={"mb"}>
+              <div>
                 <Timezone />
               </div>
               {timezone !== null && (
                 <>
-                  <div className={"center fullW"}>
+                  <div className={"center fullW"} style={{ marginTop: 20 }}>
                     <div className={"center"}>
                       <h2>time range:</h2>
                     </div>
@@ -116,7 +127,7 @@ const Recurring = ({ disabledDate, scheduleNow }) => {
                         setTimeRangeHandler(e);
                       }}
                     />
-                    <div style={{ marginTop: 5 }} className={"mb"}>
+                    <div style={{ marginTop: 5 }}>
                       <p className={"center"} style={{ fontSize: ".92rem" }}>
                         Both dates included
                       </p>
@@ -124,21 +135,19 @@ const Recurring = ({ disabledDate, scheduleNow }) => {
                   </div>
                   {timeRange.length === 2 && (
                     <>
-                      <div className={"center mb fullW"}>
+                      <div
+                        className={"center fullW"}
+                        style={{
+                          width: "100%",
+                          marginTop: 20,
+                          marginBottom: -20,
+                        }}
+                      >
                         <Recipients />
                       </div>
                       {recipients.length > 0 && (
                         <>
-                          <TextBody />
-                          {messageBody !== "" && messageEnds !== "" && (
-                            <button
-                              onClick={() => scheduleNow()}
-                              className={"button"}
-                              style={{ fontSize: "2rem" }}
-                            >
-                              Schedule now
-                            </button>
-                          )}
+                          <TextBody scheduleNow={scheduleNow} />
                         </>
                       )}
                     </>
@@ -149,6 +158,7 @@ const Recurring = ({ disabledDate, scheduleNow }) => {
           )}
         </>
       )}
+      <div ref={EndOfViewRef} />
     </div>
   );
 };

@@ -159,7 +159,7 @@ const Schedule = () => {
                   className={"fas fa-times"}
                   style={{ fontSize: "1.8rem" }}
                   onClick={() => closeMessageFailedToBeScheduledBar()}
-                ></i>
+                />
                 This message cannot be scheduled.
                 <br />
                 Probably because you have chosen a past date.
@@ -172,7 +172,7 @@ const Schedule = () => {
                   className={"fas fa-times greenColorHover"}
                   style={{ fontSize: "1.8rem" }}
                   onClick={() => closeMessageWasScheduledSuccessfully()}
-                ></i>
+                />
                 <p className={"center"} style={{ fontSize: "2rem" }}>
                   Success!
                 </p>

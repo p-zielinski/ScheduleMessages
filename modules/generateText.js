@@ -1,602 +1,502 @@
-const generateText = (tekst) => {
-  const moment = require('moment-timezone');
-  const selectedTimeZone = 'America/Chicago'
+const generateText = (tekst, selectedTimeZone) => {
+  const findFunctions = (e) => {
+    let ar = [];
+    for (let i = 0; i < e.length; i++) {
+      if (e[i] === "<" || e[i] === ">") {
+        ar.push([e[i], i]);
+      }
+    }
+    return ar;
+  };
 
-  const findallspecialchars = (e) => {
-    let ar = []
-    for (let i=0; i<e.length; i++){
-      if (e[i]=='{' || e[i]=='}'){
-        ar.push([e[i],i])
-      }
-    }
-    return ar
-  }
-  const findfunctions = (e) => {
-    let ar = []
-    for (let i=0; i<e.length; i++){
-      if (e[i]=='<' || e[i]=='>'){
-        ar.push([e[i],i])
-      }
-    }
-    return ar
-  }
-  const functionTo = (e) => {
-    timeNow = moment(new Date()).tz(selectedTimeZone).hours(12).minutes(0).seconds(0).milliseconds(0);//strefa czasowa
-    e=e.replace(/\n/g, " ")
-    ar = e.toLowerCase().replace(/to/g,"").replace(/\//g,"").replace(/from/g,"").replace(/</g,"").replace(/>/g,"").replace(/,/g,"").replace(/\./g,"").split(" ").slice(1).filter(Boolean);
-    months=['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']
-    {//varibles
-      year = false
-      month = false
-      day = false
-      temp_y=false;
-      temp_m=false;
-      temp_w=false;
-      temp_d=false;
-      expressIn="";
-      isPast=false
-      upperCase=false
-      onlyYN=false
-    }
+  const f = findFunctions(tekst);
+  let errors = {};
+  const replace = [];
 
-    for (i in ar){
-      if(day == false){
-        if(ar[i]<32 && ar[i]>0){
-          day=ar[i]
-        }
-      }
-      if(year == false){
-        if(ar[i]>1900 && ar[i]<2100){
-          year=ar[i]
-        }
-      }
-      if(month == false){
-        for(j in months){
-          if(ar[i]==months[j]){
-            month=j
-          }
-        }
-      }
-      if(temp_y==false && temp_m==false && temp_w==false && temp_d==false){
-        for(char of ar[i].toLowerCase()){
-          if(char.charCodeAt()>=97 && char.charCodeAt()<=122){
-            if(char == 'y'){
-              temp_y=true
-            }
-            else if(char == 'm'){
-              temp_m=true
-            }
-            else if(char == 'w'){
-              temp_w=true
-            }
-            else if(char == 'd'){
-              temp_d=true
-            }
-            else{
-              temp_y=false
-              temp_m=false
-              temp_w=false
-              temp_d=false
-              break
-            }
-          }
-        }
-      }
-      if(upperCase==false){
-        if(ar[i].toLowerCase().indexOf('uppercase')!=-1){
-          upperCase=true
-        }
-      }
-      if(onlyYN==false){
-        if(ar[i].toLowerCase().indexOf('yn')!=-1 || ar[i].toLowerCase().indexOf('ny')!=-1){
-          onlyYN=true
-        }
-      }
-    }
-    if(onlyYN==true && year!=false){
-      if(year<timeNow.year()){
-        return " "+timeNow.year()-year+" "
-      }
-      else{
-        return " "+year-timeNow.year()+" "
-      }
-    }
-
-    {//make expressIn varible
-      if(temp_y==true){
-        expressIn+='y'
-      }
-      if(temp_m==true){
-        expressIn+='m'
-      }
-      if(temp_w==true){
-        expressIn+='w'
-      }
-      if(temp_d==true){
-        expressIn+='d'
-      }
-      if(expressIn.length==0){
-        expressIn="ymd"
-      }
-    }
-
-    if(year==false || month==false || day==false){
-      console.log('Please enter year, month and a day you want count down to')
-      return e
-    }
-
-    {
-      targetDate=moment(timeNow)
-      targetDate=targetDate.year(year).month(month)
-      if(targetDate.daysInMonth()<day){
-        console.log('Date is not valid')
-        return e
-      }
-      targetDate=targetDate.date(day)
-    }
-
-    daysToXinTotal=targetDate.diff(timeNow,'days')//Days in Total to THE date
-    if(daysToXinTotal<0){//if past date reverse
-      isPast=true
-      temp=moment(timeNow)
-      timeNow=moment(targetDate)
-      targetDate=moment(temp)
-      daysToXinTotal=targetDate.diff(timeNow,'days')
-    }
-    monthsToXinTotal=targetDate.diff(timeNow,'months')//Months in Total to THE date
-    monthsToX=monthsToXinTotal%12//Months to THE date
-    target=targetDate.year(targetDate.year()+timeNow.diff(targetDate,'years'))
-    daysToX=targetDate.diff(timeNow,'days')//Days to THE date
-    yearsToX=Math.floor(monthsToXinTotal/12)//Years to THE date
-    response = ""
-    temp=[]
-
-    if(expressIn=='y'){
-      if(yearsToX==1){
-        response+="a year "
-      }
-      else{
-        response+=yearsToX+" years "
-      }
-    }
-    else if(expressIn=='m'){
-      if(monthsToXinTotal==1){
-        response+="a month "
-      }
-      else{
-        response+=monthsToXinTotal+" months "
-      }
-    }
-    else if(expressIn=='w'){
-      weeksToXinTotal=Math.floor(daysToXinTotal/7)
-      if(weeksToXinTotal==1){
-        response+="a week "
-      }
-      else{
-        response+=weeksToXinTotal+" weeks "
-      }
-    }
-    else if(expressIn=='d'){
-      if(daysToXinTotal==1){
-        response+="a day "
-      }
-      else{
-        response+=daysToXinTotal+" days "
-      }
-    }
-    else if(expressIn=='ym'){
-      if(yearsToX==0){}
-      else if(yearsToX==1){
-        response+="a year "
-      }
-      else{
-        response+=yearsToX+" years "
-      }
-      if(response.length!=0 && monthsToX==0){}
-      else if(monthsToX==1){
-        if(response!=0){
-          response+="and "
-        }
-        response+="a month "
-      }
-      else{
-        if(response!=0){
-          response+="and "
-        }
-        response+=monthsToX+" months "
-      }
-    }
-    else if(expressIn=='yw'){
-      if(yearsToX==0){}
-      else if(yearsToX==1){
-        response+="a year "
-      }
-      else{
-        response+=yearsToX+" years "
-      }
-      if(response.length!=0 && Math.floor(daysToX/7)==0){}
-      else if(Math.floor(daysToX/7)==1){
-        if(response!=0){
-          response+="and "
-        }
-        response+="a week "
-      }
-      else{
-        if(response!=0){
-          response+="and "
-        }
-        response+=Math.floor(daysToX/7)+" weeks "
-      }
-    }
-    else if(expressIn=='yd'){
-      if(yearsToX==0){}
-      else if(yearsToX==1){
-        response+="a year "
-      }
-      else{
-        response+=yearsToX+" years "
-      }
-      if(response.length!=0 && daysToX==0){}
-      else if(daysToX==1){
-        if(response!=0){
-          response+="and "
-        }
-        response+="a day "
-      }
-      else{
-        if(response!=0){
-          response+="and "
-        }
-        response+=daysToX+" days "
-      }
-    }
-    else if(expressIn=='mw'){
-      if(monthsToXinTotal==0){}
-      else if(monthsToXinTotal==1){
-        response+="a month "
-      }
-      else{
-        response+=monthsToXinTotal+" months "
-      }
-      timeNow=timeNow.month(timeNow.month()+monthsToX)
-      weeksToX=targetDate.diff(timeNow,'weeks')
-      if(response.length!=0 && Math.floor(daysToX/7)==0){}
-      else if(weeksToX==1){
-        if(response!=0){
-          response+="and "
-        }
-        response+="a week "
-      }
-      else{
-        if(response!=0){
-          response+="and "
-        }
-        response+=weeksToX+" weeks "
-      }
-    }
-    else if(expressIn=='md'){
-      if(monthsToXinTotal==0){}
-      else if(monthsToXinTotal==1){
-        response+="a month "
-      }
-      else{
-        response+=monthsToXinTotal+" months "
-      }
-      timeNow=timeNow.month(timeNow.month()+monthsToX)
-      daysToX=targetDate.diff(timeNow,'days')
-      if(response.length!=0 && daysToX==0){}
-      else if(daysToX==1){
-        if(response!=0){
-          response+="and "
-        }
-        response+="a day "
-      }
-      else{
-        if(response!=0){
-          response+="and "
-        }
-        response+=daysToX+" days "
-      }
-    }
-    else if(expressIn=='wd'){
-      if(Math.floor(daysToXinTotal/7)==0){}
-      else if(Math.floor(daysToXinTotal/7)==1){
-        response+="a week "
-      }
-      else{
-        response+=Math.floor(daysToXinTotal/7)+" weeks "
-      }
-      if(response.length!=0 && daysToXinTotal%7==0){}
-      else if(daysToXinTotal%7==1){
-        if(response!=0){
-          response+="and "
-        }
-        response+="a day "
-      }
-      else{
-        if(response!=0){
-          response+="and "
-        }
-        response+=daysToXinTotal%7+" days "
-      }
-    }
-    else if(expressIn=='mwd'){
-      if(monthsToXinTotal==1){
-        temp.push('a month')
-      }
-      else if(monthsToXinTotal>1){
-        temp.push(monthsToXinTotal+' months')
-      }
-      timeNow=timeNow.month(timeNow.month()+monthsToX)
-      daysToX=targetDate.diff(timeNow,'days')
-      console.log(daysToX)
-      if(Math.floor(daysToX/7)==1){
-        temp.push('a week')
-      }
-      else if(Math.floor(daysToX/7)>1){
-        temp.push(Math.floor(daysToX/7)+' weeks')
-      }
-      if(daysToX%7==1){
-        temp.push('a day')
-      }
-      else if(daysToX%7>1){
-        temp.push(daysToX%7+' days')
-      }
-      temp.reverse()
-      while(temp.length>0){
-        if(temp.length>2){
-          response+=temp.pop()+", "
-        }
-        else if(temp.length==2){
-          response+=temp.pop()+" and "
-        }
-        else{
-          response+=temp.pop()
-        }
-      }
-      if(response.length=""){
-        response="0 days"
-      }
-    }
-    else if(expressIn=='ywd'){
-      if(yearsToX==1){
-        temp.push('a year')
-      }
-      else if(yearsToX>1){
-        temp.push(yearsToX+' years')
-      }
-      if(Math.floor(daysToX/7)==1){
-        temp.push('a week')
-      }
-      else if(Math.floor(daysToX/7)>1){
-        temp.push(Math.floor(daysToX/7)+' weeks')
-      }
-      if(daysToX%7==1){
-        temp.push('a day')
-      }
-      else if(daysToX%7>1){
-        temp.push(daysToX%7+' days')
-      }
-      temp.reverse()
-      while(temp.length>0){
-        if(temp.length>2){
-          response+=temp.pop()+", "
-        }
-        else if(temp.length==2){
-          response+=temp.pop()+" and "
-        }
-        else{
-          response+=temp.pop()
-        }
-      }
-      if(response.length=""){
-        response="0 days"
-      }
-    }
-    else if(expressIn=='ymw'){
-      if(yearsToX==1){
-        temp.push('a year')
-      }
-      else if(yearsToX>1){
-        temp.push(yearsToX+' years')
-      }
-      if(monthsToX==1){
-        temp.push('a month')
-      }
-      else if(monthsToX>1){
-        temp.push(monthsToX+' months')
-      }
-      timeNow=timeNow.month(timeNow.month()+monthsToX)
-      daysToX=targetDate.diff(timeNow,'days')
-      if(Math.floor(daysToX/7)==1){
-        temp.push('a week')
-      }
-      else if(Math.floor(daysToX/7)>1){
-        temp.push(Math.floor(daysToX/7)+' weeks')
-      }
-      temp.reverse()
-      while(temp.length>0){
-        if(temp.length>2){
-          response+=temp.pop()+", "
-        }
-        else if(temp.length==2){
-          response+=temp.pop()+" and "
-        }
-        else{
-          response+=temp.pop()
-        }
-      }
-      if(response.length=""){
-        response="0 weeks"
-      }
-    }
-    else if(expressIn=='ymwd'){
-      if(yearsToX==1){
-        temp.push('a year')
-      }
-      else if(yearsToX>1){
-        temp.push(yearsToX+' years')
-      }
-      if(monthsToX==1){
-        temp.push('a month')
-      }
-      else if(monthsToX>1){
-        temp.push(monthsToX+' months')
-      }
-      timeNow=timeNow.month(timeNow.month()+monthsToX)
-      daysToX=targetDate.diff(timeNow,'days')
-      if(Math.floor(daysToX/7)==1){
-        temp.push('a week')
-      }
-      else if(Math.floor(daysToX/7)>1){
-        temp.push(Math.floor(daysToX/7)+' weeks')
-      }
-      if(daysToX%7==1){
-        temp.push('a day')
-      }
-      else if(daysToX%7>1){
-        temp.push(daysToX%7+' days')
-      }
-      temp.reverse()
-      while(temp.length>0){
-        if(temp.length>2){
-          response+=temp.pop()+", "
-        }
-        else if(temp.length==2){
-          response+=temp.pop()+" and "
-        }
-        else{
-          response+=temp.pop()
-        }
-      }
-      if(response.length=""){
-        response="0 days"
-      }
-    }
-    else{
-      if(yearsToX==1){
-        temp.push('a year')
-      }
-      else if(yearsToX>1){
-        temp.push(yearsToX+' years')
-      }
-      if(monthsToX==1){
-        temp.push('a month')
-      }
-      else if(monthsToX>1){
-        temp.push(monthsToX+' months')
-      }
-      timeNow=timeNow.month(timeNow.month()+monthsToX)
-      daysToX=targetDate.diff(timeNow,'days')
-      if(daysToX==1){
-        temp.push('a day')
-      }
-      else if(daysToX>1){
-        temp.push(daysToX+' days')
-      }
-      temp.reverse()
-      while(temp.length>0){
-        if(temp.length>2){
-          response+=temp.pop()+", "
-        }
-        else if(temp.length==2){
-          response+=temp.pop()+" and "
-        }
-        else{
-          response+=temp.pop()
-        }
-      }
-      if(response.length=""){
-        response="0 days"
-      }
-    }
-    if(isPast==true){
-      response+=" ago"
-    }
-    if(upperCase==true){
-      response=response.toUpperCase()
-    }
-    return response
-  }
-
-  tekst="{"+tekst+"}"
-  f = findfunctions(tekst);
-  // console.log(f)
-  i=0
-  while(i<f.length){//looking for functions
-    if(f[i][0]==">"){
+  i = 0;
+  while (i < f.length) {
+    //looking for functions
+    if (f[i][0] === ">") {
       try {
-        if(f[i-1][0]=="<"){
-          sliced = tekst.slice(f[i-1][1],f[i][1]+1)//part inside { ... }
-          if(sliced.replace(/\n/g, "").split(" ").join("").slice(1,3).toLowerCase()=="to" || sliced.replace(/\n/g, "").split(" ").join("").slice(1,5).toLowerCase()=="from"){
-            // function_ = sliced.replace(/</g,"").replace(/>/g,"").split(" ")
-            // console.log(function_)
-            tekst = tekst.replace(sliced, functionTo(sliced))
-            i++
+        if (f[i - 1][0] === "<") {
+          const sliced = tekst.slice(f[i - 1][1], f[i][1] + 1);
+          const slicedToLowerCase = sliced.toLowerCase(); //part inside { ... }
+          if (
+            slicedToLowerCase
+              .replace(/\n/g, "")
+              .replace(/\ /g, "")
+              .includes("to")
+          ) {
+            let valid = true; //posiblly valid fuction
+            let yearIndex = slicedToLowerCase.indexOf("year");
+            let yearHolder = "";
+            if (yearIndex !== -1) {
+              let foundNumber = false;
+              yearIndex += 4;
+              while (yearIndex < slicedToLowerCase.length) {
+                if (slicedToLowerCase[yearIndex].match(/[0-9]/)) {
+                  yearHolder += slicedToLowerCase[yearIndex];
+                  foundNumber = true;
+                } else if (foundNumber === true) {
+                  break;
+                }
+                yearIndex += 1;
+              }
+            }
+            yearHolder = parseInt(yearHolder);
+            if (yearHolder < 1900 || yearHolder > 2100) {
+              valid = false;
+              errors.YEAR = `Year ${yearHolder} in function ${sliced} is out of range, should be between 1900 and 2100.`;
+            }
+            let monthIndex = slicedToLowerCase.indexOf("month");
+            let monthHolder = "";
+            if (monthIndex !== -1) {
+              let foundNumber = false;
+              monthIndex += 5;
+              while (monthIndex < slicedToLowerCase.length) {
+                if (slicedToLowerCase[monthIndex].match(/[0-9]/)) {
+                  monthHolder += slicedToLowerCase[monthIndex];
+                  foundNumber = true;
+                } else if (foundNumber === true) {
+                  break;
+                }
+                monthIndex += 1;
+              }
+            }
+            monthHolder = parseInt(monthHolder);
+            if (monthHolder < 1 || monthHolder > 12) {
+              valid = false;
+              errors.MONTH = `Month ${monthHolder} in function ${sliced} is out of range, should be between 1 and 12.`;
+            }
+            let dayIndex = slicedToLowerCase.indexOf("day");
+            let dayHolder = "";
+            if (dayIndex !== -1) {
+              let foundNumber = false;
+              dayIndex += 3;
+              while (dayIndex < slicedToLowerCase.length) {
+                if (slicedToLowerCase[dayIndex].match(/[0-9-]/)) {
+                  dayHolder += slicedToLowerCase[dayIndex];
+                  foundNumber = true;
+                } else if (foundNumber === true) {
+                  break;
+                }
+                dayIndex += 1;
+              }
+            }
+            dayHolder = parseInt(dayHolder);
+            if (dayHolder < 0 && dayHolder > -32) {
+              //sprawdzic czy nie ma roku podanego
+            } else if (dayHolder < -31 || dayHolder > 31 || dayHolder === 0) {
+              valid = false;
+              errors.DAY = `Day ${dayHolder} in function ${sliced} is out of range, should be between -31 and -1 or between 1 and 31.`;
+            }
+            if (
+              Object.keys(errors).length === 0 &&
+              (yearIndex !== -1 || monthIndex !== -1 || dayIndex !== -1)
+            ) {
+              const slicedToLowerCaseArray = slicedToLowerCase.split("");
+              let options = new Set();
+              while (true) {
+                const e = slicedToLowerCaseArray.pop();
+                if (e.match(/[ymwd]/)) {
+                  options.add(e);
+                } else if (e.match(/[0-9]/)) {
+                  break;
+                }
+              }
+              if (options.size === 0) {
+                options = new Set(["d", "w", "m", "y"]);
+              }
+              let today = moment()
+                .tz(selectedTimeZone)
+                .format("YYYY-MM-DD")
+                .split("-");
+              today = {
+                year: parseInt(today[0]),
+                month: parseInt(today[1]),
+                day: parseInt(today[2]),
+              };
+              const to = {
+                year: isNaN(yearHolder) ? null : yearHolder,
+                month: isNaN(monthHolder) ? null : monthHolder,
+                day: isNaN(dayHolder) ? null : dayHolder,
+              };
+              if (to.year !== null && to.month === null && to.day === null) {
+                replace.push([
+                  sliced,
+                  Math.abs(to.year - today.year) === 1
+                    ? "1 year"
+                    : Math.abs(to.year - today.year) + " years",
+                ]);
+              } else if (to.year === null && to.month !== null) {
+                //month is declared
+                if (options.size === 1 && options.has("y")) {
+                  options = new Set(["d", "w", "m", "y"]);
+                }
+                if (to.day === null) {
+                  to.day = 1;
+                }
+                const todayMoment = moment().tz(selectedTimeZone);
+                const toMoment = moment(todayMoment);
+                toMoment.set("month", to.month);
+                toMoment.set("date", to.day);
+                let months;
+                let weeks;
+                let days;
+                if (options.has("m")) {
+                  if (toMoment.diff(todayMoment, "days") < 0) {
+                    toMoment.set("year", today.year + 1);
+                  }
+                  months = toMoment.diff(todayMoment, "months");
+                  todayMoment.add(months, "months");
+                }
+                if (options.has("w")) {
+                  weeks = toMoment.diff(todayMoment, "weeks");
+                  todayMoment.add(weeks, "weeks");
+                }
+                if (options.has("d")) {
+                  days = toMoment.diff(todayMoment, "days");
+                }
+                if (months !== undefined) {
+                  months =
+                    months === 1
+                      ? "1 month"
+                      : months > 0
+                      ? months + " months"
+                      : null;
+                }
+                if (weeks !== undefined) {
+                  weeks =
+                    weeks === 1
+                      ? "1 week"
+                      : weeks > 0
+                      ? weeks + " weeks"
+                      : null;
+                }
+                if (days !== undefined) {
+                  days =
+                    days === 1 ? "1 day" : days > 0 ? days + " days" : null;
+                }
+                if (
+                  (days === undefined || days === null) &&
+                  (weeks === undefined || weeks === null) &&
+                  (months === undefined || months === null)
+                ) {
+                  if (days === null) {
+                    days = "0 days";
+                  } else if (weeks === null) {
+                    weeks = "0 weeks";
+                  } else {
+                    months = "0 months";
+                  }
+                }
+                let temp = "";
+                if (typeof months === "string") {
+                  temp += months;
+                }
+                if (typeof weeks === "string" && typeof days !== "string") {
+                  temp += " and " + weeks;
+                } else if (
+                  typeof weeks !== "string" &&
+                  typeof days === "string"
+                ) {
+                  temp += " and " + days;
+                } else {
+                  temp += ", " + weeks + " and " + days;
+                }
+                replace.push([sliced, temp]);
+              } else if (
+                to.year !== null &&
+                to.month === null &&
+                to.day !== null
+              ) {
+                errors.VALID = `Function ${sliced} is not valid because no month is provided.`;
+              } else if (
+                to.year === null &&
+                to.month === null &&
+                to.day !== null
+              ) {
+                //only day is declared
+                if (to.day === today.day) {
+                  replace.push([sliced, "0 days"]);
+                } else if (to.day > 0) {
+                  const todayMoment = moment().tz(selectedTimeZone);
+                  let daysCounter = 0;
+                  let maxTry = 120;
+                  while (maxTry >= -1) {
+                    maxTry -= 1;
+                    daysCounter += 1;
+                    todayMoment.add(1, "days");
+                    if (parseInt(todayMoment.format("DD")) === to.day) {
+                      if (options.has("w")) {
+                        if (options.has("d")) {
+                          let temp = "";
+                          if (Math.floor(daysCounter / 7) >= 1) {
+                            if (Math.floor(daysCounter / 7) === 1) {
+                              temp = "1 week";
+                            } else {
+                              temp = Math.floor(daysCounter / 7) + " weeks";
+                            }
+                          }
+                          if (daysCounter === 0) {
+                            temp = "0 days";
+                          }
+                          daysCounter %= 7;
+                          if (daysCounter > 0 && temp.length > 0) {
+                            temp += " and ";
+                          }
+                          if (daysCounter >= 1) {
+                            if (daysCounter === 1) {
+                              temp += "1 day";
+                            } else {
+                              temp += daysCounter + " days";
+                            }
+                          }
+                          replace.push([sliced, temp]);
+                        } else {
+                          replace.push([
+                            sliced,
+                            Math.floor(daysCounter / 7) === 1
+                              ? "1 week"
+                              : Math.floor(daysCounter / 7) + " weeks",
+                          ]);
+                        }
+                      } else {
+                        replace.push([
+                          sliced,
+                          daysCounter === 1 ? "1 day" : daysCounter + " days",
+                        ]);
+                      }
+                      break;
+                    }
+                  }
+                } else if (to.day < 0) {
+                  const todayMoment = moment().tz(selectedTimeZone);
+                  let daysInCurrentMonth;
+                  let daysCounter = 0;
+                  let maxTry = 120;
+                  while (maxTry >= -1) {
+                    maxTry -= 1;
+                    daysInCurrentMonth = todayMoment.daysInMonth();
+                    if (-daysInCurrentMonth <= to.day) {
+                      if (
+                        daysInCurrentMonth -
+                          parseInt(todayMoment.format("DD")) ===
+                        -to.day
+                      ) {
+                        if (options.has("w")) {
+                          if (options.has("d")) {
+                            let temp = "";
+                            if (Math.floor(daysCounter / 7) >= 1) {
+                              if (Math.floor(daysCounter / 7) === 1) {
+                                temp = "1 week";
+                              } else {
+                                temp = Math.floor(daysCounter / 7) + " weeks";
+                              }
+                            }
+                            if (daysCounter === 0) {
+                              temp = "0 days";
+                            }
+                            daysCounter %= 7;
+                            if (daysCounter > 0 && temp.length > 0) {
+                              temp += " and ";
+                            }
+                            if (daysCounter >= 1) {
+                              if (daysCounter === 1) {
+                                temp += "1 day";
+                              } else {
+                                temp += daysCounter + " days";
+                              }
+                            }
+                            replace.push([sliced, temp]);
+                          } else {
+                            replace.push([
+                              sliced,
+                              Math.floor(daysCounter / 7) === 1
+                                ? "1 week"
+                                : Math.floor(daysCounter / 7) + " weeks",
+                            ]);
+                          }
+                        } else {
+                          replace.push([
+                            sliced,
+                            daysCounter === 1 ? "1 day" : daysCounter + " days",
+                          ]);
+                        }
+                        break;
+                      }
+                    }
+                    todayMoment.add(1, "days");
+                    daysCounter += 1;
+                  }
+                }
+              } else {
+                //Date provided
+                let todayMoment = moment().tz(selectedTimeZone);
+                let toMoment = moment(todayMoment);
+                toMoment.set("year", to.year);
+                toMoment.set("month", to.month);
+                toMoment.set("date", to.day);
+                if (toMoment.diff(todayMoment, "days") < 0) {
+                  let tempMoment = moment(toMoment);
+                  toMoment = moment(todayMoment);
+                  todayMoment = moment(tempMoment);
+                }
+                let years;
+                let months;
+                let weeks;
+                let days;
+                if (options.has("y")) {
+                  years = toMoment.diff(todayMoment, "years");
+                  todayMoment.add(years, "years");
+                }
+                if (options.has("m")) {
+                  if (toMoment.diff(todayMoment, "days") < 0) {
+                    toMoment.set("year", today.year + 1);
+                  }
+                  months = toMoment.diff(todayMoment, "months");
+                  todayMoment.add(months, "months");
+                }
+                if (options.has("w")) {
+                  weeks = toMoment.diff(todayMoment, "weeks");
+                  todayMoment.add(weeks, "weeks");
+                }
+                if (options.has("d")) {
+                  days = toMoment.diff(todayMoment, "days");
+                }
+                if (years !== undefined) {
+                  years =
+                    years === 1
+                      ? "1 year"
+                      : years > 0
+                      ? years + " years"
+                      : null;
+                }
+                if (months !== undefined) {
+                  months =
+                    months === 1
+                      ? "1 month"
+                      : months > 0
+                      ? months + " months"
+                      : null;
+                }
+                if (weeks !== undefined) {
+                  weeks =
+                    weeks === 1
+                      ? "1 week"
+                      : weeks > 0
+                      ? weeks + " weeks"
+                      : null;
+                }
+                if (days !== undefined) {
+                  days =
+                    days === 1 ? "1 day" : days > 0 ? days + " days" : null;
+                }
+                if (
+                  (days === undefined || days === null) &&
+                  (weeks === undefined || weeks === null) &&
+                  (months === undefined || months === null) &&
+                  (years === undefined || years === null)
+                ) {
+                  if (days === null) {
+                    days = "0 days";
+                  } else if (weeks === null) {
+                    weeks = "0 weeks";
+                  } else if (months === null) {
+                    months = "0 months";
+                  } else {
+                    years = "0 years";
+                  }
+                }
+                let temp = "";
+                if (typeof years === "string") {
+                  temp += years;
+                }
+                if (typeof months === "string" && temp !== "") {
+                  temp += ", " + months;
+                } else if (typeof months === "string" && temp === "") {
+                  temp += months;
+                }
+                if (typeof weeks === "string" && temp !== "") {
+                  temp += ", " + weeks;
+                } else if (typeof weeks === "string" && temp === "") {
+                  temp += weeks;
+                }
+                if (typeof days === "string" && temp !== "") {
+                  temp += ", " + days;
+                } else if (typeof days === "string" && temp === "") {
+                  temp += days;
+                }
+                temp = temp
+                  .split(",")
+                  .join(", ")
+                  .split("")
+                  .reverse()
+                  .join("")
+                  .replace(",", "dna ")
+                  .split("")
+                  .reverse()
+                  .join("");
+                replace.push([sliced, temp]);
+              }
+            } else {
+              errors.DATE = `Date in function ${sliced} is missing.`;
+            }
+            i++;
           }
-          i++
+          i++;
         }
       } catch (error) {
-        i++
+        console.log(error);
+        i++;
+      }
+    } else {
+      i++;
+    }
+  }
+
+  replace.forEach((e) => {
+    tekst = tekst.replace(new RegExp(e[0], "i"), " " + e[1] + " ");
+  });
+
+  const findAllSpecialCharacters = (e) => {
+    let ar = [];
+    for (let i = 0; i < e.length; i++) {
+      if (e[i] === "{" || e[i] === "}") {
+        ar.push([e[i], i]);
       }
     }
-    else{
-      i++
+    return ar;
+  };
+  let e = findAllSpecialCharacters(tekst);
+
+  let i = 0;
+  while (i < e.length) {
+    //randomly choosing options for final result
+    if (e[i][0] === "}") {
+      const sliced = tekst.slice(e[i - 1][1] + 1, e[i][1]); //part inside { ... }
+      let options = sliced.split("|");
+      let temp_ = options[Math.floor(Math.random() * options.length)]; //radnomly choose an option: 1 | 2 | 3...
+
+      tekst =
+        tekst.slice(0, e[i - 1][1]) +
+        temp_ +
+        tekst.slice(e[i][1] + 1, tekst.length); // new text
+
+      e = findAllSpecialCharacters(tekst); //get new build.
+      i = i - 2;
     }
+    i++;
   }
 
-  e = findallspecialchars(tekst);
-
-
-  {//fixing too many "{" or "}"
-    start=0
-    end=0
-    level=0
-    i=0
-    while (true){
-      try {
-        if(e[i][0]=="{"){
-          level++;
-        }
-      } catch (error) {
-        tekst=tekst+"}".repeat(level)
-        break
-      }
-      if(e[i][0]=="}"){
-        level--;
-        if(level<0){
-          tekst="{"+tekst
-          i=0
-          e = findallspecialchars(tekst);
-        }
-      }
-      i++
-    }
+  while (tekst.includes("  ")) {
+    tekst = tekst.replace(/\ \ /g, " ");
+  }
+  while (tekst.includes("\n\n\n")) {
+    tekst = tekst.replace(/\n\n\n/g, "\n\n");
   }
 
-  i=0
-  while(i<e.length){//randomly choosing options for final result
-    if(e[i][0]=="}"){
-      sliced = tekst.slice(e[i-1][1]+1,e[i][1])//part inside { ... }
-      options = sliced.split("|")
-      temp_=options[Math.floor(Math.random() * options.length)]//radnomly choose an option: 1 | 2 | 3...
-
-      tekst=(tekst.slice(0,e[i-1][1])+temp_+tekst.slice(e[i][1]+1,tekst.length)) // new text
-
-      e = findallspecialchars(tekst); //get new build.
-      i=i-2
-    }
-    i++
-  }
-
-  {//deleting empty spaces
-    tekst=tekst.split("\n").join(" ")
-    while(tekst.indexOf("  ")!=-1){
-      tekst=tekst.split("  ").join(" ")
-    }
-    tekst=tekst.trim()
-  }
   return tekst;
-}
+};
 
 module.exports = generateText;

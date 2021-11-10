@@ -53,6 +53,10 @@ const Logged = ({ LogOut, token, setToken }) => {
 
     setTimeout(async () => {
       let index = 0;
+      secondsTotal = Math.round(
+        (new Date(0).setUTCSeconds(decoded.exp) - Date.now()) / 1000
+      );
+
       const whileF = async () => {
         try {
           if (localToken !== tokenRef.current.value) {

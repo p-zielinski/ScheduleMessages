@@ -474,11 +474,20 @@ const TextBody = ({ scheduleNow }) => {
               or/and <b>D</b> (days), if no options selected, we will use{" "}
               <b>YMWD</b> as options.
               <br />
-              If no year is selected, we will return a number of months or/and
-              weeks or/and days to the next closest desired date. Otherwise we
-              will return a positive number of years or/and months or/and weeks
-              or/and days to the desired date{" "}
-              <u>at the moment of sending a message</u>.
+              1. If only Year is provided as a date, function will return a
+              number of years to the desired year from the moment of sending the
+              message plus year/years. If past, will return a positive number.
+              No mater what are the options.
+              <br />
+              2. If only month is provided, automatically day will be added as
+              "1". If options includes "Y", it will be ignored.
+              <br />
+              3. If only day is provided, function will return a number of days
+              or/and weeks to the next closest desired day. If options includes
+              "Y" or "M", function will ignore them.
+              <br />
+              4. If Year and Day are provided, but no Month, function will be{" "}
+              <b>not valid</b>.
             </div>
           </>
         </div>

@@ -37,7 +37,7 @@ const EveryWeek = () => {
   };
 
   return (
-    <div className={"fullW mb"}>
+    <div className={"fullW"} style={{ marginTop: 20 }}>
       <div className={"center"}>
         <h2>on:</h2>
       </div>
