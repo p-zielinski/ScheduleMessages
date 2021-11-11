@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { nanoid } = require("nanoid");
 
 const newUserSchema = mongoose.Schema({
   status: {

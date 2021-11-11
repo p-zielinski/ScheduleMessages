@@ -28,6 +28,14 @@ export const setToken = (token) => async (dispatch) => {
   });
 };
 
+export const setCountryAndTimezone =
+  (default_country, default_tz) => async (dispatch) => {
+    dispatch({
+      type: "set_country_and_timezone",
+      payload: { default_country: default_country, default_tz: default_tz },
+    });
+  };
+
 export const updateMessagesData = (messages) => async (dispatch) => {
   dispatch({
     type: "set_messages",
@@ -44,6 +52,13 @@ export const clearScheduleData = () => async (dispatch) => {
 export const clearData = () => async (dispatch) => {
   dispatch({
     type: "clear_data",
+  });
+};
+
+export const setContactListInStoreOnly = (contact_list) => async (dispatch) => {
+  dispatch({
+    type: "set_contact_list_in_store",
+    payload: { contact_list: contact_list },
   });
 };
 

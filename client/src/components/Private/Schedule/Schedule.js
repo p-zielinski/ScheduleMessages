@@ -8,6 +8,8 @@ import axios from "axios";
 import {
   updateMessagesData,
   clearScheduleData,
+  setCountryAndTimezone,
+  setContactListInStoreOnly,
 } from "../../../store/actions/userDataActions";
 import Loading from "../../utils/Loading";
 import ViewMessageSummary from "../Dashboard/ViewMessageSummary";
@@ -71,8 +73,8 @@ const Schedule = () => {
         break;
       }
     }
-    //trzeba teraz zrobic funcje....
     let data = {
+      myName: name,
       isSingleTime: isSingleTime,
       deliverEvery: deliverEvery,
       weekDays: weekDays,
@@ -99,12 +101,26 @@ const Schedule = () => {
     try {
       data.at = at.format("HH:mm").split(":");
     } catch (e) {}
-
     let returningData = await ScheduleReq(token, data);
     if (typeof returningData.messages === "object") {
       dispatch(updateMessagesData(returningData.messages.reverse()));
       setMessageWasScheduledSuccessfully(true);
-    } else if (typeof returningData.error === "string") {
+    }
+    if (typeof returningData.contact_list === "object") {
+      dispatch(setContactListInStoreOnly(returningData.contact_list));
+    }
+    if (
+      typeof returningData.default_country === "string" &&
+      typeof returningData.default_tz === "string"
+    ) {
+      dispatch(
+        setCountryAndTimezone(
+          returningData.default_country,
+          returningData.default_tz
+        )
+      );
+    }
+    if (typeof returningData.error === "string") {
       setMessageFailedToBeScheduled(true);
     }
   };

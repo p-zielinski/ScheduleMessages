@@ -20,6 +20,8 @@ const initState = {
   contact_list: [],
   contact_list_is_updating: false,
 
+  default_country: undefined,
+  default_tz: undefined,
   default_tz_and_country_is_updating: false,
 };
 
@@ -53,6 +55,15 @@ const userDataReducer = (state = initState, action) => {
     }
     case "set_token": {
       state.token = action.payload.token;
+      return { ...state };
+    }
+    case "set_contact_list_in_store": {
+      state.contact_list = action.payload.contact_list;
+      return { ...state };
+    }
+    case "set_country_and_timezone": {
+      state.default_country = action.payload.default_country;
+      state.default_tz = action.payload.default_tz;
       return { ...state };
     }
     case "set_contact_list": {

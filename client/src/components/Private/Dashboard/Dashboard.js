@@ -15,7 +15,12 @@ const Dashboard = ({ newestScheduledMessage, setNewestScheduledMessage }) => {
     <div>
       <div className={"dashboard-info"}>
         <h2 style={{ textAlign: "center", marginTop: 10 }}>
-          Hi {name !== "" ? name : email.toLowerCase()}
+          Hi{" "}
+          {name !== ""
+            ? name
+            : typeof email === "string"
+            ? email.toLowerCase()
+            : ""}
           <br />
           <div className={"center"}>
             <div className={"flex-wrapper"} style={{ marginTop: 5 }}>
@@ -62,22 +67,6 @@ const Dashboard = ({ newestScheduledMessage, setNewestScheduledMessage }) => {
       <h2 style={{ textAlign: "center" }}>Messaging log:</h2>
       <h2 style={{ marginTop: 10 }}>No messages to display</h2>
       <h2 style={{ textAlign: "center" }}>Most recent scheduled message:</h2>
-      {/*{newestScheduledMessage === undefined ? (*/}
-      {/*  messages !== undefined ? (*/}
-      {/*    messages.length > 0 ? (*/}
-      {/*      <ViewMessageSummary*/}
-      {/*        key={messages.pop().uniqJobId}*/}
-      {/*        message={messages.pop()}*/}
-      {/*      />*/}
-      {/*    ) : (*/}
-      {/*      parse("<h2 style='margin-top: 10px'>No messages to display</h2>")*/}
-      {/*    )*/}
-      {/*  ) : (*/}
-      {/*    parse("<h2 style='margin-top: 10px'>No messages to display</h2>")*/}
-      {/*  )*/}
-      {/*) : (*/}
-
-      {/*)}*/}
       {typeof messages === "object"
         ? messages.map((message, index) => {
             if (index === 0)

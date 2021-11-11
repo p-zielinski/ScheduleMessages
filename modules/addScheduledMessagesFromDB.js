@@ -1,5 +1,4 @@
 const User = require("../models/user");
-const generateText = require("./generateText");
 const { scheduleAMessage } = require("./nodeSchedule");
 
 const addScheduledMessagesFromDB = async () => {

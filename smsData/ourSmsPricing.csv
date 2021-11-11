@@ -1,0 +1,228 @@
+ISO,Country,Price
+AD,Andorra,0.15
+AE,United Arab Emirates,0.05
+AF,Afghanistan,0.15
+AG,Antigua and Barbuda,0.07
+AI,Anguilla,0.07
+AL,Albania,0.13
+AM,Armenia,0.12
+AN,Netherlands Antilles,0.22
+AO,Angola,0.09
+AR,Argentina,0.1
+AS,American Samoa,0.18
+AT,Austria,0.14
+AU,Australia,0.08
+AW,Aruba,0.09
+AZ,Azerbaijan,0.24
+BA,Bosnia and Herzegovina,0.12
+BB,Barbados,0.07
+BD,Bangladesh,0.16
+BE,Belgium,0.15
+BF,Burkina Faso,0.08
+BG,Bulgaria,0.2
+BH,Bahrain,0.18
+BI,Burundi,0.15
+BJ,Benin,0.16
+BM,Bermuda,0.08
+BN,Brunei,0.04
+BO,Bolivia,0.12
+BR,Brazil,0.09
+BS,Bahamas,0.08
+BT,Bhutan,0.16
+BW,Botswana,0.14
+BY,Belarus,0.19
+BZ,Belize,0.13
+CA,Canada,0.04
+CD,DR Congo,0.12
+CF,Central Africa,0.04
+CG,Congo,0.1
+CH,Switzerland,0.1
+CI,Ivory Coast,0.23
+CK,Cook Islands,0.07
+CL,Chile,0.09
+CM,Cameroon,0.21
+CN,China,0.04
+CO,Colombia,0.08
+CR,Costa Rica,0.06
+CU,Cuba,0.12
+CV,Cape Verde,0.11
+CY,Cyprus,0.12
+CZ,Czech Republic,0.11
+DE,Germany,0.13
+DJ,Djibouti,0.15
+DK,Denmark,0.07
+DM,Dominica,0.07
+DO,Dominican Republic,0.09
+DZ,Algeria,0.16
+EC,Ecuador,0.14
+EE,Estonia,0.16
+EG,Egypt,0.13
+ER,Eritrea,0.15
+ES,Spain,0.13
+ET,Ethiopia,0.17
+FI,Finland,0.12
+FJ,Fiji,0.15
+FK,Falkland Islands,0.19
+FM,Micronesia,0.11
+FO,Faroe Islands,0.04
+FR,France,0.11
+GA,Gabon,0.16
+GB,United Kingdom,0.06
+GD,Grenada,0.08
+GE,Georgia,0.17
+GF,French Guiana,0.28
+GG,Guernsey,0.05
+GH,Ghana,0.16
+GI,Gibraltar,0.05
+GL,Greenland,0.06
+GM,Gambia,0.12
+GN,Guinea,0.23
+GP,Guadeloupe,0.14
+GQ,Equatorial Guinea,0.06
+GR,Greece,0.09
+GT,Guatemala,0.09
+GU,Guam,0.14
+GW,Guinea-Bissau,0.22
+GY,Guyana,0.08
+HK,Hong Kong,0.08
+HN,Honduras,0.08
+HR,Croatia,0.07
+HT,Haiti,0.1
+HU,Hungary,0.14
+IA,Unknown,0.15
+ID,Indonesia,0.22
+IE,Ireland,0.11
+IL,Israel,0.13
+IN,India,0.06
+IQ,Iraq,0.15
+IR,Iran,0.1
+IS,Iceland,0.11
+IT,Italy,0.13
+JE,Jersey,0.06
+JM,Jamaica,0.08
+JO,Jordan,0.18
+JP,Japan,0.12
+KE,Kenya,0.15
+KG,Kyrgyzstan,0.18
+KH,Cambodia,0.13
+KI,Kiribati,0.12
+KM,Comoros,0.1
+KN,St Kitts and Nevis,0.14
+KR,Korea Republic of,0.07
+KW,Kuwait,0.13
+KY,Cayman Islands,0.07
+KZ,Kazakhstan,0.17
+LA,Laos PDR,0.08
+LB,Lebanon,0.09
+LC,St Lucia,0.08
+LI,Liechtenstein,0.05
+LK,Sri Lanka,0.18
+LR,Liberia,0.11
+LS,Lesotho,0.15
+LT,Lithuania,0.06
+LU,Luxembourg,0.13
+LV,Latvia,0.12
+LY,Libya,0.16
+MA,Morocco,0.11
+MC,Monaco,0.23
+MD,Moldova,0.09
+ME,Montenegro,0.06
+MG,Madagascar,0.1
+MH,Marshall Islands,0.18
+MK,Macedonia,0.13
+ML,Mali,0.15
+MM,Myanmar,0.13
+MN,Mongolia,0.12
+MO,Macau,0.05
+MP,Northern Mariana Islands,0.08
+MQ,Martinique,0.24
+MR,Mauritania,0.14
+MS,Montserrat,0.07
+MT,Malta,0.07
+MU,Mauritius,0.1
+MV,Maldives,0.06
+MW,Malawi,0.13
+MX,Mexico,0.07
+MY,Malaysia,0.07
+MZ,Mozambique,0.06
+NA,Namibia,0.09
+NC,New Caledonia,0.21
+NE,Niger,0.13
+NF,Norfolk Island,0.04
+NG,Nigeria,0.15
+NI,Nicaragua,0.09
+NL,Netherlands,0.15
+NO,Norway,0.09
+NP,Nepal,0.16
+NU,Niue,0.04
+NZ,New Zealand,0.15
+OM,Oman,0.1
+PA,Panama,0.09
+PE,Peru,0.09
+PF,French Polynesia,0.26
+PG,Papua New Guinea,0.07
+PH,Philippines,0.07
+PK,Pakistan,0.14
+PL,Poland,0.06
+PM,St Pierre and Miquelon,0.18
+PR,Puerto Rico,0.06
+PS,Palestinian Territory,0.18
+PT,Portugal,0.07
+PW,Palau,0.14
+PY,Paraguay,0.06
+QA,Qatar,0.09
+RE,Reunion/Mayotte,0.33
+RO,Romania,0.11
+RS,Serbia,0.07
+RU,Russia,0.17
+RW,Rwanda,0.08
+SA,Saudi Arabia,0.07
+SB,Solomon Islands,0.12
+SC,Seychelles,0.17
+SD,Sudan,0.13
+SE,Sweden,0.08
+SG,Singapore,0.06
+SI,Slovenia,0.07
+SK,Slovakia,0.15
+SL,Sierra Leone,0.1
+SM,San Marino,0.13
+SN,Senegal,0.16
+SO,Somalia,0.15
+SR,Suriname,0.11
+SS,South Sudan,0.12
+ST,Sao Tome and Principe,0.2
+SV,El Salvador,0.06
+SY,Syria,0.19
+SZ,Swaziland,0.09
+TC,Turks and Caicos Islands,0.07
+TD,Chad,0.12
+TG,Togo,0.08
+TH,Thailand,0.04
+TJ,Tajikistan,0.18
+TL,East Timor,0.16
+TM,Turkmenistan,0.16
+TN,Tunisia,0.15
+TO,Tonga,0.11
+TR,Turkey,0.04
+TT,Trinidad and Tobago,0.07
+TV,Tuvalu,0.15
+TW,Taiwan,0.08
+TZ,Tanzania,0.12
+UA,Ukraine,0.14
+UG,Uganda,0.14
+US,United States,0.04
+UY,Uruguay,0.14
+UZ,Uzbekistan,0.22
+VC,St Vincent Grenadines,0.08
+VE,Venezuela,0.07
+VG,"Virgin Islands, British",0.08
+VI,"Virgin Islands, U.S.",0.04
+VN,Vietnam,0.11
+VU,Vanuatu,0.14
+WF,Wallis and Futuna,0.17
+WS,Samoa,0.07
+XK,Kosovo,0.14
+YE,Yemen,0.14
+ZA,South Africa,0.04
+ZM,Zambia,0.16
+ZW,Zimbabwe,0.15

@@ -1,6 +1,4 @@
 const schedule = require("node-schedule");
-const dotenv = require("dotenv");
-const generateText = require("./generateText");
 const moment = require("moment-timezone");
 const { nanoid } = require("nanoid");
 const User = require("../models/user");
@@ -41,7 +39,6 @@ const scheduleAMessage = async (userId, data, uniqJobIdIfFromDB) => {
     rule.minute = parseInt(data.at[1]);
     rule.hour = parseInt(data.at[0]);
     rule.tz = data.timezone;
-    // if (typeof uniqJobIdIfFromDB) {
     const testingNow = moment().tz(data.timezone);
     testingNow.set("minute", parseInt(data.at[1]));
     testingNow.set("hour", parseInt(data.at[0]));
@@ -74,7 +71,6 @@ const scheduleAMessage = async (userId, data, uniqJobIdIfFromDB) => {
         handleChangeMessageStatus(userId, uniqJobId, "completed");
         return false;
       }
-      // }
     } else {
       rule.year = parseInt(startDate[0]);
       rule.month = parseInt(startDate[1]) - 1;

@@ -24,13 +24,63 @@ exports.scheduleAMessageRequest = async (req, res) => {
   const statusOrData = await scheduleAMessage(token.userId, data, true);
   if (statusOrData !== false) {
     if (typeof statusOrData === "object") {
-      return res.status(200).json({
+      let resObj = {
         success: true,
         result: `Success! A message was scheduled!`,
         messages: statusOrData.messages,
         newJobId: statusOrData.uniqJobId,
-      });
-      // if(data.saveTimezoneAsDefault)
+      };
+      let contactList = null;
+      if (data.saveTimezoneAsDefault) {
+        await User.findOneAndUpdate(
+          { _id: token.userId },
+          {
+            default_country: data.country,
+            default_tz: data.timezone,
+          }
+        )
+          .then(async (userData) => {
+            resObj.default_country = data.country;
+            resObj.default_tz = data.timezone;
+            contactList = userData.contact_list;
+          })
+          .catch((error) => {
+            console.log(error);
+            console.log(
+              `error while updating timezone [schedule new message], user id: ${token.userId}`
+            );
+          });
+      } else if (data.contactsToSave.length > 0) {
+        await User.findOne({ _id: token.userId })
+          .then(async (userData) => {
+            contactList = userData.recipients;
+          })
+          .catch((error) => {
+            console.log(error);
+            console.log(
+              `error while getting contact_list [schedule new message], user id: ${token.userId}`
+            );
+          });
+      }
+      if (data.contactsToSave.length > 0) {
+        await User.findOneAndUpdate(
+          { _id: token.userId },
+          {
+            contact_list: contactList.concat(data.contactsToSave),
+          }
+        )
+          .then(async () => {
+            contactList = contactList.concat(data.contactsToSave);
+            resObj.contact_list = contactList;
+          })
+          .catch((error) => {
+            console.log(error);
+            console.log(
+              `error while updating contact list [schedule new message], user id: ${token.userId}`
+            );
+          });
+      }
+      return res.status(200).json(resObj);
     }
     return res.status(200).json({
       success: true,
