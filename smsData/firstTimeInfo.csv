@@ -1,228 +1,79 @@
 ISO,Message
-AD,0.15
-AE,0.05
-AF,0.15
-AG,0.07
-AI,0.07
-AL,0.13
-AM,0.12
-AN,0.22
-AO,0.09
-AR,0.1
-AS,0.18
-AT,0.14
-AU,0.08
-AW,0.09
-AZ,0.24
-BA,0.12
-BB,0.07
-BD,0.16
-BE,0.15
-BF,0.08
-BG,0.2
-BH,0.18
-BI,0.15
-BJ,0.16
-BM,0.08
-BN,0.03
-BO,0.12
-BR,0.09
-BS,0.08
-BT,0.16
-BW,0.14
-BY,0.19
-BZ,0.13
-CA,0.01
-CD,0.12
-CF,0.03
-CG,0.1
-CH,0.1
-CI,0.23
-CK,0.07
-CL,0.09
-CM,0.21
-CN,0.04
-CO,0.08
-CR,0.06
-CU,0.12
-CV,0.11
-CY,0.12
-CZ,0.11
-DE,0.13
-DJ,0.15
-DK,0.07
-DM,0.07
-DO,0.09
-DZ,0.16
-EC,0.14
-EE,0.16
-EG,0.13
-ER,0.15
-ES,0.13
-ET,0.17
-FI,0.12
-FJ,0.15
-FK,0.19
-FM,0.11
-FO,0.02
-FR,0.11
-GA,0.16
-GB,0.06
-GD,0.08
-GE,0.17
-GF,0.28
-GG,0.05
-GH,0.16
-GI,0.05
-GL,0.06
-GM,0.12
-GN,0.23
-GP,0.14
-GQ,0.06
-GR,0.09
-GT,0.09
-GU,0.14
-GW,0.22
-GY,0.08
-HK,0.08
-HN,0.08
-HR,0.07
-HT,0.1
-HU,0.14
-IA,0.15
-ID,0.22
-IE,0.11
-IL,0.13
-IN,0.06
-IQ,0.15
-IR,0.1
-IS,0.11
-IT,0.13
-JE,0.06
-JM,0.08
-JO,0.18
-JP,0.12
-KE,0.15
-KG,0.18
-KH,0.13
-KI,0.12
-KM,0.1
-KN,0.14
-KR,0.07
-KW,0.13
-KY,0.07
-KZ,0.17
-LA,0.08
-LB,0.09
-LC,0.08
-LI,0.05
-LK,0.18
-LR,0.11
-LS,0.15
-LT,0.06
-LU,0.13
-LV,0.12
-LY,0.16
-MA,0.11
-MC,0.23
-MD,0.09
-ME,0.06
-MG,0.1
-MH,0.18
-MK,0.13
-ML,0.15
-MM,0.13
-MN,0.12
-MO,0.05
-MP,0.08
-MQ,0.24
-MR,0.14
-MS,0.07
-MT,0.07
-MU,0.1
-MV,0.04
-MW,0.13
-MX,0.07
-MY,0.07
-MZ,0.06
-NA,0.09
-NC,0.21
-NE,0.13
-NF,0.04
-NG,0.15
-NI,0.09
-NL,0.15
-NO,0.09
-NP,0.16
-NU,0.02
-NZ,0.15
-OM,0.1
-PA,0.09
-PE,0.09
-PF,0.26
-PG,0.07
-PH,0.07
-PK,0.14
-PL,"Ta wiadomość została wysłana z ScheduleMessages.com przez jednego z naszych użytkowaników. Jeżeli nie chcesz otrzymywać więcej wiadomości od tego użytkowanika, proszę odpowiedz "STOP" w dowolnym momencie. W kolejnych wiadomościach od tego użytkowanika nie pojawi się już ta informacja. Jeżeli masz pytanie, proszę skontaktować się z nami na adress email support@schedulemessages.com . Dziękujemy i życzymy miłego dnia."
-PM,0.18
-PR,0.06
-PS,0.18
-PT,0.07
-PW,0.14
-PY,0.05
-QA,0.09
-RE,0.33
-RO,0.11
-RS,0.07
-RU,0.17
-RW,0.08
-SA,0.07
-SB,0.12
-SC,0.17
-SD,0.13
-SE,0.08
-SG,0.06
-SI,0.07
-SK,0.15
-SL,0.1
-SM,0.13
-SN,0.16
-SO,0.15
-SR,0.11
-SS,0.12
-ST,0.2
-SV,0.06
-SY,0.19
-SZ,0.09
-TC,0.07
-TD,0.12
-TG,0.08
-TH,0.04
-TJ,0.18
-TL,0.16
-TM,0.16
-TN,0.15
-TO,0.11
-TR,0.04
-TT,0.07
-TV,0.15
-TW,0.08
-TZ,0.12
-UA,0.14
-UG,0.14
-US,"This message was sent from ScheduleMessages.com by one of our users. If you want to not receiving messages from this user in the future please reply “STOP” at any time. No further information will be given. If you have a question, you can contact us support@schedulemessages.com . Thank you and have a wonderful day."
-UY,0.14
-UZ,0.22
-VC,0.08
-VE,0.07
-VG,0.08
-VI,0.03
-VN,0.11
-VU,0.14
-WF,0.17
-WS,0.07
-XK,0.14
-YE,0.14
-ZA,0.04
-ZM,0.16
-ZW,0.15
+AD,"Aquest missatge va ser enviat des de ScheduleMessages.com per un dels nostres usuaris. Si no voleu rebre mes missatges d'aquest usuari, respongueu ""STOP"" en qualsevol moment. En els missatges futurs d'aquest usuari aquesta informacio no tornara a apareixer. Si teniu alguna pregunta, poseu-vos en contacte amb nosaltres a l'adreca de correu electronic support@schedulemessages.com i un dia meravellos."
+AL,"Ky mesazh u dergua nga ScheduleMessages.com nga nje nga perdoruesit tane. Nese nuk doni te merrni ndonje mesazh tjeter nga ky perdorues, ju lutemi te pergjigjeni ""STOP"" ne cdo kohe. Ne mesazhet e ardhshme nga ky perdorues ky informacion nuk do te shfaqet perseri. Nese keni nje pyetje, ju lutemi na kontaktoni ne adresen e support@schedulemessages.com dhe keni nje dite te mrekullueshme."
+AO,"Esta mensagem foi enviada de ScheduleMessages.com por um dos nossos usuarios. Se voce nao quiser receber mais mensagens deste usuario, responda ""STOP"" a qualquer momento. Em mensagens futuras deste usuario, essas informacoes nao serao exibidas novamente. Se voce tiver uma pergunta, entre em contato conosco no endereco de e-mail support@schedulemessages.com e tenha um dia maravilhoso."
+AT,"Diese Nachricht wurde von ScheduleMessages.com von einem unserer Benutzer gesendet. Wenn Sie nicht mehr Nachrichten von diesem Benutzer erhalten mochten, antworten Sie bitte jederzeit ""STOP"" zukunftigen Nachrichten von diesem Benutzer werden diese Informationen nicht wieder angezeigt. Wenn Sie eine Frage haben, wenden Sie sich bitte an die E-Mail-Adresse support@schedulemessages.com Dank und einen schonen Tag."
+AW,"Dit bericht is verzonden vanaf ScheduleMessages.com door een van onze gebruikers. Als u geen berichten meer van deze gebruiker wilt ontvangen, kunt u op elk gewenst moment beantwoorden. In toekomstige berichten van deze gebruiker verschijnt deze informatie niet opnieuw. Als u een vraag heeft, neem dan contact met ons op via e-mailadres support@schedulemessages.com en een geweldige dag."
+BA,"Ova poruka je poslana iz ScheduleMessages.com jednog od nasih korisnika. Ako ne zelite primati vise poruka ovog korisnika, molimo odgovorite u bilo koje vrijeme ""STOP"" buducim porukama ovog korisnika ove se informacije vise nece pojaviti. Ako imate pitanje, kontaktirajte nas na adresu support@schedulemessages.com vam i divan dan."
+BE,"Dit bericht is verzonden vanaf ScheduleMessages.com door een van onze gebruikers. Als u geen berichten meer van deze gebruiker wilt ontvangen, kunt u op elk gewenst moment beantwoorden. In toekomstige berichten van deze gebruiker verschijnt deze informatie niet opnieuw. Als u een vraag heeft, neem dan contact met ons op via e-mailadres support@schedulemessages.com en een geweldige dag."
+BF,"Ce message a ete envoye de ScheduleMessages.com par l'un de nos utilisateurs. Si vous ne souhaitez pas recevoir plus de messages de cet utilisateur, veuillez repondre ""STOP"" a tout moment. Dans les messages futurs de cet utilisateur, ces informations n'apparaitront plus. Si vous avez une question, veuillez nous contacter a l'adresse e-mail support@schedulemessages.com et passez une journee merveilleuse."
+BG,"Tova sobshchenie e izprateno ot ScheduleMessages.com ot edin ot nashite potrebiteli. Ako ne iskate da poluchavate poveche sobshcheniya ot tozi potrebitel, molya otgovorete na ""STOP"" po vsyako vreme. V bdeshchite sobshcheniya ot tozi potrebitel tazi informaciya nyama da se poyavi otnovo. Ako imate vpros, molya svrzhete se s nas na imeyl adresa support@schedulemessages.com vi i imate prekrasen den."
+BI,"Ce message a ete envoye de ScheduleMessages.com par l'un de nos utilisateurs. Si vous ne souhaitez pas recevoir plus de messages de cet utilisateur, veuillez repondre ""STOP"" a tout moment. Dans les messages futurs de cet utilisateur, ces informations n'apparaitront plus. Si vous avez une question, veuillez nous contacter a l'adresse e-mail support@schedulemessages.com et passez une journee merveilleuse."
+BJ,"Ce message a ete envoye de ScheduleMessages.com par l'un de nos utilisateurs. Si vous ne souhaitez pas recevoir plus de messages de cet utilisateur, veuillez repondre ""STOP"" a tout moment. Dans les messages futurs de cet utilisateur, ces informations n'apparaitront plus. Si vous avez une question, veuillez nous contacter a l'adresse e-mail support@schedulemessages.com et passez une journee merveilleuse."
+BN,"Mesej ini dihantar dari ScheduleMessages.com oleh salah seorang pengguna kami. Jika anda tidak mahu menerima lebih banyak mesej dari pengguna ini, sila balas ""STOP"" pada bila-bila masa. Dalam mesej masa depan dari pengguna ini Maklumat ini tidak akan muncul lagi. Jika anda mempunyai soalan, sila hubungi kami di alamat e-mel support@schedulemessages.com kasih dan mempunyai hari yang indah."
+BR,"Esta mensagem foi enviada de ScheduleMessages.com por um dos nossos usuarios. Se voce nao quiser receber mais mensagens deste usuario, responda ""STOP"" a qualquer momento. Em mensagens futuras deste usuario, essas informacoes nao serao exibidas novamente. Se voce tiver uma pergunta, entre em contato conosco no endereco de e-mail support@schedulemessages.com e tenha um dia maravilhoso."
+CD,"Ce message a ete envoye de ScheduleMessages.com par l'un de nos utilisateurs. Si vous ne souhaitez pas recevoir plus de messages de cet utilisateur, veuillez repondre ""STOP"" a tout moment. Dans les messages futurs de cet utilisateur, ces informations n'apparaitront plus. Si vous avez une question, veuillez nous contacter a l'adresse e-mail support@schedulemessages.com et passez une journee merveilleuse."
+CF,"Ce message a ete envoye de ScheduleMessages.com par l'un de nos utilisateurs. Si vous ne souhaitez pas recevoir plus de messages de cet utilisateur, veuillez repondre ""STOP"" a tout moment. Dans les messages futurs de cet utilisateur, ces informations n'apparaitront plus. Si vous avez une question, veuillez nous contacter a l'adresse e-mail support@schedulemessages.com et passez une journee merveilleuse."
+CG,"Ce message a ete envoye de ScheduleMessages.com par l'un de nos utilisateurs. Si vous ne souhaitez pas recevoir plus de messages de cet utilisateur, veuillez repondre ""STOP"" a tout moment. Dans les messages futurs de cet utilisateur, ces informations n'apparaitront plus. Si vous avez une question, veuillez nous contacter a l'adresse e-mail support@schedulemessages.com et passez une journee merveilleuse."
+CH,"Diese Nachricht wurde von ScheduleMessages.com von einem unserer Benutzer gesendet. Wenn Sie nicht mehr Nachrichten von diesem Benutzer erhalten mochten, antworten Sie bitte jederzeit ""STOP"" zukunftigen Nachrichten von diesem Benutzer werden diese Informationen nicht wieder angezeigt. Wenn Sie eine Frage haben, wenden Sie sich bitte an die E-Mail-Adresse support@schedulemessages.com Dank und einen schonen Tag."
+CI,"Ce message a ete envoye de ScheduleMessages.com par l'un de nos utilisateurs. Si vous ne souhaitez pas recevoir plus de messages de cet utilisateur, veuillez repondre ""STOP"" a tout moment. Dans les messages futurs de cet utilisateur, ces informations n'apparaitront plus. Si vous avez une question, veuillez nous contacter a l'adresse e-mail support@schedulemessages.com et passez une journee merveilleuse."
+CM,"Ce message a ete envoye de ScheduleMessages.com par l'un de nos utilisateurs. Si vous ne souhaitez pas recevoir plus de messages de cet utilisateur, veuillez repondre ""STOP"" a tout moment. Dans les messages futurs de cet utilisateur, ces informations n'apparaitront plus. Si vous avez une question, veuillez nous contacter a l'adresse e-mail support@schedulemessages.com et passez une journee merveilleuse."
+CV,"Esta mensagem foi enviada de ScheduleMessages.com por um dos nossos usuarios. Se voce nao quiser receber mais mensagens deste usuario, responda ""STOP"" a qualquer momento. Em mensagens futuras deste usuario, essas informacoes nao serao exibidas novamente. Se voce tiver uma pergunta, entre em contato conosco no endereco de e-mail support@schedulemessages.com e tenha um dia maravilhoso."
+CZ,"Tato zprava byla odeslana ze ScheduleMessages.com jednim z nasich uzivatelu. Pokud od tohoto uzivatele nechcete prijimat dalsi zpravy, odpovezte prosim ""STOP"" kdykoliv. V budoucich zpravach od tohoto uzivatele tyto informace se nezobrazi znovu. Mate-li otazku, kontaktujte nas na e-mailove adrese support@schedulemessages.com a mate nadherny den."
+DE,"Diese Nachricht wurde von ScheduleMessages.com von einem unserer Benutzer gesendet. Wenn Sie nicht mehr Nachrichten von diesem Benutzer erhalten mochten, antworten Sie bitte jederzeit ""STOP"" zukunftigen Nachrichten von diesem Benutzer werden diese Informationen nicht wieder angezeigt. Wenn Sie eine Frage haben, wenden Sie sich bitte an die E-Mail-Adresse support@schedulemessages.com Dank und einen schonen Tag."
+DJ,"Ce message a ete envoye de ScheduleMessages.com par l'un de nos utilisateurs. Si vous ne souhaitez pas recevoir plus de messages de cet utilisateur, veuillez repondre ""STOP"" a tout moment. Dans les messages futurs de cet utilisateur, ces informations n'apparaitront plus. Si vous avez une question, veuillez nous contacter a l'adresse e-mail support@schedulemessages.com et passez une journee merveilleuse."
+DK,"Denne besked blev sendt fra ScheduleMessages.com af en af vores brugere. Hvis du ikke vil modtage flere beskeder fra denne bruger, skal du svare ""STOP"" til enhver tid. I fremtidige meddelelser fra denne bruger vises disse oplysninger ikke igen. Hvis du har et sporgsmal, bedes du kontakte os pa e-mail-adressen support@schedulemessages.com og have en vidunderlig dag."
+EE,"See sonum saadeti planeeringute alates uhe kasutaja kasutaja poolt. Kui te ei soovi sellest kasutajalt enam sonumeid vastu votta, vastake igal ajal ""STOP"" kasutaja tulevaste sonumite puhul ei ilmu see teave uuesti. Kui teil on kusimus, votke meiega uhendust aadressil e-posti aadress support@schedulemessages.com teid ja on suureparane paev."
+FI,"Tama viesti lahetettiin ScheduleMessages.com yhdesta kayttajastamme. Jos et halua saada lisaa viesteja tasta kayttajalta, vastaa ""STOP"" milloin tahansa. Taman kayttajan tulevissa viesteissa nama tiedot eivat nay uudelleen. Jos sinulla on kysymys, ota yhteytta sahkopostiosoitteeseen support@schedulemessages.com ja ihana paiva."
+FO,"Denne besked blev sendt fra ScheduleMessages.com af en af vores brugere. Hvis du ikke vil modtage flere beskeder fra denne bruger, skal du svare ""STOP"" til enhver tid. I fremtidige meddelelser fra denne bruger vises disse oplysninger ikke igen. Hvis du har et sporgsmal, bedes du kontakte os pa e-mail-adressen support@schedulemessages.com og have en vidunderlig dag."
+FR,"Ce message a ete envoye de ScheduleMessages.com par l'un de nos utilisateurs. Si vous ne souhaitez pas recevoir plus de messages de cet utilisateur, veuillez repondre ""STOP"" a tout moment. Dans les messages futurs de cet utilisateur, ces informations n'apparaitront plus. Si vous avez une question, veuillez nous contacter a l'adresse e-mail support@schedulemessages.com et passez une journee merveilleuse."
+GA,"Ce message a ete envoye de ScheduleMessages.com par l'un de nos utilisateurs. Si vous ne souhaitez pas recevoir plus de messages de cet utilisateur, veuillez repondre ""STOP"" a tout moment. Dans les messages futurs de cet utilisateur, ces informations n'apparaitront plus. Si vous avez une question, veuillez nous contacter a l'adresse e-mail support@schedulemessages.com et passez une journee merveilleuse."
+GF,"Ce message a ete envoye de ScheduleMessages.com par l'un de nos utilisateurs. Si vous ne souhaitez pas recevoir plus de messages de cet utilisateur, veuillez repondre ""STOP"" a tout moment. Dans les messages futurs de cet utilisateur, ces informations n'apparaitront plus. Si vous avez une question, veuillez nous contacter a l'adresse e-mail support@schedulemessages.com et passez une journee merveilleuse."
+GL,"Denne besked blev sendt fra ScheduleMessages.com af en af vores brugere. Hvis du ikke vil modtage flere beskeder fra denne bruger, skal du svare ""STOP"" til enhver tid. I fremtidige meddelelser fra denne bruger vises disse oplysninger ikke igen. Hvis du har et sporgsmal, bedes du kontakte os pa e-mail-adressen support@schedulemessages.com og have en vidunderlig dag."
+GN,"Ce message a ete envoye de ScheduleMessages.com par l'un de nos utilisateurs. Si vous ne souhaitez pas recevoir plus de messages de cet utilisateur, veuillez repondre ""STOP"" a tout moment. Dans les messages futurs de cet utilisateur, ces informations n'apparaitront plus. Si vous avez une question, veuillez nous contacter a l'adresse e-mail support@schedulemessages.com et passez une journee merveilleuse."
+GP,"Ce message a ete envoye de ScheduleMessages.com par l'un de nos utilisateurs. Si vous ne souhaitez pas recevoir plus de messages de cet utilisateur, veuillez repondre ""STOP"" a tout moment. Dans les messages futurs de cet utilisateur, ces informations n'apparaitront plus. Si vous avez une question, veuillez nous contacter a l'adresse e-mail support@schedulemessages.com et passez une journee merveilleuse."
+GW,"Esta mensagem foi enviada de ScheduleMessages.com por um dos nossos usuarios. Se voce nao quiser receber mais mensagens deste usuario, responda ""STOP"" a qualquer momento. Em mensagens futuras deste usuario, essas informacoes nao serao exibidas novamente. Se voce tiver uma pergunta, entre em contato conosco no endereco de e-mail support@schedulemessages.com e tenha um dia maravilhoso."
+HR,"Ova poruka je poslana iz ScheduleMessages.com jedan od nasih korisnika. Ako ne zelite primati vise poruka od ovog korisnika, odgovorite ""STOP"" u bilo kojem trenutku. U buducim porukama od ovog korisnika ove informacije se nece ponovno pojaviti. Ako imate pitanje, kontaktirajte nas na adresu e-poste support@schedulemessages.com i imas divan dan."
+HT,"Ce message a ete envoye de ScheduleMessages.com par l'un de nos utilisateurs. Si vous ne souhaitez pas recevoir plus de messages de cet utilisateur, veuillez repondre ""STOP"" a tout moment. Dans les messages futurs de cet utilisateur, ces informations n'apparaitront plus. Si vous avez une question, veuillez nous contacter a l'adresse e-mail support@schedulemessages.com et passez une journee merveilleuse."
+HU,"Ezt az uzenetet a ScheduleMessages.com egyik felhasznalojan kuldtek el. Ha nem szeretne tovabbi uzenetet kapni ebbol a felhasznalobol, kerjuk, valaszoljon ""STOP"" barmikor. A felhasznalok jovobeni uzeneteiben ez az informacio nem jelenik meg ujra. Ha van egy kerdese, kerjuk, lepjen velunk kapcsolatba az e-mail cimen support@schedulemessages.com cimen. Koszonom es csodalatos napod van."
+ID,"Pesan ini dikirim dari ScheduleMessages.com oleh salah satu pengguna kami. Jika Anda tidak ingin menerima pesan lagi dari pengguna ini, silakan balas ""STOP"" kapan saja. Dalam pesan masa depan dari pengguna ini, informasi ini tidak akan muncul lagi. Jika Anda memiliki pertanyaan, silakan hubungi kami di alamat email support@schedulemessages.com kasih dan semoga harimu menyenangkan."
+IT,"Questo messaggio e stato inviato da ScheduleMessages.com da uno dei nostri utenti. Se non si desidera ricevere piu messaggi da questo utente, rispondi a ""STOP"" in qualsiasi momento. Nei messaggi futuri da questo utente queste informazioni non verranno nuovamente visualizzate. Se hai una domanda, vi preghiamo di contattarci all'indirizzo e-mail support@schedulemessages.com e buona giornata."
+LI,"Diese Nachricht wurde von ScheduleMessages.com von einem unserer Benutzer gesendet. Wenn Sie nicht mehr Nachrichten von diesem Benutzer erhalten mochten, antworten Sie bitte jederzeit ""STOP"" zukunftigen Nachrichten von diesem Benutzer werden diese Informationen nicht wieder angezeigt. Wenn Sie eine Frage haben, wenden Sie sich bitte an die E-Mail-Adresse support@schedulemessages.com Dank und einen schonen Tag."
+LT,"Sis pranesimas buvo issiustas nuo ScheduleMessages.com vienu is musu vartotoju. Jei nenorite gauti daugiau pranesimu is sio vartotojo, prasome atsakyti ""STOP"" bet kuriuo metu. Ateities pranesimuose is sio naudotojo si informacija nebus rodoma dar karta. Jei turite klausima, prasome susisiekti su mumis el. Pasto adresu support@schedulemessages.com ir turite nuostabia diena."
+LU,"Dese Message gouf vun der ScheduleMessages.com vun engem vun eise Benotzer gescheckt. Wann Dir net mei u Problem net mei empfanken fir des Benotzer ze kreien, antweren w. e. g. ""STOP"" op all Moment. An zukunftege Messagen vun desem Benotzer gett des Informatioun net erem optrieden. Wann Dir eng Fro hutt, da kontakteiert eis op der E-Mail AdressMerci an e wonnerscheinen Dag."
+LV,"Sis zinojums tika nosutits no ScheduleMessages.com viens no musu lietotajiem. Ja jus nevelaties sanemt vairak zinu no si lietotaja, ludzu, atbildiet ""STOP"" jebkura laika. Saja lietotaja turpmakajos zinojumos si informacija vairs netiks paradita velreiz. Ja jums ir jautajums, ludzu, sazinieties ar mums e-pasta adreses support@schedulemessages.com un ir briniskiga diena."
+MC,"Ce message a ete envoye de ScheduleMessages.com par l'un de nos utilisateurs. Si vous ne souhaitez pas recevoir plus de messages de cet utilisateur, veuillez repondre ""STOP"" a tout moment. Dans les messages futurs de cet utilisateur, ces informations n'apparaitront plus. Si vous avez une question, veuillez nous contacter a l'adresse e-mail support@schedulemessages.com et passez une journee merveilleuse."
+MD,"Acest mesaj a fost trimis de la ScheduleMessages.com de catre unul dintre utilizatorii nostri. Daca nu doriti sa primiti mai multe mesaje de la acest utilizator, va rugam sa raspundeti ""STOP"" in orice moment. In mesajele viitoare de la acest utilizator, aceste informatii nu vor aparea din nou. Daca aveti o intrebare, va rugam sa ne contactati la adresa de e-mail support@schedulemessages.com si ai o zi minunata."
+MG,"Ity hafatra ity dia nalefa avy amin'ny ScheduleMessages.com avy amin'ny iray amin'ireo mpampiasa anay. Raha tsy te handray hafatra bebe kokoa amin'ity mpampiasa ity ianao dia azafady valio ny ""STOP"" amin'ny fotoana rehetra. Amin'ny hafatra ho avy avy amin'ity mpampiasa ity dia tsy hiseho intsony ity fampahalalana ity. Raha manana fanontaniana ianao, azafady mba mifandraisa aminay amin'ny adiresy mailaka support@schedulemessages.com sy manana andro mahafinaritra."
+ML,"Ce message a ete envoye de ScheduleMessages.com par l'un de nos utilisateurs. Si vous ne souhaitez pas recevoir plus de messages de cet utilisateur, veuillez repondre ""STOP"" a tout moment. Dans les messages futurs de cet utilisateur, ces informations n'apparaitront plus. Si vous avez une question, veuillez nous contacter a l'adresse e-mail support@schedulemessages.com et passez une journee merveilleuse."
+MO,"Esta mensagem foi enviada de ScheduleMessages.com por um dos nossos usuarios. Se voce nao quiser receber mais mensagens deste usuario, responda ""STOP"" a qualquer momento. Em mensagens futuras deste usuario, essas informacoes nao serao exibidas novamente. Se voce tiver uma pergunta, entre em contato conosco no endereco de e-mail support@schedulemessages.com e tenha um dia maravilhoso."
+MQ,"Ce message a ete envoye de ScheduleMessages.com par l'un de nos utilisateurs. Si vous ne souhaitez pas recevoir plus de messages de cet utilisateur, veuillez repondre ""STOP"" a tout moment. Dans les messages futurs de cet utilisateur, ces informations n'apparaitront plus. Si vous avez une question, veuillez nous contacter a l'adresse e-mail support@schedulemessages.com et passez une journee merveilleuse."
+MY,"Mesej ini dihantar dari ScheduleMessages.com oleh salah seorang pengguna kami. Jika anda tidak mahu menerima lebih banyak mesej dari pengguna ini, sila balas ""STOP"" pada bila-bila masa. Dalam mesej masa depan dari pengguna ini Maklumat ini tidak akan muncul lagi. Jika anda mempunyai soalan, sila hubungi kami di alamat e-mel support@schedulemessages.com kasih dan mempunyai hari yang indah."
+MZ,"Esta mensagem foi enviada de ScheduleMessages.com por um dos nossos usuarios. Se voce nao quiser receber mais mensagens deste usuario, responda ""STOP"" a qualquer momento. Em mensagens futuras deste usuario, essas informacoes nao serao exibidas novamente. Se voce tiver uma pergunta, entre em contato conosco no endereco de e-mail support@schedulemessages.com e tenha um dia maravilhoso."
+NC,"Ce message a ete envoye de ScheduleMessages.com par l'un de nos utilisateurs. Si vous ne souhaitez pas recevoir plus de messages de cet utilisateur, veuillez repondre ""STOP"" a tout moment. Dans les messages futurs de cet utilisateur, ces informations n'apparaitront plus. Si vous avez une question, veuillez nous contacter a l'adresse e-mail support@schedulemessages.com et passez une journee merveilleuse."
+NE,"Ce message a ete envoye de ScheduleMessages.com par l'un de nos utilisateurs. Si vous ne souhaitez pas recevoir plus de messages de cet utilisateur, veuillez repondre ""STOP"" a tout moment. Dans les messages futurs de cet utilisateur, ces informations n'apparaitront plus. Si vous avez une question, veuillez nous contacter a l'adresse e-mail support@schedulemessages.com et passez une journee merveilleuse."
+NL,"Dit bericht is verzonden vanaf ScheduleMessages.com door een van onze gebruikers. Als u geen berichten meer van deze gebruiker wilt ontvangen, kunt u op elk gewenst moment beantwoorden. In toekomstige berichten van deze gebruiker verschijnt deze informatie niet opnieuw. Als u een vraag heeft, neem dan contact met ons op via e-mailadres support@schedulemessages.com en een geweldige dag."
+NO,"Denne meldingen ble sendt fra ScheduleMessages.com av en av vare brukere. Hvis du ikke vil motta flere meldinger fra denne brukeren, vennligst svar ""STOP"" nar som helst. I fremtidige meldinger fra denne brukeren vil denne informasjonen ikke vises igjen. Hvis du har et sporsmal, vennligst kontakt oss pa e-postadressen support@schedulemessages.com og ha en fantastisk dag."
+PF,"Ce message a ete envoye de ScheduleMessages.com par l'un de nos utilisateurs. Si vous ne souhaitez pas recevoir plus de messages de cet utilisateur, veuillez repondre ""STOP"" a tout moment. Dans les messages futurs de cet utilisateur, ces informations n'apparaitront plus. Si vous avez une question, veuillez nous contacter a l'adresse e-mail support@schedulemessages.com et passez une journee merveilleuse."
+PL,"Ta wiadomosc zostala wyslana z ScheduleMessages.com przez jednego z naszych uzytkownikow. Jesli nie chcesz otrzymywac wiecej wiadomosci od tego uzytkownika, odpowiedz ""STOP"" w dowolnym momencie. W przyszlych wiadomosciach od tego uzytkownika informacje te nie pojawia sie ponownie. Jesli masz pytanie, skontaktuj sie z nami na adres e-mail support@schedulemessages.com Dziekujemy i zyczymy milego dnia."
+PM,"Ce message a ete envoye de ScheduleMessages.com par l'un de nos utilisateurs. Si vous ne souhaitez pas recevoir plus de messages de cet utilisateur, veuillez repondre ""STOP"" a tout moment. Dans les messages futurs de cet utilisateur, ces informations n'apparaitront plus. Si vous avez une question, veuillez nous contacter a l'adresse e-mail support@schedulemessages.com et passez une journee merveilleuse."
+PT,"Esta mensagem foi enviada de ScheduleMessages.com por um dos nossos usuarios. Se voce nao quiser receber mais mensagens deste usuario, responda ""STOP"" a qualquer momento. Em mensagens futuras deste usuario, essas informacoes nao serao exibidas novamente. Se voce tiver uma pergunta, entre em contato conosco no endereco de e-mail support@schedulemessages.com e tenha um dia maravilhoso."
+PW,"This message was sent from ScheduleMessages.com by one of our users. If you do not want to receive any more messages from this user, please reply ""STOP"" at any time. In future messages from this user this information will not appear again. If you have a question, please contact us at the email address support@schedulemessages.com Thank you and have a wonderful support@schedulemessages.com ScheduleMessages.com"
+RE,"Ce message a ete envoye de ScheduleMessages.com par l'un de nos utilisateurs. Si vous ne souhaitez pas recevoir plus de messages de cet utilisateur, veuillez repondre ""STOP"" a tout moment. Dans les messages futurs de cet utilisateur, ces informations n'apparaitront plus. Si vous avez une question, veuillez nous contacter a l'adresse e-mail support@schedulemessages.com et passez une journee merveilleuse."
+RO,"Acest mesaj a fost trimis de la ScheduleMessages.com de catre unul dintre utilizatorii nostri. Daca nu doriti sa primiti mai multe mesaje de la acest utilizator, va rugam sa raspundeti ""STOP"" in orice moment. In mesajele viitoare de la acest utilizator, aceste informatii nu vor aparea din nou. Daca aveti o intrebare, va rugam sa ne contactati la adresa de e-mail support@schedulemessages.com si ai o zi minunata."
+RS,"Ova poruka je poslata sa Raspolagages. com od strane jednog od nashih korisnika. Ako ne zhelite da primate vishe poruka od ovog korisnika, odgovorite ""STOP"" u bilo koje vreme. U budutshim porukama ovog korisnika ove informacije se netshe ponovo pojaviti. Ako imate pitanje, kontaktirajte nas na adresi e-poshte support@schedulemessages.com vam i predivni dan."
+SE,"Detta meddelande skickades fran ScheduleMessages.com av en av vara anvandare. Om du inte vill fa fler meddelanden fran den har anvandaren, vanligen svara ""STOP"" nar som helst. I framtida meddelanden fran den har anvandaren visas inte denna information igen. Om du har en fraga, kontakta oss pa e-postadressen support@schedulemessages.com och ha en underbar dag."
+SI,"To sporocilo je bilo poslano od ScheduleMessages.com z enim od nasih uporabnikov. Ce tega uporabnika ne zelite prejemati vec sporocil, odgovorite >>Stop<< kadarkoli. V prihodnjih sporocilih tega uporabnika te informacije ne bodo spet pojavile. Ce imate vprasanje, se obrnite na nas na e-postnem naslovu support@schedulemessages.com in imate cudovit dan."
+SK,"Tato sprava bola odoslana z programu ScheduleMessages.com podla jedneho z nasich pouzivatelov. Ak nechcete dostat ziadne dalsie spravy od tohto pouzivatela, odpovedzte kedykolvek ""STOP"" buducich spravach od tohto pouzivatela sa tieto informacie nezobrazia znova. Ak mate otazku, kontaktujte nas na e-mailovej adrese support@schedulemessages.com a mate nadherny den."
+SM,"Questo messaggio e stato inviato da ScheduleMessages.com da uno dei nostri utenti. Se non si desidera ricevere piu messaggi da questo utente, rispondi a ""STOP"" in qualsiasi momento. Nei messaggi futuri da questo utente queste informazioni non verranno nuovamente visualizzate. Se hai una domanda, vi preghiamo di contattarci all'indirizzo e-mail support@schedulemessages.com e buona giornata."
+SN,"Ce message a ete envoye de ScheduleMessages.com par l'un de nos utilisateurs. Si vous ne souhaitez pas recevoir plus de messages de cet utilisateur, veuillez repondre ""STOP"" a tout moment. Dans les messages futurs de cet utilisateur, ces informations n'apparaitront plus. Si vous avez une question, veuillez nous contacter a l'adresse e-mail support@schedulemessages.com et passez une journee merveilleuse."
+SO,"Farriintan waxaa loo diray jadwalka loo diro ScheduleMessages.com mid ka mid ah isticmaaleyaasheena. Haddii aadan rabin inaad ka hesho wax farriin ah oo dheeraad ah isticmaalehan, fadlan ku jawaab ""STOP"" waqti kasta. Fariimaha mustaqbalka ee adeegsadahan macluumaadkan ma soo muuqan doono mar labaad. Haddii aad su'aal qabtid, fadlan nagala soo xiriir cinwaanka cinwaanka support@schedulemessages.com ku mahadsan tahay oo maalin cajiib ah."
+SR,"Dit bericht is verzonden vanaf ScheduleMessages.com door een van onze gebruikers. Als u geen berichten meer van deze gebruiker wilt ontvangen, kunt u op elk gewenst moment beantwoorden. In toekomstige berichten van deze gebruiker verschijnt deze informatie niet opnieuw. Als u een vraag heeft, neem dan contact met ons op via e-mailadres support@schedulemessages.com en een geweldige dag."
+ST,"Esta mensagem foi enviada de ScheduleMessages.com por um dos nossos usuarios. Se voce nao quiser receber mais mensagens deste usuario, responda ""STOP"" a qualquer momento. Em mensagens futuras deste usuario, essas informacoes nao serao exibidas novamente. Se voce tiver uma pergunta, entre em contato conosco no endereco de e-mail support@schedulemessages.com e tenha um dia maravilhoso."
+TD,"Ce message a ete envoye de ScheduleMessages.com par l'un de nos utilisateurs. Si vous ne souhaitez pas recevoir plus de messages de cet utilisateur, veuillez repondre ""STOP"" a tout moment. Dans les messages futurs de cet utilisateur, ces informations n'apparaitront plus. Si vous avez une question, veuillez nous contacter a l'adresse e-mail support@schedulemessages.com et passez une journee merveilleuse."
+TG,"Ce message a ete envoye de ScheduleMessages.com par l'un de nos utilisateurs. Si vous ne souhaitez pas recevoir plus de messages de cet utilisateur, veuillez repondre ""STOP"" a tout moment. Dans les messages futurs de cet utilisateur, ces informations n'apparaitront plus. Si vous avez une question, veuillez nous contacter a l'adresse e-mail support@schedulemessages.com et passez une journee merveilleuse."
+TL,"Esta mensagem foi enviada de ScheduleMessages.com por um dos nossos usuarios. Se voce nao quiser receber mais mensagens deste usuario, responda ""STOP"" a qualquer momento. Em mensagens futuras deste usuario, essas informacoes nao serao exibidas novamente. Se voce tiver uma pergunta, entre em contato conosco no endereco de e-mail support@schedulemessages.com e tenha um dia maravilhoso."
+TN,"Ce message a ete envoye de ScheduleMessages.com par l'un de nos utilisateurs. Si vous ne souhaitez pas recevoir plus de messages de cet utilisateur, veuillez repondre ""STOP"" a tout moment. Dans les messages futurs de cet utilisateur, ces informations n'apparaitront plus. Si vous avez une question, veuillez nous contacter a l'adresse e-mail support@schedulemessages.com et passez une journee merveilleuse."
+TR,"Bu mesaj, ScheduleMessages.com kullanicilarimizdan biriyle gonderildi. Bu kullanicidan daha fazla mesaj almak istemiyorsaniz, lutfen istediginiz zaman ""STOP"" yi. Bu kullanicidan gelecekteki mesajlarda bu bilgiler tekrar gorunmeyecektir. Bir sorunuz varsa, lutfen support@schedulemessages.com e-posta adresinden bizimle iletisime gecin. Tesekkurler ve harika bir gun gecir."
+UZ,"Ushbu xabar bizning foydalanuvchilarimizdan biri tomonidan jadvaldan yuborilgan. Agar siz ushbu foydalanuvchidan boshqa xabarlarni olishni istamasangiz, istalgan vaqtda ""STOP"" ni yuboring. Kelgusida ushbu foydalanuvchi xabarlari ushbu ma'lumot endi ko'rinmaydi. Agar savolingiz bo'lsa, iltimos, elektron pochta manziliga elektron pochta manziliga murojaat qiling. Rahmat va ajoyib kuningiz bor."
+WF,"Ce message a ete envoye de ScheduleMessages.com par l'un de nos utilisateurs. Si vous ne souhaitez pas recevoir plus de messages de cet utilisateur, veuillez repondre ""STOP"" a tout moment. Dans les messages futurs de cet utilisateur, ces informations n'apparaitront plus. Si vous avez une question, veuillez nous contacter a l'adresse e-mail support@schedulemessages.com et passez une journee merveilleuse."

@@ -13,6 +13,43 @@ const replaceMyName = require("./messagesFunctions/replaceMyName");
 const replaceRName = require("./messagesFunctions/replaceRName");
 const chooseRandomly = require("./messagesFunctions/chooseRandomly");
 
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+const english =
+  "This message was sent from ScheduleMessages.com by one of our users. If you do not want to receive any more messages from this user, " +
+  'please reply "STOP" at any time. In future messages from this user this information will not appear again. ' +
+  "If you have a question, please contact us at the email address support@schedulemessages.com Thank you and have a wonderful day.";
+const spanish =
+  "Este mensaje fue enviado desde ScheduleMessages.com por uno de nuestros usuarios. " +
+  'Si no desea recibir mas mensajes de este usuario, responda "STOP" en cualquier momento. ' +
+  "En futuros mensajes de este usuario, esta informacion no aparecera nuevamente. Si tiene alguna pregunta, comuniquese con nosotros " +
+  "en la direccion de correo electronico support@schedulemessages.com y tenga un maravilloso dia.";
+
+const spanishISO = [
+  "AR",
+  "BO",
+  "CL",
+  "CO",
+  "CR",
+  "CU",
+  "DO",
+  "EC",
+  "ES",
+  "GQ",
+  "GT",
+  "HN",
+  "MX",
+  "NI",
+  "PA",
+  "PE",
+  "PR",
+  "PY",
+  "SV",
+  "UY",
+  "VE",
+];
 let smsPricing = [];
 let firstTimeMessages = [];
 
@@ -82,10 +119,10 @@ const handleSendingMessages = async (userId, data, uniqJobId) => {
     .replace(/<br\W\/>/g, "\n")
     .replace(/<br\/>/g, "\n");
   while (theMessage.includes("  ")) {
-    theMessage.replace(/\ \ /g, " ");
+    theMessage = theMessage.replace(/\ \ /g, " ");
   }
   while (theMessage.includes("\n\n\n")) {
-    theMessage.replace(/\n\n\n/g, "\n\n");
+    theMessage = theMessage.replace(/\n\n\n/g, "\n\n");
   }
   theMessage = await replaceDateFunctions(theMessage, data.timezone);
   theMessage = await replaceMyName(theMessage, currentUserName, data.name);
@@ -98,7 +135,13 @@ const handleSendingMessages = async (userId, data, uniqJobId) => {
       person.firstTimeMessage = false;
       person.valid = true;
       person.country = temp_parsedPhoneNumber.country;
-      person.msgPrice = smsPricing.find((e) => e.ISO === person.country).Price;
+      try {
+        person.msgPrice = smsPricing.find(
+          (e) => e.ISO === person.country
+        ).Price;
+      } catch (e) {
+        person.msgPrice = undefined;
+      }
       person.message = chooseRandomly(theMessage);
       if (
         theMessage.includes("<r") ||
@@ -114,20 +157,28 @@ const handleSendingMessages = async (userId, data, uniqJobId) => {
       ) {
         sent_earlier.push(person.number);
         person.firstTimeMessage = true;
-        person.message +=
-          "\n\n" +
-          firstTimeMessages.find((e) => e.ISO === person.country).Message;
-      }
-      if (data.allowExpensiveCharacters === false) {
-        person.message = transliterate(person.message);
       }
       person.msgSegmentsCount = new SegmentedMessage(
         person.message
       ).segmentsCount;
       person.sent = false;
-      totalCost += person.msgPrice * person.msgSegmentsCount;
+      if (person.msgPrice !== undefined) {
+        totalCost += person.msgPrice * person.msgSegmentsCount;
+        if (person.firstTimeMessage === true) {
+          person.msgSegmentsCount += 3;
+          totalCost += person.msgPrice * 3;
+        }
+      } else {
+        totalCost = Infinity;
+      }
     } else {
       person.valid = false;
+    }
+    while (person.message.includes("  ")) {
+      person.message = person.message.replace(/\ \ /g, " ");
+    }
+    while (person.message.includes("\n\n\n")) {
+      person.message = person.message.replace(/\n\n\n/g, "\n\n");
     }
     simulateSending.push(person);
   }
@@ -139,10 +190,37 @@ const handleSendingMessages = async (userId, data, uniqJobId) => {
           from: "+12244412200",
           to: person.number.replace(/\ /g, ""),
         })
-        .then((message) => {
+        .then(async (message) => {
           person.sent = message.dateCreated;
           person.messageSid = message.sid;
         });
+      if (person.firstTimeMessage === true) {
+        let fistTimeMessage;
+        if (firstTimeMessages.find((e) => e.ISO === person.country) !== null) {
+          fistTimeMessage = firstTimeMessages.find(
+            (e) => e.ISO === person.country
+          ).Message;
+        } else if (spanishISO.find((e) => e.ISO === person.country) !== null) {
+          fistTimeMessage = spanish;
+        } else {
+          fistTimeMessage = english;
+        }
+        await sleep(1050);
+        await twilioClient.messages
+          .create({
+            body: fistTimeMessage,
+            from: "+12244412200",
+            to: person.number.replace(/\ /g, ""),
+          })
+          .then(async (message) => {
+            person.FirstTimeMessage = {
+              body: fistTimeMessage,
+              sent: message.dateCreated,
+              messageSid: message.sid,
+            };
+          });
+      }
+      await sleep(1050);
     }
     await User.findOneAndUpdate(
       { _id: userId },
