@@ -196,11 +196,15 @@ const handleSendingMessages = async (userId, data, uniqJobId) => {
         });
       if (person.firstTimeMessage === true) {
         let fistTimeMessage;
-        if (firstTimeMessages.find((e) => e.ISO === person.country) !== null) {
+        if (
+          firstTimeMessages.find((e) => e.ISO === person.country) !== undefined
+        ) {
           fistTimeMessage = firstTimeMessages.find(
             (e) => e.ISO === person.country
           ).Message;
-        } else if (spanishISO.find((e) => e.ISO === person.country) !== null) {
+        } else if (
+          spanishISO.find((e) => e.ISO === person.country) !== undefined
+        ) {
           fistTimeMessage = spanish;
         } else {
           fistTimeMessage = english;
