@@ -205,7 +205,7 @@ const handleSendingMessages = async (userId, data, uniqJobId) => {
         } else {
           fistTimeMessage = english;
         }
-        await sleep(1050);
+        await sleep(100);
         await twilioClient.messages
           .create({
             body: fistTimeMessage,
@@ -220,7 +220,7 @@ const handleSendingMessages = async (userId, data, uniqJobId) => {
             };
           });
       }
-      await sleep(1050);
+      await sleep(100);
     }
     await User.findOneAndUpdate(
       { _id: userId },
