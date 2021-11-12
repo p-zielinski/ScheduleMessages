@@ -133,23 +133,16 @@ const handleSendingMessages = async (userId, data, uniqJobId) => {
   }
   if (usersFunds >= totalCost) {
     for (let person of simulateSending) {
-      console.log({
-        body: person.message,
-        from: "+12244412200",
-        to: person.number.replace(/\ /g, ""),
-      });
-      person.sent = new Date();
-      person.messageSid = "test";
-      // await twilioClient.messages
-      //   .create({
-      //     body: person.message,
-      //     from: "+12244412200",
-      //     to: person.number.replace(/\ /g, ""),
-      //   })
-      //   .then((message) => {
-      //     person.sent = message.dateCreated;
-      //     person.messageSid = message.sid;
-      //   });
+      await twilioClient.messages
+        .create({
+          body: person.message,
+          from: "+12244412200",
+          to: person.number.replace(/\ /g, ""),
+        })
+        .then((message) => {
+          person.sent = message.dateCreated;
+          person.messageSid = message.sid;
+        });
     }
     await User.findOneAndUpdate(
       { _id: userId },
