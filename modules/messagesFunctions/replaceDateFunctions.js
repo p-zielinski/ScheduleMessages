@@ -1,3 +1,5 @@
+const moment = require("moment-timezone");
+
 const replaceDateFunctions = (tekst, selectedTimeZone) => {
   const findFunctions = (e) => {
     let ar = [];
@@ -97,6 +99,7 @@ const replaceDateFunctions = (tekst, selectedTimeZone) => {
               Object.keys(errors).length === 0 &&
               (yearIndex !== -1 || monthIndex !== -1 || dayIndex !== -1)
             ) {
+              console.log(dayHolder, yearHolder, monthHolder);
               const slicedToLowerCaseArray = slicedToLowerCase.split("");
               let options = new Set();
               while (true) {
@@ -334,7 +337,6 @@ const replaceDateFunctions = (tekst, selectedTimeZone) => {
                   }
                 }
               } else {
-                //Date provided
                 let todayMoment = moment().tz(selectedTimeZone);
                 let toMoment = moment(todayMoment);
                 toMoment.set("year", to.year);

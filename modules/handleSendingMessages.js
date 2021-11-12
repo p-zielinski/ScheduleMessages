@@ -77,6 +77,10 @@ const handleSendingMessages = async (userId, data, uniqJobId) => {
     return 0;
   }
   let theMessage = data.messageBody;
+  theMessage = theMessage
+    .replace(/<br>/g, "\n")
+    .replace(/<br\W\/>/g, "\n")
+    .replace(/<br\/>/g, "\n");
   while (theMessage.includes("  ")) {
     theMessage.replace(/\ \ /g, " ");
   }
@@ -85,7 +89,6 @@ const handleSendingMessages = async (userId, data, uniqJobId) => {
   }
   theMessage = await replaceDateFunctions(theMessage, data.timezone);
   theMessage = await replaceMyName(theMessage, currentUserName, data.name);
-
   let simulateSending = [];
   let totalCost = 0;
   for (let person of data.recipients) {
@@ -95,12 +98,15 @@ const handleSendingMessages = async (userId, data, uniqJobId) => {
       person.firstTimeMessage = false;
       person.valid = true;
       person.country = temp_parsedPhoneNumber.country;
-      person.msgPrice = smsPricing.find(
-        ((e) => e.ISO === person.country).Price
-      );
+      person.msgPrice = smsPricing.find((e) => e.ISO === person.country).Price;
       person.message = chooseRandomly(theMessage);
-      if (theMessage.includes("<r") || theMessage.match(/<\Wr/) !== null) {
-        person.message = replaceRName(person.message);
+      if (
+        theMessage.includes("<r") ||
+        theMessage.match(/<\Wr/) !== null ||
+        theMessage.includes("<R") ||
+        theMessage.match(/<\WR/) !== null
+      ) {
+        person.message = replaceRName(person.message, person.name);
       }
       if (
         sent_earlier.find((e) => e.replace(/\ /g, "") === person.number) ===
@@ -109,7 +115,8 @@ const handleSendingMessages = async (userId, data, uniqJobId) => {
         sent_earlier.push(person.number);
         person.firstTimeMessage = true;
         person.message +=
-          "\n\n" + firstTimeMessages.find((e) => e.ISO === person.country);
+          "\n\n" +
+          firstTimeMessages.find((e) => e.ISO === person.country).Message;
       }
       if (data.allowExpensiveCharacters === false) {
         person.message = transliterate(person.message);
@@ -126,16 +133,23 @@ const handleSendingMessages = async (userId, data, uniqJobId) => {
   }
   if (usersFunds >= totalCost) {
     for (let person of simulateSending) {
-      await twilioClient.messages
-        .create({
-          body: person.message,
-          from: "+12244412200",
-          to: person.number.replace(/\ /g, ""),
-        })
-        .then((message) => {
-          person.sent = message.dateCreated;
-          person.messageSid = message.sid;
-        });
+      console.log({
+        body: person.message,
+        from: "+12244412200",
+        to: person.number.replace(/\ /g, ""),
+      });
+      person.sent = new Date();
+      person.messageSid = "test";
+      // await twilioClient.messages
+      //   .create({
+      //     body: person.message,
+      //     from: "+12244412200",
+      //     to: person.number.replace(/\ /g, ""),
+      //   })
+      //   .then((message) => {
+      //     person.sent = message.dateCreated;
+      //     person.messageSid = message.sid;
+      //   });
     }
     await User.findOneAndUpdate(
       { _id: userId },

@@ -9,8 +9,7 @@ const replaceRName = (theMessage, rName) => {
     return ar;
   };
 
-  const f = findFunctions(tekst);
-  let errors = {};
+  const f = findFunctions(theMessage);
   const replace = [];
 
   i = 0;
@@ -19,7 +18,7 @@ const replaceRName = (theMessage, rName) => {
     if (f[i][0] === ">") {
       try {
         if (f[i - 1][0] === "<") {
-          const sliced = tekst.slice(f[i - 1][1], f[i][1] + 1);
+          const sliced = theMessage.slice(f[i - 1][1], f[i][1] + 1);
           const slicedToLowerCase = sliced
             .toLowerCase()
             .replace(/\n/g, "")

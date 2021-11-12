@@ -163,7 +163,7 @@ PF,0.26
 PG,0.07
 PH,0.07
 PK,0.14
-PL,0.06
+PL,"Ta wiadomość została wysłana z ScheduleMessages.com przez jednego z naszych użytkowaników. Jeżeli nie chcesz otrzymywać więcej wiadomości od tego użytkowanika, proszę odpowiedz "STOP" w dowolnym momencie. W kolejnych wiadomościach od tego użytkowanika nie pojawi się już ta informacja. Jeżeli masz pytanie, proszę skontaktować się z nami na adress email support@schedulemessages.com . Dziękujemy i życzymy miłego dnia."
 PM,0.18
 PR,0.06
 PS,0.18
@@ -210,7 +210,7 @@ TW,0.08
 TZ,0.12
 UA,0.14
 UG,0.14
-US,"This message was sent from ScheduleMessages.com by one of our users. If you want to not receiving messages from this user in the future. Please reply “STOP” at any time. No further information will be given. If you have a question, you can contact us support@schedulemessages.com . Thank you and have a wonderful day."
+US,"This message was sent from ScheduleMessages.com by one of our users. If you want to not receiving messages from this user in the future please reply “STOP” at any time. No further information will be given. If you have a question, you can contact us support@schedulemessages.com . Thank you and have a wonderful day."
 UY,0.14
 UZ,0.22
 VC,0.08

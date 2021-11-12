@@ -9,7 +9,7 @@ const replaceMyName = (theMessage, currentName, nameAtAMomentOfScheduling) => {
     return ar;
   };
 
-  const f = findFunctions(tekst);
+  const f = findFunctions(theMessage);
   let errors = {};
   const replace = [];
 
@@ -19,7 +19,7 @@ const replaceMyName = (theMessage, currentName, nameAtAMomentOfScheduling) => {
     if (f[i][0] === ">") {
       try {
         if (f[i - 1][0] === "<") {
-          const sliced = tekst.slice(f[i - 1][1], f[i][1] + 1);
+          const sliced = theMessage.slice(f[i - 1][1], f[i][1] + 1);
           const slicedToLowerCase = sliced
             .toLowerCase()
             .replace(/\n/g, "")
