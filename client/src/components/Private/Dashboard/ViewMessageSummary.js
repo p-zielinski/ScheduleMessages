@@ -19,7 +19,7 @@ const CancelJobReq = async (token, uniqJobId) => {
     .catch((error) => error.response.data);
 };
 
-const ViewMessageSummary = ({ message }) => {
+const ViewMessageSummary = ({ message, setMargin }) => {
   const [recipients, setRecipients] = useState([]);
   const [backgroundColor, setBackgroundColor] = useState("none");
   const [weekDays, setWeekDays] = useState("");
@@ -47,11 +47,11 @@ const ViewMessageSummary = ({ message }) => {
     setRecipients(recipients);
 
     if (message.status === "active") {
-      setBackgroundColor("rgba(134, 255, 64, 0.1)");
+      setBackgroundColor("rgb(245,255,244)");
     } else if (message.status === "completed") {
-      setBackgroundColor("rgba(0, 0, 0, 0.03)");
+      setBackgroundColor("rgb(246,246,246)");
     } else if (message.status === "canceled") {
-      setBackgroundColor("rgba(255,0,0,0.1)");
+      setBackgroundColor("rgb(255,234,234)");
     }
 
     const weekDays = [];
@@ -154,7 +154,7 @@ const ViewMessageSummary = ({ message }) => {
         width: "100%",
         height: "auto",
         padding: 5,
-        marginTop: 10,
+        marginTop: typeof setMargin !== "number" ? 10 : setMargin,
         background: backgroundColor,
       }}
     >
@@ -186,39 +186,29 @@ const ViewMessageSummary = ({ message }) => {
           </div>
         </div>
       )}
-
-      <h2 className={"center"} style={{ textAlign: "center" }}>
-        {message.data.isSingleTime === "single"
-          ? "Single time message"
-          : "Recurring message"}
-      </h2>
-      <p
-        className={"delete_contact"}
-        style={{
-          width: "auto",
-          height: "auto",
-          padding: 10,
-          background: "rgba(0, 0, 0, .02)",
-          borderColor: "rgba(0, 0, 0, .02)",
-          marginTop: 5,
-          fontSize: "1.15rem",
-          lineHeight: 1.3,
-          textAlign: "center",
-          marginBottom: 10,
-        }}
-      >
+      <p style={{ textAlign: "center", marginTop: 10 }}>
+        <b className={"center"} style={{ textAlign: "center", fontSize: 18 }}>
+          {message.data.isSingleTime === "single"
+            ? "Single time message to:"
+            : "Recurring message to:"}
+        </b>
+      </p>
+      <p style={{ marginTop: 2, textAlign: "center", fontSize: 16 }}>
         {parse(recipients.join("<br />"))}
       </p>
+      <p className={"center"} style={{ marginTop: 10 }}>
+        <b>Deliver:</b>
+      </p>
       {message.data.deliverEvery === "day" && (
-        <h3 className={"center"} style={{ textAlign: "center", marginTop: 8 }}>
+        <p className={"center"} style={{ textAlign: "center" }}>
           Every <b>{message.data.deliverEvery}</b> from{" "}
           <b style={{ whiteSpace: "nowrap" }}>
             {message.data.timeRange.join(" to ")}
           </b>
-        </h3>
+        </p>
       )}
       {message.data.deliverEvery === "week" && (
-        <h3 className={"center"} style={{ textAlign: "center", marginTop: 8 }}>
+        <p className={"center"} style={{ textAlign: "center" }}>
           Every <b>{message.data.deliverEvery}</b> on <br />
           <b>{weekDays}</b>
           <br />
@@ -226,10 +216,10 @@ const ViewMessageSummary = ({ message }) => {
           <b style={{ whiteSpace: "nowrap" }}>
             {message.data.timeRange.join(" to ")}
           </b>
-        </h3>
+        </p>
       )}
       {message.data.deliverEvery === "month" && (
-        <h3 className={"center"} style={{ textAlign: "center", marginTop: 8 }}>
+        <p className={"center"} style={{ textAlign: "center" }}>
           Every <b>{message.data.deliverEvery}</b> on <br />
           <b>{monthDays}</b> day of a month
           <b>{message.data.reverseMonth === true ? " from the end" : ""}</b>
@@ -238,10 +228,10 @@ const ViewMessageSummary = ({ message }) => {
           <b style={{ whiteSpace: "nowrap" }}>
             {message.data.timeRange.join(" to ")}
           </b>
-        </h3>
+        </p>
       )}
       {message.data.deliverEvery === "year" && (
-        <h3 className={"center"} style={{ textAlign: "center", marginTop: 8 }}>
+        <p className={"center"} style={{ textAlign: "center" }}>
           Every <b>{message.data.deliverEvery}</b> on
           <br />
           {parse(yearDays)}
@@ -251,51 +241,47 @@ const ViewMessageSummary = ({ message }) => {
           <b style={{ whiteSpace: "nowrap" }}>
             {message.data.timeRange.join(" to ")}
           </b>
-        </h3>
+        </p>
       )}
-      <h3 className={"center"} style={{ textAlign: "center", marginTop: 5 }}>
+      <p className={"center"} style={{ textAlign: "center" }}>
         <b>{message.data.date}</b> at {message.data.at.join(":")}
-      </h3>
-      <h3 className={"center"} style={{ textAlign: "center", marginTop: 5 }}>
-        Timezone:{" "}
+      </p>
+      <p className={"center"} style={{ textAlign: "center", marginTop: 10 }}>
+        <b>Timezone:</b> <br />
         {message.data.timezone.replace(/_/g, " ").replace(/\//g, " - ")}
-      </h3>
+      </p>
       <div className={"center"}>
-        <div className={"flex-wrapper"} style={{ fontSize: "1.2rem" }}>
+        <div className={"flex-wrapper"}>
           <p
             style={{
               width: "auto",
               height: "auto",
               padding: 10,
               marginTop: 5,
+              textAlign: "center",
             }}
           >
-            status: <b>{message.status}</b>{" "}
+            <b>status:</b>
+            <br />
+            {message.status}{" "}
           </p>
           {message.status === "active" && (
-            <p
+            <div
               className={"delete_contact cancel_job"}
               onClick={() => setShowCancelBar(true)}
             >
-              CANCEL
-            </p>
+              <p className={"vertical-center"}>CANCEL</p>
+            </div>
           )}
         </div>
       </div>
       <p
-        className={"delete_contact"}
-        style={{
-          width: "auto",
-          height: "auto",
-          padding: 10,
-          background: "rgba(0, 0, 0, .02)",
-          borderColor: "rgba(0, 0, 0, .02)",
-          marginTop: 5,
-        }}
+        className={"center"}
+        style={{ textAlign: "center", marginTop: 5, marginBottom: 10 }}
       >
-        <center>
-          {message.data.messageBody} {message.data.messageEnds}
-        </center>
+        <b>Content:</b>
+        <br />
+        {message.data.messageBody} {message.data.messageEnds}
       </p>
     </div>
   );

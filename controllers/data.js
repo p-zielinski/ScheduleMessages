@@ -11,6 +11,8 @@ exports.getUserInfo = (req, res) => {
       User.findOne({ _id: decoded.userId })
         .then(async (user) => {
           return res.status(200).json({
+            sending_messages_log: user.sending_messages_log,
+            sent_earlier: user.sent_earlier,
             messages: user.messages,
             available_funds: user.available_funds,
             name: user.name,

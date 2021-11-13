@@ -3,13 +3,12 @@ import ViewMessageSummary from "./ViewMessageSummary";
 import { useEffect, useState } from "react";
 import parse from "html-react-parser";
 import { Link } from "react-router-dom";
+import ViewMessageSendingLog from "./ViewMessageSendingLog";
+import { nanoid } from "nanoid";
 
-const Dashboard = ({ newestScheduledMessage, setNewestScheduledMessage }) => {
-  const { messages, email, name, available_funds } = useSelector(
-    (state) => state.userData
-  );
-
-  const [lastMessage, setLastMessage] = useState({});
+const Dashboard = () => {
+  const { messages, email, name, available_funds, sending_messages_log } =
+    useSelector((state) => state.userData);
 
   return (
     <div>
@@ -64,18 +63,29 @@ const Dashboard = ({ newestScheduledMessage, setNewestScheduledMessage }) => {
           </div>
         </h2>
       </div>
-      <h2 style={{ textAlign: "center" }}>Messaging log:</h2>
-      <h2 style={{ marginTop: 10 }}>No messages to display</h2>
-      <h2 style={{ textAlign: "center" }}>Most recent scheduled message:</h2>
-      {typeof messages === "object"
-        ? messages.map((message, index) => {
+      <h2 style={{ textAlign: "center" }}>Most recent messaging log:</h2>
+      {typeof sending_messages_log === "object"
+        ? sending_messages_log.map((message_log, index) => {
             if (index === 0)
               return (
-                <ViewMessageSummary key={message.uniqJobId} message={message} />
+                <ViewMessageSendingLog
+                  key={nanoid()}
+                  message_log={message_log}
+                />
               );
             else return "";
           })
-        : ""}
+        : "No messages to display"}
+      <h2 style={{ textAlign: "center", marginTop: 10 }}>
+        Most recent scheduled message:
+      </h2>
+      {typeof messages === "object"
+        ? messages.map((message, index) => {
+            if (index === 0)
+              return <ViewMessageSummary key={nanoid()} message={message} />;
+            else return "";
+          })
+        : "No messages to display"}
       {typeof messages === "object"
         ? messages.length > 1 && (
             <Link to={"/messages"}>

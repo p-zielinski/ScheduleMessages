@@ -23,12 +23,18 @@ const initState = {
   default_country: undefined,
   default_tz: undefined,
   default_tz_and_country_is_updating: false,
+
+  sending_messages_log: [],
+  sent_earlier: [],
 };
 
 const userDataReducer = (state = initState, action) => {
   switch (action.type) {
     case "set_data": {
       if (typeof action.payload.userData !== undefined) {
+        state.sending_messages_log =
+          action.payload.userData.sending_messages_log;
+        state.sent_earlier = action.payload.userData.sent_earlier;
         state.messages = action.payload.userData.messages;
         state.available_funds = action.payload.userData.available_funds;
         state.name = action.payload.userData.name;

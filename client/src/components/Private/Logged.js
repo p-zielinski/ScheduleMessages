@@ -1,8 +1,6 @@
 import parse from "html-react-parser";
-import { nanoid } from "nanoid";
 import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// import axios from "axios";
 import {
   fetchData,
   setToken as setTokenRedux,

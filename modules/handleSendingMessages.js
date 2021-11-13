@@ -202,9 +202,7 @@ const handleSendingMessages = async (userId, data, uniqJobId) => {
           fistTimeMessage = firstTimeMessages.find(
             (e) => e.ISO === person.country
           ).Message;
-        } else if (
-          spanishISO.find((e) => e.ISO === person.country) !== undefined
-        ) {
+        } else if (spanishISO.find((e) => e === person.country) !== undefined) {
           fistTimeMessage = spanish;
         } else {
           fistTimeMessage = english;
@@ -231,7 +229,11 @@ const handleSendingMessages = async (userId, data, uniqJobId) => {
       {
         $inc: { available_funds: -totalCost },
         $push: {
-          sending_messages_log: { data: simulateSending, uniqJobId: uniqJobId },
+          sending_messages_log: {
+            data: simulateSending,
+            uniqJobId: uniqJobId,
+            totalCost: totalCost,
+          },
         },
         sent_earlier: sent_earlier,
       },

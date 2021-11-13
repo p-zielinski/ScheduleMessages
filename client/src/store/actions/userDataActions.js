@@ -8,6 +8,9 @@ export const fetchData = () => async (dispatch) => {
   if (userData.messages !== undefined) {
     userData.messages = userData.messages.reverse();
   }
+  if (userData.sending_messages_log !== undefined) {
+    userData.sending_messages_log = userData.sending_messages_log.reverse();
+  }
   dispatch({
     type: "set_data",
     payload: { userData },
