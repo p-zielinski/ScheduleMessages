@@ -10,17 +10,6 @@ https://schedulemessages.com/
 
 <b>Registration is working</b>
 
-Uses JWT to login and use interface.
-Created by Piotr Zieliński.
-All rights restricted.
-
-To start app on your machine:
-1. Download all files.
-2. Update mongoDB conection info in /modules/connectToDB.js
-3. Open terminal in the main folder.
-4. Run commands as follow:
-- npm install
-- npm run client-install
-- npm run dev
+<img width="902" alt="Screen Shot 2021-11-15 at 5 45 35 PM (2)" src="https://user-images.githubusercontent.com/82354717/141820824-805f61f2-e7d5-43ff-bbf0-a90d73edc4e5.png">
 
 License: All rights restricted.
