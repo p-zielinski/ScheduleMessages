@@ -618,10 +618,6 @@ input:disabled{
   100% {background-color: rgba(64, 169, 255, 0.15);}
 }
 
-.add_icon:hover{
-  border: solid 1px #40a9ff;
-  color: rgba(64, 147, 255, 0.9);
-}
 
 .add_icon_selected{
   height: 40px;
@@ -662,7 +658,10 @@ input:disabled{
   border-radius: 2px;
 }
 
-
+.show_message_assigned_button:hover{
+  border: solid 1px rgb(193, 44, 255);
+  color: rgb(126, 26, 168);
+}
 
 .token_expiration_alert {
   z-index: 2;
@@ -1072,7 +1071,7 @@ input-contact-inner-plus-save{
   background: rgb(229, 243, 255);
   padding: 10px;
   border-radius: 10px;
-  z-index: 1;
+  z-index: 3;
 }
 
 .session-timer-button{

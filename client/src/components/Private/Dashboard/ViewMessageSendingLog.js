@@ -66,7 +66,6 @@ const ViewMessageSendingLog = ({ message_log }) => {
               height: "auto",
               marginBottom: 6,
               background: `rgb(241,247,255)`,
-              boxShadow: `-2px -2px 4px rgba(180, 161, 206,.4), 2px 0px 10px #fff`,
             }}
             onClick={() => {
               if (index === selected) {
@@ -154,18 +153,33 @@ const ViewMessageSendingLog = ({ message_log }) => {
             ) : (
               ""
             )}
+            {message_log.error !== undefined ? (
+              <div
+                className={"center"}
+                style={{
+                  height: "auto",
+                  padding: "5px 0 5px 0",
+                  textAlign: "center",
+                }}
+              >
+                <b>Reason:</b>
+                <br />
+                {message_log.error}
+              </div>
+            ) : (
+              ""
+            )}
           </>
         )}
       </div>
       <div
-        className={"add_icon"}
+        className={"add_icon show_message_assigned_button"}
         style={{
           marginTop: 10,
           marginBottom: 0,
           width: "100%",
           height: "auto",
-          background: `rgb(241,247,255)`,
-          boxShadow: `-2px -2px 4px rgba(180, 161, 206,.4), 2px 0px 10px #fff`,
+          background: `rgb(253,248,255)`,
         }}
         onClick={() => setShowScheduleMessage(!showScheduledMessage)}
       >
@@ -180,7 +194,12 @@ const ViewMessageSendingLog = ({ message_log }) => {
         </div>
       </div>
       {showScheduledMessage && typeof message === "object" ? (
-        <ViewMessageSummary key={nanoid()} message={message} setMargin={5} />
+        <ViewMessageSummary
+          key={message.uniqJobId}
+          message={message}
+          setMargin={5}
+          noContent={totalCost > 0}
+        />
       ) : (
         ""
       )}

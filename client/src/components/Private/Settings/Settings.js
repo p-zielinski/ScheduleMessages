@@ -5,6 +5,7 @@ import ChangePassword from "./ChangePassword";
 import ChangeUsername from "./ChangeUsername";
 import EditContacts from "./EditContacts";
 import { useLocation } from "react-router-dom";
+import AddFunds from "./AddFunds";
 
 const Settings = () => {
   const [formType, setFormType] = useState(undefined);
@@ -79,7 +80,7 @@ const Settings = () => {
       {formType === "password" && <ChangePassword />}
       {formType === "username" && <ChangeUsername />}
       {formType === "contacts" && <EditContacts />}
-      {formType === "funds" && <div>addfunds</div>}
+      {formType === "funds" && <AddFunds />}
     </div>
   );
 };

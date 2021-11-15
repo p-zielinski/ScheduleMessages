@@ -11,6 +11,7 @@ import Settings from "./Settings/Settings";
 import Schedule from "./Schedule/Schedule";
 import NavBar from "./Schared/NavBar";
 import Messages from "./Messages/Messages";
+import Logs from "./Logs/Logs";
 import axios from "axios";
 import Loading from "../utils/Loading";
 const jwt = require("jsonwebtoken");
@@ -111,6 +112,7 @@ const Logged = ({ LogOut, token, setToken }) => {
     setIsLoadingExtendSession(false);
     if (typeof data.error !== "object") {
       setToken = data.token;
+      localStorage.setItem("token", data.token);
       tokenRef.current.value = data.token;
       await dispatch(setTokenRedux(data.token));
       setShowExtendSessionButton(false);
@@ -196,6 +198,8 @@ const Logged = ({ LogOut, token, setToken }) => {
           <Schedule setNewestScheduledMessage={setNewestScheduledMessage} />
         ) : currentLocation === "/messages" ? (
           <Messages />
+        ) : currentLocation === "/logs" ? (
+          <Logs />
         ) : (
           <Dashboard newestScheduledMessage={newestScheduledMessage} />
         )}

@@ -164,7 +164,11 @@ exports.signup = (req, res) => {
                         // from: '"ScheduleMessages@gmail.com" <schedulemessages@gmail.com>', // sender address
                         to: email,
                         subject: "Confirm your email", // Subject line
-                        html: generateConfirmEmailHtml(email, data.key), // html body
+                        html: generateConfirmEmailHtml(
+                          email,
+                          data.key,
+                          data.secret_email
+                        ), // html body
                       });
                       console.log(info);
                     })();
@@ -173,16 +177,20 @@ exports.signup = (req, res) => {
                       email: response.email,
                     });
                   })
-                  .catch((err) =>
+                  .catch((err) => {
+                    console.log(err);
                     res.status(500).json({
                       err,
-                    })
-                  );
+                    });
+                  });
               })
               .catch((err) => {
-                res.status(500).json({
-                  err,
-                });
+                {
+                  console.log(err);
+                  res.status(500).json({
+                    err,
+                  });
+                }
               });
           }
         );
@@ -282,8 +290,7 @@ exports.check_email = (req, res) => {
 };
 
 exports.confirm_email = (req, res) => {
-  let { email, activation_key } = req.body;
-  console.log(email, activation_key, req.body);
+  let { email, activation_key, secret_email } = req.body;
   let errors = {};
   if (!email) {
     errors.email = "required";
@@ -295,45 +302,88 @@ exports.confirm_email = (req, res) => {
   } else if (activation_key.length !== 24) {
     errors.activation_key = "invalid";
   }
-  if (Object.keys(errors).length > 0) {
+  if (secret_email !== undefined) {
+    EmailValidation.findOne({ secret_email: secret_email })
+      .then((result) => {
+        if (result.key === activation_key) {
+          User.findOneAndUpdate({ email: result.email }, { status: "active" })
+            .then(async (user) => {
+              await EmailValidation.findOneAndDelete({
+                secret_email: secret_email,
+              })
+                .then()
+                .catch((err) => console.log(err));
+              const access_token = createJWT(user.email, user._id, 3600);
+              jwt.verify(
+                access_token,
+                process.env.TOKEN_SECRET,
+                (err, decoded) => {
+                  if (err) {
+                    res.status(500).json({ err });
+                  }
+                  if (decoded) {
+                    return res.status(200).json({
+                      success: true,
+                      token: access_token,
+                      user: user._id,
+                    });
+                  }
+                }
+              );
+            })
+            .catch((err) => console.log(err));
+        } else {
+          return res.status(422).json({ secret_email: "invalid" });
+        }
+      })
+      .catch((err) => {
+        res.status(500).json({
+          secret_email: "invalid",
+        });
+      });
+  } else if (
+    errors.activation_key === undefined &&
+    errors.email === undefined
+  ) {
+    EmailValidation.findOne({ email: email })
+      .then((result) => {
+        if (result.key === activation_key) {
+          User.findOneAndUpdate({ email: email }, { status: "active" })
+            .then(async (user) => {
+              await EmailValidation.findOneAndDelete({ email: email })
+                .then()
+                .catch((err) => console.log(err));
+              const access_token = createJWT(user.email, user._id, 3600);
+              jwt.verify(
+                access_token,
+                process.env.TOKEN_SECRET,
+                (err, decoded) => {
+                  if (err) {
+                    res.status(500).json({ err });
+                  }
+                  if (decoded) {
+                    return res.status(200).json({
+                      success: true,
+                      token: access_token,
+                      user: user._id,
+                    });
+                  }
+                }
+              );
+            })
+            .catch((err) => console.log(err));
+        } else {
+          return res.status(422).json({ activation_key: "incorrect" });
+        }
+      })
+      .catch((err) => {
+        res.status(500).json({
+          email: "incorrect",
+        });
+      });
+  } else {
     return res.status(422).json(errors);
   }
-  EmailValidation.findOne({ email: email })
-    .then((result) => {
-      if (result.key === activation_key) {
-        User.findOneAndUpdate({ email: email }, { status: "active" })
-          .then(async (user) => {
-            await EmailValidation.findOneAndDelete({ email: email })
-              .then()
-              .catch((err) => console.log(err));
-            const access_token = createJWT(user.email, user._id, 3600);
-            jwt.verify(
-              access_token,
-              process.env.TOKEN_SECRET,
-              (err, decoded) => {
-                if (err) {
-                  res.status(500).json({ err });
-                }
-                if (decoded) {
-                  return res.status(200).json({
-                    success: true,
-                    token: access_token,
-                    user: user._id,
-                  });
-                }
-              }
-            );
-          })
-          .catch((err) => console.log(err));
-      } else {
-        return res.status(422).json({ activation_key: "incorrect" });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({
-        email: "incorrect",
-      });
-    });
 };
 
 exports.is_token_valid = (req, res) => {
@@ -357,7 +407,8 @@ exports.extend_session = (req, res) => {
       res.status(500).json({ error });
     }
     if (decoded) {
-      const access_token = createJWT(decoded.email, decoded._id, 3600);
+      console.log(decoded);
+      const access_token = createJWT(decoded.email, decoded.userId, 3600);
       return res.status(200).json({
         success: true,
         token: access_token,

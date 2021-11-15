@@ -65,26 +65,58 @@ const Dashboard = () => {
       </div>
       <h2 style={{ textAlign: "center" }}>Most recent messaging log:</h2>
       {typeof sending_messages_log === "object"
-        ? sending_messages_log.map((message_log, index) => {
-            if (index === 0)
-              return (
-                <ViewMessageSendingLog
-                  key={nanoid()}
-                  message_log={message_log}
-                />
-              );
-            else return "";
-          })
+        ? sending_messages_log.length === 0
+          ? parse(`<h3 style="margin-bottom: 0">No logs to display</h3>`)
+          : sending_messages_log.map((message_log, index) => {
+              if (index === 0)
+                return (
+                  <ViewMessageSendingLog
+                    key={message_log.messageSid}
+                    message_log={message_log}
+                  />
+                );
+              else return "";
+            })
         : "No messages to display"}
+      {typeof sending_messages_log === "object"
+        ? sending_messages_log.length > 1 && (
+            <Link to={"/logs"}>
+              <div
+                className={"add_icon"}
+                style={{ marginTop: 10, width: "100%", height: "auto" }}
+              >
+                <p
+                  className={"center hide-decoration"}
+                  style={{
+                    fontSize: "1.8rem",
+                    padding: 8,
+                    textAlign: "center",
+                    color: "black",
+                    textDecorationColor: "none",
+                  }}
+                >
+                  Show all logs
+                </p>
+              </div>
+            </Link>
+          )
+        : ""}
       <h2 style={{ textAlign: "center", marginTop: 10 }}>
         Most recent scheduled message:
       </h2>
       {typeof messages === "object"
-        ? messages.map((message, index) => {
-            if (index === 0)
-              return <ViewMessageSummary key={nanoid()} message={message} />;
-            else return "";
-          })
+        ? messages.length === 0
+          ? parse(`<h3 style="margin-bottom: 0">No messages to display</h3>`)
+          : messages.map((message, index) => {
+              if (index === 0)
+                return (
+                  <ViewMessageSummary
+                    key={message.uniqJobId}
+                    message={message}
+                  />
+                );
+              else return "";
+            })
         : "No messages to display"}
       {typeof messages === "object"
         ? messages.length > 1 && (
@@ -96,8 +128,8 @@ const Dashboard = () => {
                 <p
                   className={"center hide-decoration"}
                   style={{
-                    fontSize: "2rem",
-                    padding: 10,
+                    fontSize: "1.8rem",
+                    padding: 8,
                     textAlign: "center",
                     color: "black",
                     textDecorationColor: "none",

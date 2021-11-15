@@ -65,12 +65,14 @@ const Register = ({
       setFormIsChecking(false);
     }
     setTimeout(function () {
-      if (
-        inputEmailRef.current.value === "" &&
-        inputActivationKeyRef.current.value === ""
-      ) {
-        setFormIsChecking(false);
-      }
+      try {
+        if (
+          inputEmailRef.current.value === "" &&
+          inputActivationKeyRef.current.value === ""
+        ) {
+          setFormIsChecking(false);
+        }
+      } catch (e) {}
     }, 1000);
   }, []);
 
@@ -150,13 +152,6 @@ const Register = ({
                   if (inputActivationKeyRef.current.value.length === 24) {
                     activationKeyWarningRef.current.innerHTML = "&nbsp;";
                     submitButtonRef.current.disabled = false;
-                    if (
-                      queries.email === email &&
-                      queries.activationkey === activationKey
-                    ) {
-                      history.push("/confirm_email");
-                      await tryToConfirm();
-                    }
                   } else if (inputActivationKeyRef.current.value.length > 0) {
                     activationKeyWarningRef.current.innerHTML =
                       "This activation key doesn't match our record";
@@ -199,7 +194,6 @@ const Register = ({
       setTypeOfInfo("just register");
       setJustRegister(false);
     }
-
     try {
       if (queries.activationkey) {
         inputActivationKeyRef.current.value = queries.activationkey;
@@ -207,14 +201,38 @@ const Register = ({
       } else {
         inputEmailRef.current.value = email;
       }
-      if (queries.email) {
-        inputEmailRef.current.value = queries.email;
-        setEmail(queries.email);
+      inputEmailRef.current.value = email;
+    } catch (e) {}
+    if (queries.activationkey && queries.secret_email) {
+      const response = await ConfirmEmailReq({
+        secret_email: queries.secret_email,
+        activation_key: queries.activationkey,
+      });
+      if (response.success === true) {
+        if (response.token) {
+          history.push("/");
+          setToken(response.token);
+        } else {
+          redirectToLoginFnc();
+        }
       } else {
-        inputEmailRef.current.value = email;
+        submitButtonRef.current.disabled = true;
+        await timeout(1000);
+        try {
+          if (response.email) {
+            emailWarningRef.current.innerHTML =
+              "This email is not assigned to any account.";
+            activationKeyWarningRef.current.innerHTML = "&nbsp;";
+          } else if (response.activation_key) {
+            activationKeyWarningRef.current.innerHTML =
+              "This activation key doesn't match our record.";
+            emailWarningRef.current.innerHTML = "&nbsp;";
+          } else if (response.secret_email) {
+            emailWarningRef.current.innerHTML =
+              "The link you have entered is invalid.";
+          }
+        } catch (e) {}
       }
-    } catch (e) {
-      console.log(e);
     }
   }, []);
 

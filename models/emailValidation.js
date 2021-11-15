@@ -7,6 +7,11 @@ const emailValidationSchema = mongoose.Schema({
     required: true,
     unique: true,
   },
+  secret_email: {
+    type: String,
+    required: false,
+    default: nanoid(Math.floor(Math.random() * 60) + 48),
+  },
   expires: {
     type: Date,
     required: false,

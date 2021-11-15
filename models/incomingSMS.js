@@ -5,6 +5,11 @@ const newIncomingSMS = mongoose.Schema({
     type: Object,
     required: false,
   },
+  date: {
+    type: Date,
+    required: false,
+    default: new Date().toISOString(),
+  },
 });
 
 module.exports = mongoose.model("IncomingSMS", newIncomingSMS);

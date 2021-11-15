@@ -250,7 +250,11 @@ const handleSendingMessages = async (userId, data, uniqJobId) => {
       { _id: userId },
       {
         $push: {
-          sending_messages_log: { data: simulateSending, uniqJobId: uniqJobId },
+          sending_messages_log: {
+            data: simulateSending,
+            uniqJobId: uniqJobId,
+            error: "Not enough funds",
+          },
         },
       },
       { new: true }

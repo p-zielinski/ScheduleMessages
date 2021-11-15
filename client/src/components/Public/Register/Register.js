@@ -14,8 +14,14 @@ const RegisterUser = async (credentials) => {
     },
     data: credentials,
   })
-    .then((response) => response.data)
-    .catch((error) => error.response.status);
+    .then((response) => {
+      console.log(response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error);
+      return error.response.status;
+    });
 };
 
 const CheckEmailInDatabase = async (email) => {
@@ -216,6 +222,7 @@ const Register = ({
         email,
         password,
       });
+      console.log(response);
       if (response.success === true) {
         setJustRegister(true);
         redirectToConfirm();

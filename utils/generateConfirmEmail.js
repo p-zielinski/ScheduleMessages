@@ -1,4 +1,4 @@
-exports.generateConfirmEmailHtml = (email, activationKey) => {
+exports.generateConfirmEmailHtml = (email, activationKey, secret_email) => {
   return `<!doctype html>
     <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
       <head>
@@ -140,7 +140,7 @@ exports.generateConfirmEmailHtml = (email, activationKey) => {
             <tbody><tr>
               <td align="left" style="font-size:0px;padding:0px 15px 0px 30px;word-break:break-word;">
                 
-      <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:1.5;text-align:left;color:#000000;"><p style="font-size: 11px; font-family: Ubuntu, Helvetica, Arial;"><span style="font-size: 36px; font-family: Georgia, sans-serif;">ScheduleMessages.com</span></p></div>
+      <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:1.5;text-align:left;color:#000000;"><p style="font-size: 11px; font-family: Ubuntu, Helvetica, Arial;"><span style="color: #000000; font-size: 36px; font-family: Georgia, sans-serif;">ScheduleMessages.com</span></p></div>
     
               </td>
             </tr>
@@ -170,7 +170,7 @@ exports.generateConfirmEmailHtml = (email, activationKey) => {
             <tr>
               <td align="left" style="font-size:0px;padding:15px 15px 7px 15px;word-break:break-word;">
                 
-      <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:1.5;text-align:left;color:#000000;"><p style="font-size: 11px; font-family: Ubuntu, Helvetica, Arial; text-align: center;"><span style="font-family: Arial, sans-serif; font-size: 20px;">Welcome <span style="text-decoration: underline;"><span style="color: #000957; text-decoration: underline;">${email}</span></span></span></p></div>
+      <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:1.5;text-align:left;color:#000000;"><p style="font-size: 11px; font-family: Ubuntu, Helvetica, Arial; text-align: center;"><span style="color: #000000; font-family: Arial, sans-serif; font-size: 20px;">Welcome <span style="text-decoration: underline;"><span style="color: #000000; text-decoration: underline;">${email}</span></span></span></p></div>
     
               </td>
             </tr>
@@ -186,7 +186,7 @@ exports.generateConfirmEmailHtml = (email, activationKey) => {
             <tr>
               <td align="left" style="font-size:0px;padding:0px 15px 15px 15px;word-break:break-word;">
                 
-      <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:1.5;text-align:left;color:#000000;"><p style="font-size: 11px; font-family: Ubuntu, Helvetica, Arial; text-align: center;"><span style="text-decoration: underline; font-family: Arial, sans-serif; color: #000000; font-size: 15px;"><a style="color: #000000; text-decoration: underline;" href="https://schedulemessages.com/confirm_email?email=${email}&activationkey=${activationKey}">https://schedulemessages.com/confirm_email?email=${email}&activationkey=${activationKey}</a></span></p></div>
+      <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:1.5;text-align:left;color:#000000;"><p style="font-size: 11px; font-family: Ubuntu, Helvetica, Arial; text-align: center;"><span style="text-decoration: underline; font-family: Arial, sans-serif; color: #000000; font-size: 15px;"><a style="color: #000000; text-decoration: underline;" href="https://schedulemessages.com/confirm_email?secret_email=${secret_email}&activationkey=${activationKey}">https://schedulemessages.com/confirm_email?secret_email=${secret_email}&activationkey=${activationKey}</a></span></p></div>
     
               </td>
             </tr>

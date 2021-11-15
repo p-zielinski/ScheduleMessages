@@ -181,7 +181,6 @@ const ChangeUsername = () => {
               <Radio.Group
                 size={"large"}
                 style={{ width: "100%" }}
-                className={"mb"}
                 onChange={(e) => setDeleteOrChangeNameFormType(e.target.value)}
               >
                 <Radio.Button style={{ width: "100%" }} value="delete">
@@ -194,7 +193,10 @@ const ChangeUsername = () => {
               {deleteOrChangeNameFormType !== undefined && (
                 <>
                   <b>
-                    <p className={"center"} style={{ marginBottom: 10 }}>
+                    <p
+                      className={"center"}
+                      style={{ marginBottom: 10, marginTop: 20 }}
+                    >
                       This change will only apply to messages scheduled from the
                       moment of change
                     </p>

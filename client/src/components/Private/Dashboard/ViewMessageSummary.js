@@ -19,7 +19,7 @@ const CancelJobReq = async (token, uniqJobId) => {
     .catch((error) => error.response.data);
 };
 
-const ViewMessageSummary = ({ message, setMargin }) => {
+const ViewMessageSummary = ({ message, setMargin, noContent }) => {
   const [recipients, setRecipients] = useState([]);
   const [backgroundColor, setBackgroundColor] = useState("none");
   const [weekDays, setWeekDays] = useState("");
@@ -275,14 +275,16 @@ const ViewMessageSummary = ({ message, setMargin }) => {
           )}
         </div>
       </div>
-      <p
-        className={"center"}
-        style={{ textAlign: "center", marginTop: 5, marginBottom: 10 }}
-      >
-        <b>Content:</b>
-        <br />
-        {message.data.messageBody} {message.data.messageEnds}
-      </p>
+      {noContent !== true && (
+        <p
+          className={"center"}
+          style={{ textAlign: "center", marginTop: 5, marginBottom: 10 }}
+        >
+          <b>Content:</b>
+          <br />
+          {message.data.messageBody} {message.data.messageEnds}
+        </p>
+      )}
     </div>
   );
 };
