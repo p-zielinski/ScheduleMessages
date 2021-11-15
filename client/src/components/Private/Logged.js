@@ -203,8 +203,8 @@ const Logged = ({ LogOut, token, setToken }) => {
         ) : (
           <Dashboard newestScheduledMessage={newestScheduledMessage} />
         )}
-        <div className={"add-120px-if-mobile"}></div>
       </div>
+      <div className={"add-120px-if-mobile"}></div>
     </div>
   );
 };

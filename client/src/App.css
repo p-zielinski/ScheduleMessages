@@ -192,6 +192,7 @@ legend {
 }
 
 
+
 .public-wrapper {
   z-index:1;
   padding: 16px;
@@ -200,16 +201,26 @@ legend {
   color: black;
   background: white;
   position:absolute;
-  top:0;
+  top:2rem;
   left:0;
   right:0;
   width:100%;
   max-width: 650px;
   min-width: 320px;
-  -ms-transform: translateY(50%);
-  transform: translateY(50%);
   height:550px;
   margin:auto;
+}
+
+@media screen and (max-width: 650px) {
+  .public-wrapper {
+    top:0;
+    border-top: 3px white;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+  }
+  body,html{
+    background: rgb(246, 251, 255);
+  }
 }
 
 .public-wrapper-tall {
@@ -1086,8 +1097,9 @@ input-contact-inner-plus-save{
 }
 
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 650px) {
   .add-120px-if-mobile{
     height: 120px;
+    background: rgb(246, 251, 255);
   }
 }
