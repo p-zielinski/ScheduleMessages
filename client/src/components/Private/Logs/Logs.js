@@ -42,18 +42,16 @@ const Logs = () => {
             ? parse(`<h3 style="margin-bottom: 0">No logs to display</h3>`)
             : sending_messages_log.map((message_log, index) => {
                 if (showType === "sent") {
-                  if (typeof message_log.data[0].sent === "string") {
+                  if (typeof message_log.error !== "string") {
                     return (
                       <ViewMessageSendingLog
                         key={message_log.data[0].messageSid}
                         message_log={message_log}
                       />
                     );
-                  } else {
-                    console.log("chuj");
                   }
                 } else if (showType === "not sent") {
-                  if (typeof message_log.data[0].sent !== "string") {
+                  if (typeof message_log.error === "string") {
                     return (
                       <ViewMessageSendingLog
                         key={message_log.data[0].messageSid}
