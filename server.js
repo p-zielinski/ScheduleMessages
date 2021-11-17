@@ -43,12 +43,12 @@ const main = (async () => {
   if ((await connectToDB()) === false) {
     return `Connection with database has FAILED - app STOPPED`;
   } else console.log("Connection with database was ESTABLISHED - OK");
-  // const scheduledMessagesFromDB = await addScheduledMessagesFromDB();
-  // if (typeof scheduledMessagesFromDB === false) {
-  //   return "Scheduling messages from DB have FAILED - app STOPPED";
-  // } else {
-  //   console.log(`Scheduling messages from DB was SUCCESSFULLY completed`);
-  // }
+  const scheduledMessagesFromDB = await addScheduledMessagesFromDB();
+  if (typeof scheduledMessagesFromDB === false) {
+    return "Scheduling messages from DB have FAILED - app STOPPED";
+  } else {
+    console.log(`Scheduling messages from DB was SUCCESSFULLY completed`);
+  }
   checkExpiredEmailValidation();
   checkChangePasswordsKeysValidations();
   app.listen(PORT, () => console.log(`Server started on port ${PORT}!`));
