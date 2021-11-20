@@ -36,7 +36,10 @@ const userDataReducer = (state = initState, action) => {
           action.payload.userData.sending_messages_log;
         state.sent_earlier = action.payload.userData.sent_earlier;
         state.messages = action.payload.userData.messages;
-        state.available_funds = action.payload.userData.available_funds;
+        state.available_funds =
+          action.payload.userData.available_funds !== 0
+            ? action.payload.userData.available_funds / 100
+            : 0;
         state.name = action.payload.userData.name;
         state.contact_list = action.payload.userData.contact_list;
         state.default_country = action.payload.userData.default_country;

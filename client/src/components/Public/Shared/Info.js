@@ -6,7 +6,11 @@ const Info = ({ setTypeOfInfo, text }) => {
   return (
     <div className={"info-wrapper"}>
       <p className={"info-text-holder"}>{text}</p>
-      <i onClick={() => close()} className="fas fa-times"></i>
+      <i
+        onClick={() => close()}
+        className="fas fa-times"
+        style={{ zIndex: 2 }}
+      ></i>
     </div>
   );
 };

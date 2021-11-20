@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import parse from "html-react-parser";
 import { Link } from "react-router-dom";
 import ViewMessageSendingLog from "./ViewMessageSendingLog";
-import { nanoid } from "nanoid";
 
 const Dashboard = () => {
   const { messages, email, name, available_funds, sending_messages_log } =

@@ -58,7 +58,7 @@ let firstTimeMessages = [];
     .createReadStream("./smsData/ourSmsPricing.csv")
     .pipe(await csv())
     .on("data", async (data) => {
-      data.Price = parseFloat(data.Price);
+      data.Price = parseInt(data.Price);
       smsPricing.push(data);
     })
     .on("end", async () => {
@@ -227,7 +227,7 @@ const handleSendingMessages = async (userId, data, uniqJobId) => {
     await User.findOneAndUpdate(
       { _id: userId },
       {
-        $inc: { available_funds: -totalCost },
+        $inc: { available_funds: -(totalCost * 100) },
         $push: {
           sending_messages_log: {
             data: simulateSending,

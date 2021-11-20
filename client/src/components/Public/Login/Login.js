@@ -5,6 +5,20 @@ import { Link, useHistory } from "react-router-dom";
 import Info from "../Shared/Info";
 import { useDispatch } from "react-redux";
 
+const RequestPasswordChange = async (email) => {
+  return await axios({
+    method: "post",
+    url: "/api/change_password_req",
+    timeout: 1000 * 5, // Wait for 5 seconds
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: { email: email },
+  })
+    .then((response) => response.data)
+    .catch((error) => error.response.data);
+};
+
 const LoginUser = async (credentials) => {
   return await axios({
     method: "post",
@@ -205,11 +219,14 @@ const Login = ({
 
   const recoverPasswordHandle = async () => {
     if (inputEmailRef.current.value === lastEmailCheckedSuccessfully) {
-      setTypeOfInfo("password recovery email was sent");
-      console
-        .log
-        //send request if sccess, let him know about it.
-        ();
+      const respond = await RequestPasswordChange(inputEmailRef.current.value);
+      if (typeof respond === "object") {
+        if (respond.success === true) {
+          setTypeOfInfo("password recovery email was sent");
+        } else if (respond.error === "sent within last 15 minutes") {
+          setTypeOfInfo("password recovery email was sent");
+        }
+      }
     } else {
       setTypeOfInfo("email not valid");
     }

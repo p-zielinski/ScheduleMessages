@@ -6,6 +6,7 @@ import Register from "./Register/Register";
 import Home from "./Home/Home";
 import Loading from "../utils/Loading";
 import ChangePassword from "./ChangePassword/ChangePassword";
+import ChangeEmail from "./ChangeEmail/ChangeEmail";
 
 const NotLogged = ({ setToken }) => {
   const [email, setEmail] = useState("");
@@ -50,8 +51,16 @@ const NotLogged = ({ setToken }) => {
           setPassword={setPassword}
           email={email}
           setEmail={setEmail}
-          justRegister={justRegister}
-          setJustRegister={setJustRegister}
+          setToken={setToken}
+        />
+      </Route>
+      <Route path="/change_email">
+        <ChangeEmail
+          Loading={Loading}
+          password={password}
+          setPassword={setPassword}
+          email={email}
+          setEmail={setEmail}
           setToken={setToken}
         />
       </Route>

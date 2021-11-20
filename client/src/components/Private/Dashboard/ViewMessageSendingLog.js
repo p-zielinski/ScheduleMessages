@@ -146,7 +146,11 @@ const ViewMessageSendingLog = ({ message_log }) => {
               >
                 {typeof message === "object"
                   ? typeof message.data === "object"
-                    ? parse(`<b>Content:</b><br/>${message.data.messageBody}`)
+                    ? parse(
+                        `<b>Content:</b><br/>${message.data.messageBody
+                          .replace(/</g, "&lt;")
+                          .replace(/>/g, "&gt;")}`
+                      )
                     : ""
                   : ""}
               </div>

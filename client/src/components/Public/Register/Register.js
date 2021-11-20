@@ -170,7 +170,7 @@ const Register = ({
                       "Too weak"
                     ) {
                       passwordWarningRef.current.innerHTML =
-                        "This password is too weak, please add some symbols or numbers if you haven't already.";
+                        "This password is too weak, please add some symbols or numbers if there is none yet.";
                     } else {
                       passwordWarningRef.current.innerHTML = "&nbsp;";
                       submitButtonRef.current.disabled = false;

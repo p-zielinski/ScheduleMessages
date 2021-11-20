@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { nanoid } = require("nanoid");
 
-const changePasswordSchema = mongoose.Schema({
+const changeEmailSchema = mongoose.Schema({
   email: {
     type: String,
     required: true,
@@ -30,4 +30,4 @@ const changePasswordSchema = mongoose.Schema({
     default: new Date().toISOString(),
   },
 });
-module.exports = mongoose.model("Password", changePasswordSchema);
+module.exports = mongoose.model("ChangeEmail", changeEmailSchema);

@@ -211,8 +211,32 @@ legend {
   margin:auto;
 }
 
+.public-wrapper-tall {
+  z-index:1;
+  padding: 16px;
+  border: 3px solid rgba(0,101,255,0.5);
+  border-radius: 1rem;
+  color: black;
+  background: white;
+  position:absolute;
+  top:2rem;
+  left:0;
+  right:0;
+  width:100%;
+  max-width: 650px;
+  min-width: 320px;
+  height:700px;
+  margin:auto;
+}
+
 @media screen and (max-width: 650px) {
   .public-wrapper {
+    top:0;
+    border-top: 3px white;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+  }
+  .public-wrapper-tall{
     top:0;
     border-top: 3px white;
     border-top-right-radius: 0;
@@ -222,27 +246,6 @@ legend {
     background: rgb(246, 251, 255);
   }
 }
-
-.public-wrapper-tall {
-  z-index:1;
-  padding: 16px;
-  border: 3px solid rgba(0,101,255,0.5);
-  border-radius: 1rem;
-  color: black;
-  background: white;
-  position:absolute;
-  top:0;
-  left:0;
-  right:0;
-  width:100%;
-  max-width: 650px;
-  min-width: 320px;
-  -ms-transform: translateY(30%);
-  transform: translateY(30%);
-  height:700px;
-  margin:auto;
-}
-
 
 .hidden--visually {
   border: 0;
@@ -384,6 +387,26 @@ a:hover{
 }
 
 
+.info-wrapper{
+  position: absolute;
+  width: 101%;
+  top:0;
+  left:0;
+}
+
+
+.info-text-holder{
+  z-index: 1;
+  position: absolute;
+  width: 100%;
+  margin-left:-3px;
+  margin-top: -3px;
+  border-radius: 1rem;
+  background: white;
+  padding: 16px;
+  border: 3px solid rgba(255,0,9,0.3);
+}
+
 .fa-times{
   transition: all .5s ease;
   color: #222222;
@@ -400,31 +423,6 @@ a:hover{
   cursor: pointer;
   font-size: 2rem;
   /*var(--color__accent)*/
-}
-
-.info-wrapper{
-  padding: 16px;
-  border: 3px solid rgba(255,0,9,0.3);
-  border-radius: 1rem;
-  position: absolute;
-  background: white;
-  width: 101%;
-  top:-73px;
-  height: 73px;
-  bottom:auto;
-  left:-3px;
-  right:0;
-}
-
-@media screen and (max-width: 600px) {
-  .info-wrapper{
-    top:-90px;
-    height: 90px;
-  }
-}
-
-.info-text-holder{
-  width: 97%;
 }
 
 .main-area{
@@ -1103,3 +1101,5 @@ input-contact-inner-plus-save{
     background: rgb(246, 251, 255);
   }
 }
+
+

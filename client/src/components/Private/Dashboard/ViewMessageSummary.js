@@ -282,7 +282,7 @@ const ViewMessageSummary = ({ message, setMargin, noContent }) => {
         >
           <b>Content:</b>
           <br />
-          {message.data.messageBody} {message.data.messageEnds}
+          {message.data.messageBody}
         </p>
       )}
     </div>

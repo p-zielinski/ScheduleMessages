@@ -1,6 +1,6 @@
 import parse from "html-react-parser";
 import { useState, useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   fetchData,
   setToken as setTokenRedux,
@@ -14,6 +14,8 @@ import Messages from "./Messages/Messages";
 import Logs from "./Logs/Logs";
 import axios from "axios";
 import Loading from "../utils/Loading";
+import Success from "./AfterCheckout/Success";
+import Canceled from "./AfterCheckout/Canceled";
 const jwt = require("jsonwebtoken");
 
 const ExtendSession = async (token) => {
@@ -135,7 +137,7 @@ const Logged = ({ LogOut, token, setToken }) => {
 
   return (
     <div className={"main-area"}>
-      <input type="text" hidden={true} ref={tokenRef}></input>
+      <input type="text" hidden={true} ref={tokenRef} />
       <div className={"logged-nav-area"}>
         <NavBar LogOut={LogOut} />
       </div>
@@ -148,7 +150,7 @@ const Logged = ({ LogOut, token, setToken }) => {
                   className="fas fa-times"
                   style={{ marginTop: -5, marginRight: -5 }}
                   onClick={() => setShowExtendSessionButton(false)}
-                ></i>
+                />
                 {!isLoadingExtendSession ? (
                   <>
                     <p className={"center"} style={{ textAlign: "center" }}>
@@ -200,11 +202,19 @@ const Logged = ({ LogOut, token, setToken }) => {
           <Messages />
         ) : currentLocation === "/logs" ? (
           <Logs />
+        ) : currentLocation === "/success" ? (
+          <Success />
+        ) : currentLocation === "/canceled" ? (
+          <Canceled />
+        ) : currentLocation === "/change_password" ? (
+          LogOut()
+        ) : currentLocation === "/change_email" ? (
+          LogOut()
         ) : (
           <Dashboard newestScheduledMessage={newestScheduledMessage} />
         )}
       </div>
-      <div className={"add-120px-if-mobile"}></div>
+      <div className={"add-120px-if-mobile"} />
     </div>
   );
 };

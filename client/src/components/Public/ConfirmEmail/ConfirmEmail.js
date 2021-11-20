@@ -241,7 +241,6 @@ const Register = ({
       email: inputEmailRef.current.value,
       activation_key: inputActivationKeyRef.current.value,
     };
-    console.log(credentials);
     const response = await ConfirmEmailReq(credentials);
     if (response.success === true) {
       if (response.token) {

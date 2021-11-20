@@ -1,5 +1,75 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
+const ChangePasswordReq = require("../models/changePasswordReq");
+const ChangeEmailReq = require("../models/changeEmailReq");
+
+exports.getRealEmailChangeEmail = async (req, res) => {
+  let { hidden_email } = req.body;
+  await ChangeEmailReq.findOne({ hidden_email: hidden_email })
+    .then((data) => {
+      if (!data) {
+        return res.status(400).json({
+          hidden_email: "not found",
+        });
+      }
+      return res.status(200).json({
+        email: data.email,
+      });
+    })
+    .catch((e) => {
+      return res.status(400).json({
+        error: "an error has occurred",
+      });
+    });
+};
+
+exports.getRealEmailChangePassword = async (req, res) => {
+  let { hidden_email } = req.body;
+  await ChangePasswordReq.findOne({ hidden_email: hidden_email })
+    .then((data) => {
+      if (!data) {
+        return res.status(400).json({
+          hidden_email: "not found",
+        });
+      }
+      return res.status(200).json({
+        email: data.email,
+      });
+    })
+    .catch((e) => {
+      return res.status(400).json({
+        error: "an error has occurred",
+      });
+    });
+};
+
+exports.setTimezone = (req, res) => {
+  let { token, default_country, default_tz } = req.body;
+  jwt.verify(token, process.env.TOKEN_SECRET, (error, decoded) => {
+    if (error) {
+      res.status(400).json({ error: "token invalid" });
+    }
+    if (decoded) {
+      User.findOneAndUpdate(
+        { _id: decoded.userId },
+        { default_country: default_country, default_tz: default_tz },
+        { new: true }
+      )
+        .then(async (user) => {
+          return res.status(200).json({
+            default_country: user.default_country,
+            default_tz: user.default_tz,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          res.status(500).json({
+            error,
+          });
+        });
+    }
+  });
+};
 
 exports.getUserInfo = (req, res) => {
   let { token } = req.body;
@@ -11,6 +81,7 @@ exports.getUserInfo = (req, res) => {
       User.findOne({ _id: decoded.userId })
         .then(async (user) => {
           return res.status(200).json({
+            stripe_user_id: user.stripe_user_id,
             sending_messages_log: user.sending_messages_log,
             sent_earlier: user.sent_earlier,
             messages: user.messages,

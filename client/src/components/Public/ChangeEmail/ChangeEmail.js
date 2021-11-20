@@ -3,12 +3,11 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import queryString from "query-string";
 import Info from "../Shared/Info";
-import { passwordStrength } from "check-password-strength";
 
-const ChangePasswordFinalReq = async (credentials) => {
+const ChangeEmailFinalReq = async (credentials) => {
   return await axios({
     method: "post",
-    url: "/api/change_password_final_step",
+    url: "/api/change_email_final_step",
     timeout: 1000 * 3, // Wait for 5 seconds
     headers: {
       "Content-Type": "application/json",
@@ -38,7 +37,7 @@ const CheckEmailInDatabase = async (email) => {
 const GetRealEmail = async (credentials) => {
   return await axios({
     method: "post",
-    url: "/api/get_real_email_change_password",
+    url: "/api/get_real_email_change_email",
     timeout: 1000 * 3, // Wait for 5 seconds
     headers: {
       "Content-Type": "application/json",
@@ -52,7 +51,7 @@ const GetRealEmail = async (credentials) => {
 const emailRegexp =
   /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
 
-const ChangePassword = ({
+const ChangeEmail = ({
   password,
   setPassword,
   Loading,
@@ -62,16 +61,19 @@ const ChangePassword = ({
 }) => {
   let queries = queryString.parseUrl(useLocation().search).query;
   const [secretKey, setSecretKey] = useState("");
+  const [newEmail, setNewEmail] = useState("");
+  const inputNewEmailRef = useRef();
   const inputSecretKeyRef = useRef();
   const inputEmailRef = useRef();
   const secretKeyWarningRef = useRef();
   const emailWarningRef = useRef();
-  const submitButtonRef = useRef();
+  const newEmailWarningRef = useRef();
   const inputPasswordRef = useRef();
   const passwordWarningRef = useRef();
   const [typeOfInfo, setTypeOfInfo] = useState(null);
-  const [currentPasswordStrength, setCurrentPasswordStrength] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [topFormIsCorrect, setTopFormIsCorrect] = useState(false);
+  const [newEmailIsCorrect, setNewEmailIsCorrect] = useState(false);
 
   useEffect(() => {
     if (email === "" && secretKey === "") {
@@ -115,12 +117,15 @@ const ChangePassword = ({
 
   let lastEmailCheckedSuccessfully = null;
   let lastEmailCheckedSuccessfullyResponse = {};
+  let lastNewEmailCheckedSuccessfully = null;
+  let lastNewEmailCheckedSuccessfullyResponse = {};
   let emailResponse = {};
+  let newEmailResponse = {};
   const [wasAtCharacterSeen, setWasAtCharacterSeen] = useState(false);
   const [formIsChecking, setFormIsChecking] = useState(false);
 
-  const checkForm = async () => {
-    submitButtonRef.current.disabled = true;
+  const checkTopForm = async () => {
+    setTopFormIsCorrect(false);
     emailWarningRef.current.innerHTML = "&nbsp;";
     secretKeyWarningRef.current.innerHTML = "&nbsp;";
     passwordWarningRef.current.innerHTML = "&nbsp;";
@@ -157,15 +162,16 @@ const ChangePassword = ({
                   setFormIsChecking(false);
                   if (inputSecretKeyRef.current.value.length > 24) {
                     secretKeyWarningRef.current.innerHTML = "&nbsp;";
-                    if (currentPasswordStrength !== "Too weak") {
-                      submitButtonRef.current.disabled = false;
-                      passwordWarningRef.current.innerHTML = "&nbsp;";
-                    } else {
-                      if (!(await didPasswordChanged())) {
-                        passwordWarningRef.current.innerHTML =
-                          "This password is too weak, please add some symbols or numbers if there is none yet.";
+                    if (!(await didPasswordChanged())) {
+                      if (
+                        inputPasswordRef.current.value.length > 5 &&
+                        inputPasswordRef.current.value.length < 61
+                      ) {
+                        setTopFormIsCorrect(true);
+                        passwordWarningRef.current.innerHTML = "&nbsp;";
                       } else {
-                        setFormIsChecking(false);
+                        passwordWarningRef.current.innerHTML =
+                          "Password does not match our record";
                       }
                     }
                   } else {
@@ -194,7 +200,7 @@ const ChangePassword = ({
 
   useEffect(async () => {
     try {
-      await checkForm();
+      await checkTopForm();
     } catch (e) {
       console.log(e);
     }
@@ -216,6 +222,7 @@ const ChangePassword = ({
           setEmail(respond.email);
           setFormIsChecking(false);
           lastEmailCheckedSuccessfullyResponse = respond.email;
+          await checkTopForm();
         }
       } else {
         inputEmailRef.current.value = "";
@@ -226,13 +233,15 @@ const ChangePassword = ({
     }
   }, []);
 
-  const tryToChangePassword = async () => {
+  const tryToChangeEmail = async () => {
     const credentials = {
       email: inputEmailRef.current.value,
       secret_key: inputSecretKeyRef.current.value,
       password: inputPasswordRef.current.value,
+      new_email: inputNewEmailRef.current.value,
     };
-    const response = await ChangePasswordFinalReq(credentials);
+    const response = await ChangeEmailFinalReq(credentials);
+    console.log(response);
     if (response.success === true) {
       if (response.token) {
         history.push("/");
@@ -241,24 +250,80 @@ const ChangePassword = ({
         history.push("/");
       }
     } else {
-      submitButtonRef.current.disabled = true;
       if (response.email) {
         emailWarningRef.current.innerHTML =
-          "This account has not asked for a password change in the last 24 hours";
-        secretKeyWarningRef.current.innerHTML = "&nbsp;";
+          "This account has not asked for an email change in the last 24 hours";
+        setTopFormIsCorrect(false);
       } else if (response.secret_key) {
         secretKeyWarningRef.current.innerHTML =
           "This secret key doesn't match our record";
-        emailWarningRef.current.innerHTML = "&nbsp;";
+        setTopFormIsCorrect(false);
+      } else if (response.password) {
+        passwordWarningRef.current.innerHTML =
+          "This password doesn't match our record";
+        setTopFormIsCorrect(false);
+      } else if (response.new_email) {
+        newEmailWarningRef.current.innerHTML = "This email address is invalid";
+        setNewEmailIsCorrect(false);
       }
+    }
+  };
+
+  useEffect(async () => {
+    await checkNewEmail();
+  }, [newEmail]);
+
+  const checkNewEmail = async () => {
+    setFormIsChecking(true);
+    setNewEmailIsCorrect(false);
+    newEmailWarningRef.current.innerHTML = "&nbsp;";
+    if (!(await didNewEmailChanged(800))) {
+      if (newEmail.length > 0 && emailRegexp.test(newEmail)) {
+        if (newEmail !== lastNewEmailCheckedSuccessfully) {
+          newEmailResponse = await CheckEmailInDatabase(
+            inputNewEmailRef.current.value
+          );
+          if (newEmailResponse === 500) {
+            setTypeOfInfo("connection problem");
+          }
+        } else {
+          newEmailResponse = lastNewEmailCheckedSuccessfullyResponse;
+        }
+        setFormIsChecking(false);
+        try {
+          if (newEmailResponse.email === inputNewEmailRef.current.value) {
+            if (newEmailResponse.available === true) {
+              lastNewEmailCheckedSuccessfully = inputNewEmailRef.current.value;
+              lastNewEmailCheckedSuccessfullyResponse = newEmailResponse;
+              setNewEmailIsCorrect(true);
+            } else if (newEmailResponse.available === false) {
+              newEmailWarningRef.current.innerHTML = "This email is taken";
+            }
+          }
+        } catch (e) {
+          //do nothing
+        }
+      } else if (newEmail.length > 0) {
+        newEmailWarningRef.current.innerHTML = "Invalid email";
+        setFormIsChecking(false);
+      } else {
+        setFormIsChecking(false);
+      }
+    }
+  };
+
+  const didNewEmailChanged = async (ms) => {
+    await timeout(ms);
+    if (newEmail === inputNewEmailRef.current.value) {
+      return false;
+    } else {
+      return true;
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!submitButtonRef.current.disabled) {
-      tryToChangePassword();
-    }
+    if (topFormIsCorrect && newEmailIsCorrect) tryToChangeEmail();
   };
 
   return (
@@ -277,7 +342,7 @@ const ChangePassword = ({
           <h1 className={"website-name"}>MESSAGES</h1>
           <h1 className={"website-name"}>.COM</h1>
         </div>
-        <h1 className={"title"}>Change your password</h1>
+        <h1 className={"title"}>Change your email address</h1>
         <Link to={"/"}>
           <i className="fas fa-times"></i>
         </Link>
@@ -291,24 +356,21 @@ const ChangePassword = ({
             name="email"
             type="email"
             placeholder="Email"
-            onChange={(e) => setEmail(e.target.value)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value.toLowerCase())}
             ref={inputEmailRef}
           />
           <label
             maxLength={60}
             htmlFor="input__email"
             className="floating__label"
-            data-content="E-mail"
+            data-content="Current e-mail"
           >
             <span className="hidden--visually">E-mail</span>
           </label>
-          <div className={"flex-wrapper"}>
-            <p className={"warning-holder"} ref={emailWarningRef}>
-              &nbsp;
-            </p>
-            <p className={"link-holder"}>&nbsp;</p>
-            <p className={"link-holder"}>{linkHolder}</p>
-          </div>
+          <p className={"warning-holder"} ref={emailWarningRef}>
+            &nbsp;
+          </p>
         </div>
         <div className="floating">
           <input
@@ -342,9 +404,6 @@ const ChangePassword = ({
               placeholder="Password"
               onChange={(e) => {
                 setPassword(e.target.value);
-                setCurrentPasswordStrength(
-                  passwordStrength(e.target.value).value
-                );
               }}
               ref={inputPasswordRef}
             />
@@ -368,38 +427,34 @@ const ChangePassword = ({
         <p className={"warning-holder"} ref={passwordWarningRef}>
           &nbsp;
         </p>
-        <div className={"flex-wrapper"} style={{ height: 25 }}>
-          <div hidden={password.length > 0 ? false : true}>
-            <p className={"vertical-center"}>
-              <u>Password strength:</u>
-            </p>
-          </div>
-          <p
-            hidden={password.length > 0 ? false : true}
-            style={{
-              color:
-                currentPasswordStrength === "Too weak"
-                  ? "black"
-                  : currentPasswordStrength === "Weak"
-                  ? "black"
-                  : currentPasswordStrength === "Medium"
-                  ? "white"
-                  : "white",
-              background:
-                currentPasswordStrength === "Too weak"
-                  ? "rgb(249,235,215)"
-                  : currentPasswordStrength === "Weak"
-                  ? "rgb(255,221,87)"
-                  : currentPasswordStrength === "Medium"
-                  ? "rgb(50,152,220)"
-                  : "rgb(73,199,118)",
-              padding: "5px 12px 5px 12px",
-              marginLeft: 10,
-              borderRadius: 10,
-            }}
+        {/*//*/}
+        <h3>New email address:</h3>
+        <div className="floating" style={{ marginBottom: 0 }}>
+          <input
+            maxLength={200}
+            id="input__email"
+            className="floating__input"
+            name="email"
+            type="email"
+            placeholder="Email"
+            value={newEmail}
+            onChange={(e) => setNewEmail(e.target.value.toLowerCase())}
+            ref={inputNewEmailRef}
+          />
+          <label
+            maxLength={60}
+            htmlFor="input__email"
+            className="floating__label"
+            data-content="Current e-mail"
           >
-            {currentPasswordStrength}
-          </p>
+            <span className="hidden--visually">E-mail</span>
+          </label>
+          <div className={"flex-wrapper"}>
+            <p className={"warning-holder"} ref={newEmailWarningRef}>
+              &nbsp;
+            </p>
+            <p className={"link-holder"}>&nbsp;</p>
+          </div>
         </div>
         <div className={"holder"} style={{ marginTop: 10 }}>
           <Link to="/login">
@@ -410,6 +465,7 @@ const ChangePassword = ({
           </Link>
           <p className={"form-link"}>Send activation key again</p>//dorobic
           fukcje
+          {formIsChecking.toString()}
         </div>
         <div className={"holder"}>Not a robot checkbox here</div>
         <div className={"move-to-bottom"}>
@@ -418,19 +474,20 @@ const ChangePassword = ({
               <button
                 className={"button center"}
                 type={"submit"}
-                ref={submitButtonRef}
-                disabled
+                disabled={!(topFormIsCorrect && newEmailIsCorrect)}
                 style={{ fontSize: "2rem" }}
               >
-                {formIsChecking ? (
+                {topFormIsCorrect && newEmailIsCorrect ? (
+                  "confirm"
+                ) : !formIsChecking ? (
+                  "confirm"
+                ) : (
                   <Loading
                     size={"1rem"}
                     margin={"10px"}
                     height={"-1.5rem"}
                     background={"rgba(0,1,255,0.62)"}
                   />
-                ) : (
-                  "confirm"
                 )}
               </button>
             </div>
@@ -441,4 +498,4 @@ const ChangePassword = ({
   );
 };
 
-export default ChangePassword;
+export default ChangeEmail;

@@ -6,10 +6,16 @@ import ChangeUsername from "./ChangeUsername";
 import EditContacts from "./EditContacts";
 import { useLocation } from "react-router-dom";
 import AddFunds from "./AddFunds";
+import ChangeTimezone from "./ChangeTimezone";
 
 const Settings = () => {
   const [formType, setFormType] = useState(undefined);
+  const [success, setSuccess] = useState(false);
   const currentLocation = useLocation();
+
+  useEffect(() => {
+    setSuccess(false);
+  }, [formType]);
 
   useEffect(() => {
     if (currentLocation.search.includes("funds")) {
@@ -75,12 +81,19 @@ const Settings = () => {
           </Radio.Button>
         </Radio.Group>
       </div>
-      {formType !== undefined && <div style={{ height: 20 }}></div>}
-      {formType === "email" && <ChangeEmail />}
-      {formType === "password" && <ChangePassword />}
-      {formType === "username" && <ChangeUsername />}
-      {formType === "contacts" && <EditContacts />}
-      {formType === "funds" && <AddFunds />}
+      {formType !== undefined && <div style={{ height: 20 }} />}
+      {formType === "timezone" && (
+        <ChangeTimezone
+          success={success}
+          setSuccess={setSuccess}
+          key="timezone"
+        />
+      )}
+      {formType === "email" && <ChangeEmail key="email" />}
+      {formType === "password" && <ChangePassword key="password" />}
+      {formType === "username" && <ChangeUsername key="username" />}
+      {formType === "contacts" && <EditContacts key="contacts" />}
+      {formType === "funds" && <AddFunds key="funds" />}
     </div>
   );
 };

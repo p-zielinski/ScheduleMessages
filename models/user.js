@@ -25,6 +25,11 @@ const newUserSchema = mongoose.Schema({
     required: false,
     default: 0,
   },
+  stripe_fuds_history: {
+    type: Array,
+    required: false,
+    default: [],
+  },
   name: {
     type: String,
     required: false,
@@ -54,6 +59,11 @@ const newUserSchema = mongoose.Schema({
     type: Array,
     required: false,
     default: [],
+  },
+  stripe_customer_id: {
+    type: String,
+    required: false,
+    default: "",
   },
 });
 

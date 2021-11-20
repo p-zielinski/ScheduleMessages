@@ -236,10 +236,18 @@ const Schedule = () => {
       </div>
       <div className={"center fullW"}>
         {isSingleTime === "single" && (
-          <Single disabledDate={disabledDate} scheduleNow={scheduleNow} />
+          <Single
+            disabledDate={disabledDate}
+            scheduleNow={scheduleNow}
+            key={"single"}
+          />
         )}
         {isSingleTime === "recurring" && (
-          <Recurring disabledDate={disabledDate} scheduleNow={scheduleNow} />
+          <Recurring
+            disabledDate={disabledDate}
+            scheduleNow={scheduleNow}
+            key={"recuring"}
+          />
         )}
       </div>
     </div>

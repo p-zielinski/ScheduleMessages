@@ -12,12 +12,17 @@ const {
   checkChangePasswordsKeysValidations,
 } = require("./modules/checkDatabase");
 //Body parser, middleware
-app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-//import routes
+//use json parser if not /api/webhook route
+app.use((req, res, next) => {
+  if (req.originalUrl === "/api/webhook") {
+    next();
+  } else {
+    express.json()(req, res, next);
+  }
+});
+//import and use routes
 const apiRoutes = require("./routes/api");
-//routes middleware
-
 app.use("/api", apiRoutes);
 
 if (process.env.NODE_ENV === "production") {

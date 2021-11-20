@@ -16,6 +16,7 @@
   "license": "Copyright",
   "dependencies": {
     "@sindresorhus/transliterate": "^1.5.0",
+    "@stripe/react-stripe-js": "^1.6.0",
     "bcrypt": "^5.0.1",
     "check-password-strength": "^2.0.3",
     "client-sessions": "^0.8.0",
@@ -41,7 +42,7 @@
     "react-date-picker": "^8.3.2",
     "sms-segments-calculator": "^1.1.1",
     "string-width": "^5.0.1",
-    "stripe": "^8.188.0",
+    "stripe": "^8.189.0",
     "transliteration": "^2.2.0",
     "twilio": "^3.70.0",
     "url": "^0.11.0"
